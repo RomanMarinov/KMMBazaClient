@@ -1,0 +1,9 @@
+package data.public_info.remote.dto
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class PayForward(
+    val bonusPayout: BonusPayout,
+    val startTarifPrice: Int
+)

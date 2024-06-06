@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+
+
+<!--    auth-->
+    <string name="dialog_auth_faq_title" translatable="false"><b>Инструкция по входу</b></string>
+    <string name="dialog_auth_faq_description" translatable="false"><b>Зачем мы спрашиваем номер телефона?</b>
+\n\nДля входа в личный кабинет абонента в приложении введите номер телефона, привязанный к вашей учетной записи в личном кабинете на сайте: \nhttps://baza.net/cabinet\nЕсли указанного телефона нет в нашей системе — Вы войдете в приложение как гость и получите возможность смотреть онлайн-камеры. \n\n<b>Зачем звонить на номер 8-800 для входа?</b>\n
+\nНеобходимо подтвердить, что Вы владелец введенного номера телефона и намерены войти в личный кабинет. Для этого нужно пройти процедуру идентификации. Мы определим ваш номер телефона и сразу завершим вызов.
+    </string>
+
+
+<!--    // navigation-->
+    <string name="home_title">Baza.net</string>
+    <string name="outdoor_title">Мой двор</string>
+    <string name="map_title">Карта</string>
+    <string name="domofon_title">Умный домофон</string>
+    <string name="help_title">Помощь</string>
+
+    <string name="internet_tv_title">Интернет и ТВ</string>
+    <string name="profile_title">Профиль</string>
+    <string name="addresses_title">Адреса</string>
+    <string name="history_call_title">История звонков</string>
+
+<!--    home-->
+    <string name="home_personal_account">Добавить новый лицевой счет или уже существующий для оплаты услуг за своих близких</string>
+    <string name="home_button_order">Оставить заявку</string>
+
+
+    <string name="home_name_nav">Baza.net</string>
+    <string name="outdoor_name_nav">Мой двор</string>
+    <string name="map_name_nav">Карта</string>
+    <string name="domofon_name_nav">Домофон</string>
+    <string name="help_name_nav">Помощь</string>
+
+
+    <string name="outdoor_add_address">Добавить адрес</string>
+    <string name="outdoor_create_shortcut">Создать ярлык</string>
+
+<!--    domofon-->
+    <string name="domofon_present_top" translatable="false">С Умным Домофоном можно:</string>
+    <string name="domofon_present_desc" translatable="false">&#8226; Открывать дверь подъезда со смартфона\n&#8226; Принимать видеозвонки\n&#8226; Смотреть историю звонков\n&#8226; Наблюдать за придомовой территорией и парковкой\n&#8226; Скачивать записи видео из архива камер</string>
+    <string name="overlay_permission_notification" translatable="false">Получать уведомление во время звонка с домофона на заблокированном экране смартфона (ВАЖНО)</string>
+    <string name="overlay_permission_call" translatable="false">Получать изображение с камеры домофона во время звонка на заблокированном экране смартфона (ВАЖНО)</string>
+
+
+    <string name="help_title_first">Часто задаваемые вопросы</string>
+    <string name="help_title_second">Посмотрите наиболее поппулярные темы обращений к нашим специалистам. Возможно, эти ответы смогут решить вашу проблему.</string>
+    <string name="help_check_internet">Проверить скорость интернета</string>
+    <string name="help_make_question">Задайте нам вопрос</string>
+    <string name="help_make_question_desc">Любые вопросы, которые не требуют моментального реагирования, мы настоятельно просим задавать в любой удобный мессенджер.\n\nВам ответят те же технические специалисты, которые принимают звонки.</string>
+    <string name="help_title_support">Единая служба техподдержки</string>
+    <string name="help_button_make_call">Позвонить</string>
+    <string name="help_call_number_one">8-8172-70-02-39</string>
+    <string name="help_call_number_two">+78005502500</string>
+    <string name="help_make_call">Позвонить</string>
+
+    <string name="help_contact_title">Контакты:</string>
+
+    <string name="map_sheet_outdoor">Онлайн воспроизведение и доступ к архиву с этой камеры предоставлены только для жителей дома или собственников помещений</string>
+    <string name="map_sheet_domofon">Умный домофон - это сервис, который расширит функционал вашего обычного домофона:\n- вы будете видеть кто вам звонит,\n- у вас появиться возможность открыть дверь дистанционно.</string>
+
+<!--    attachPhoto-->
+    <string name="attach_content">Осталось прикрепить фото документа, подтверждающего факт Вашего проживания либо владения имуществом.\nЭто может быть свидетельство о праве собственности, договор аренды или страница прописки в паспорте.</string>
+
+
+<!--    requestResultBottomSheet-->
+    <string name="domofon_request_result_details" translatable="false">Наш сотрудник свяжется с вами в ближайшее время для уточнения технической возможности и условий подключения Умного Домофона.</string>
+    <string name="dvr_request_result_details" translatable="false">Наш сотрудник свяжется с вами в ближайшее время для уточнения технической возможности и условий подключения Дворовой камеры.</string>
+    <string name="photo_sent_successfully" translatable="false">Фото успешно отправлено!</string>
+    <string name="wait_request_result_details" translatable="false">Ожидайте смс о подтверждении вашего адреса.</string>
+    <string name="wait_static_ip_request_result_details" translatable="false">Ожидайте смс о подтверждении заявки, и звонок от нашего сотрудника.</string>
+
+    <string name="failed_to_send_service_request" translatable="false">Ой! Не удалось оставить заявку</string>
+    <string name="try_one_more_time_later" translatable="false">Попробуйте еще раз позже</string>
+</resources>

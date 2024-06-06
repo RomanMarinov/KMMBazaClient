@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="password">password</string>
+    <string name="title_activity_main_application2">MainApplication2</string>
+    <string name="title_activity_call">AuthActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
+</resources>
