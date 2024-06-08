@@ -20,13 +20,17 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -65,61 +70,84 @@ import util.ScreenRoute
 import util.navigateToWebViewHelper
 import util.shimmerEffect
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DomofonListContent(
 //    lazyListState: LazyListState,
     items: List<Sputnik>,
     isLoading: Boolean,
+    onRefresh: () -> Unit,
+    modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
     navHostController: NavHostController,
     viewModel: DomofonScreenViewModel
 ) {
     val lazyListState = rememberLazyListState()
+    val pullToRefreshState = rememberPullToRefreshState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    LazyColumn(
-        state = lazyListState,
+    Box(  modifier = modifier
+        .nestedScroll(pullToRefreshState.nestedScrollConnection)) {
+        LazyColumn(
+            state = lazyListState,
 //        contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
-        contentPadding = PaddingValues(bottom = 16.dp),
-        modifier = Modifier
-            //.navigationBarsPadding()
-            .fillMaxSize()
-        //    .navigationBarsPadding()
-        ,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+            contentPadding = PaddingValues(bottom = 16.dp),
+            modifier = Modifier
+                //.navigationBarsPadding()
+                .fillMaxSize()
+            //    .navigationBarsPadding()
+            ,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item { PermissionBannerContent() }
 
-        Logger.d("4444 DomofonListContent")
-
-        item {
-            PermissionBannerContent()
-        }
-
-
-
-        if (!isLoading && (items.isEmpty())) {
-            item {
-                PresentationContent()
+            if (!isLoading && (items.isEmpty())) {
+                item {
+                    PresentationContent()
+                }
             }
-        }
 
-        if (items.isNotEmpty()) {
-            item {
-                ContentLazyListItemTop(
-                    navHostController = navHostController
+            if (items.isNotEmpty()) {
+                item {
+                    ContentLazyListItemTop(
+                        navHostController = navHostController
+                    )
+                }
+            }
+
+            val itemsSortByFullControl = items.sortedBy { it.fullControl }.reversed()
+
+            items(itemsSortByFullControl) { sputnik ->
+                ContentLazyListItem(
+                    sputnik = sputnik,
+                    snackbarHostState = snackbarHostState,
+                    navHostController = navHostController,
+                    viewModel = viewModel
                 )
             }
         }
 
-        val itemsSortByFullControl = items.sortedBy { it.fullControl }.reversed()
 
-        items(itemsSortByFullControl) { sputnik ->
-            ContentLazyListItem(
-                sputnik = sputnik,
-                snackbarHostState = snackbarHostState,
-                navHostController = navHostController,
-                viewModel = viewModel
-            )
+        if (pullToRefreshState.isRefreshing) {
+            LaunchedEffect(true) {
+                onRefresh()
+            }
         }
+
+        LaunchedEffect(isLoading) {
+            if (isLoading) {
+                pullToRefreshState.startRefresh()
+            } else {
+                pullToRefreshState.endRefresh()
+            }
+        }
+
+        PullToRefreshContainer(
+            state = pullToRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter),
+            containerColor = Color.White,
+            contentColor = ColorCustomResources.colorBazaMainBlue
+        )
     }
 }
 

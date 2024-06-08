@@ -9,7 +9,11 @@ plugins {
 //    alias(libs.plugins.compose.compiler)
 
     kotlin("plugin.serialization") version "2.0.0"
-  //  id("com.google.gms.google-services") version "4.4.2" apply false
+//    id("com.google.gms.google-services") version "4.3.4" apply false
+   // id("com.google.gms.google-services")
+
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 kotlin {
@@ -29,7 +33,9 @@ kotlin {
             //            export(project("io.github.mirzemehdi:kmpnotifier:0.6.0"))
             baseName = "ComposeApp"
             isStatic = true
-            export(libs.kmpNotifier)
+            export(libs.kmpNotifier) // пока убрал
+
+
             //          export(project("io.github.mirzemehdi:kmpnotifier:0.6.0"))
             // export("io.github.mirzemehdi:kmpnotifier:1.0.0")
 //            export("dev.icerock.moko:resources:0.23.0")
@@ -53,7 +59,10 @@ kotlin {
             api(project.dependencies.platform(libs.firebase.bom))
             api(libs.firebase.analytics)
             api(libs.firebase.crashlytics)
-            api(libs.firebase.messaging)
+
+
+
+            api(libs.kmpNotifier)
         }
         commonMain.dependencies {
 //            implementation(compose.runtime) // до ветки
@@ -165,6 +174,8 @@ kotlin {
 
 
             api(libs.kmpNotifier)
+
+
         }
 
         iosMain {
@@ -176,6 +187,7 @@ kotlin {
 
 //                implementation("dev.gitlive:firebase-messaging:1.12.0")
 //                implementation("dev.gitlive:firebase-installations:1.12.0")
+                api(libs.kmpNotifier)
             }
             //sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
@@ -282,6 +294,7 @@ dependencies {
 //    implementation(libs.compose.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.compose.ui.tooling.preview)
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     //debugImplementation(libs.compose.ui.tooling)
@@ -332,6 +345,8 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
 
     /////////////////////////
+
+    implementation(libs.firebase.perf.ktx)
 
 
 

@@ -30,7 +30,7 @@ val viewModelModule = module {
 
     factory { AuthActivityViewModel(get(), get()) }
 
-    factory { SplashViewModel(get()) }
+    factory { SplashViewModel(get(), get()) }
 
     factory { ProfileScreenViewModel(get(), get()) }
 

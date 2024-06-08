@@ -72,30 +72,17 @@ fun DomofonScreen(
     val statusDomofonUnlockDoor by viewModel.statusDomofonUnlockDoor.collectAsStateWithLifecycle()
 
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-
-    var isRefreshing by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
     val pullToRefreshState = rememberPullToRefreshState()
-//    var isLoading by remember { mutableStateOf(true) }
 
     val snackbarHostState = remember { SnackbarHostState() }
 
     val domofonContentState = remember { mutableStateOf(DomofonContent.DEFAULT) }
-//    val domofonContentState = remember { mutableStateOf(DomofonContent.DEFAULT) }
     val addrIdFromGroup = remember { mutableIntStateOf(-1) }
-//    val isShowGroupState = remember { mutableStateOf(true) }
-//    val isShowGroupStateFirst = remember { mutableStateOf(false) }
     val countGroup = remember { mutableStateOf(-1) }
 
     val groupItems: Map<Int, List<Sputnik>>? = items?.groupBy { it.addrId }
 
-
-
-
-
-
-
-    LaunchedEffect(groupItems) {
+    LaunchedEffect(groupItems?.size) {
         groupItems?.let {
             if (it.size == 0) {
                 countGroup.value = 0
@@ -219,10 +206,6 @@ fun DomofonScreen(
                 Box(
                     modifier = Modifier
                         .nestedScroll(pullToRefreshState.nestedScrollConnection)
-//                        .navigationBarsPadding()
-//                        .padding(
-//                            bottom = paddingValue.calculateBottomPadding()
-//                        )
                 ) {
                     groupItems?.let {
 
@@ -237,6 +220,9 @@ fun DomofonScreen(
                                 //lazyListState = lazyListState,
                                 items = items,
                                 isLoading = isLoading,
+                                onRefresh = {
+                                    viewModel.getSputnik(isLoading = true)
+                                },
                                 snackbarHostState = snackbarHostState,
                                 navHostController = navHostController,
                                 viewModel = viewModel
@@ -249,6 +235,9 @@ fun DomofonScreen(
                                 //lazyListState = lazyListState,
                                 items = items,
                                 isLoading = isLoading,
+                                onRefresh = {
+                                    viewModel.getSputnik(isLoading = true)
+                                },
                                 snackbarHostState = snackbarHostState,
                                 navHostController = navHostController,
                                 viewModel = viewModel
@@ -261,10 +250,14 @@ fun DomofonScreen(
                                 Logger.d("4444 2 domofonContentState.value=" + domofonContentState.value)
                                 DomofonListGroupContent(
                                     items = items,
+                                    isLoading = isLoading,
+                                    onRefresh = {
+                                        viewModel.getSputnik(isLoading = true)
+                                    },
                                     onGoDomofonContentList = {
                                         domofonContentState.value = DomofonContent.LIST
                                         Logger.d("4444 3 domofonContentState.value=" + domofonContentState.value)
-//                                        isShowGroupState.value = bool
+//
                                     },
                                     onAddrId = { addrId ->
                                         addrIdFromGroup.value = addrId
@@ -285,6 +278,9 @@ fun DomofonScreen(
                                     //lazyListState = lazyListState,
                                     items = listFilterByAddrId,
                                     isLoading = isLoading,
+                                    onRefresh = {
+                                        viewModel.getSputnik(isLoading = true)
+                                    },
                                     snackbarHostState = snackbarHostState,
                                     navHostController = navHostController,
                                     viewModel = viewModel
@@ -293,37 +289,35 @@ fun DomofonScreen(
                         }
                     }
 
-
-
-                    // Обновление состояния загрузки при изменении состояния во ViewModel
-                    LaunchedEffect(items) {
-                       // isLoading = false
-                    }
-
-                    if (pullToRefreshState.isRefreshing) {
-                        LaunchedEffect(true) {
-                            scope.launch {
-//                                isRefreshing = true // загрузка началась
-//                                viewModel.getSputnik()
-//                                isRefreshing = false // загрузка завершилась
-                            }
-                        }
-                    }
-
-                    LaunchedEffect(isRefreshing) {
-                        if (isRefreshing) {
-                            pullToRefreshState.startRefresh()
-                        } else {
-                            pullToRefreshState.endRefresh()
-                        }
-                    }
-
-                    PullToRefreshContainer(
-                        state = pullToRefreshState,
-                        modifier = Modifier
-                            .align(Alignment.TopCenter),
-                        containerColor = Color.White
-                    )
+//                    // Обновление состояния загрузки при изменении состояния во ViewModel
+//                    LaunchedEffect(items) {
+//                       // isLoading = false
+//                    }
+//
+//                    if (pullToRefreshState.isRefreshing) {
+//                        LaunchedEffect(true) {
+//                            scope.launch {
+////                                isRefreshing = true // загрузка началась
+////                                viewModel.getSputnik()
+////                                isRefreshing = false // загрузка завершилась
+//                            }
+//                        }
+//                    }
+//
+//                    LaunchedEffect(isRefreshing) {
+//                        if (isRefreshing) {
+//                            pullToRefreshState.startRefresh()
+//                        } else {
+//                            pullToRefreshState.endRefresh()
+//                        }
+//                    }
+//
+//                    PullToRefreshContainer(
+//                        state = pullToRefreshState,
+//                        modifier = Modifier
+//                            .align(Alignment.TopCenter),
+//                        containerColor = Color.White
+//                    )
 
 
 

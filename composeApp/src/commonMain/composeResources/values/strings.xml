@@ -33,9 +33,19 @@
     <string name="domofon_name_nav">Домофон</string>
     <string name="help_name_nav">Помощь</string>
 
-
+<!--    outdoor-->
     <string name="outdoor_add_address">Добавить адрес</string>
     <string name="outdoor_create_shortcut">Создать ярлык</string>
+    <string name="bannerOutDoorHeader" translatable="false">Подключите бесплатно онлайн камеру во двор или подъезд</string>
+    <string name="bannerOutDoor" translatable="false">\n&#8226; отсутствие абонентской платы\n&#8226; бесплатный выезд специалиста\n&#8226; легкий доступ к архиву\n&#8226; отдельный канал интернета\n&#8226; обслуживание - это наша зона ответственности </string>
+    <string name="outdoor_more_info">Узнать подробнее</string>
+
+
+    <string name="give_me_camera_permission" translatable="false">"В разделе \"Разрешения\" необходимо предоставить доступ к камере"</string>
+    <string name="give_me_storage_permission" translatable="false">"В разделе \"Разрешения\" необходимо предоставить доступ к памяти"</string>
+    <string name="give_me_location_permission" translatable="false">"В разделе \"Разрешения\" необходимо предоставить доступ к геолокации"</string>
+
+
 
 <!--    domofon-->
     <string name="domofon_present_top" translatable="false">С Умным Домофоном можно:</string>

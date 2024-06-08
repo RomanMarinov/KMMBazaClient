@@ -1,6 +1,7 @@
 package net.baza.bazanetclientapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -11,22 +12,35 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import co.touchlab.kermit.Logger
+import com.google.android.gms.common.ConnectionResult
 import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import presentation.ui.splash_activity.SplashActivityContent
+import presentation.ui.splash_activity.SplashViewModel
 import util.StartActivity
+
+
+
+
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
+
         setContent {
             Log.d("4444", " SplashActivity loaded")
             val nextActivityState = remember { mutableStateOf(StartActivity.DEFAULT) }
@@ -67,12 +81,35 @@ class SplashActivity : ComponentActivity() {
             }
             LifecycleOwnerSplashActivity()
 
+
+            // тут не надо
+//            NotifierManager.initialize(
+//                NotificationPlatformConfiguration.Android(
+//                    notificationIconResId = R.drawable.ic_home,
+//                    notificationIconColorResId = R.color.color_outdoor_create_shortcut,
+//                    notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
+//                        id = "CHANNEL_ID_GENERAL",
+//                        name = "General"
+//                    )
+//                )
+//            )
+
+
+//            LaunchedEffect(Unit) {
+//                val res = NotifierManager.getPushNotifier().getToken()
+//
+//                Logger.d("4444 NotifierManager res=" + res)
+//            }
         }
     }
 }
 
+
 @Composable
 fun LifecycleOwnerSplashActivity() {
+
+
+
     val localLifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(
         key1 = localLifecycleOwner,

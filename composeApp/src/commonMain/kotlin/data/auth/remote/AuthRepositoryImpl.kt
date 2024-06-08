@@ -5,10 +5,14 @@ import data.auth.local.AppPreferencesRepository
 import data.auth.remote.dto.AuthLoginBodyDTO
 import data.auth.remote.dto.AuthLoginResponseDTO
 import data.auth.remote.dto.FingerprintBodyDTO
+import data.auth.remote.dto.firebase.FirebaseRequestBodyDTO
+import data.auth.remote.dto.firebase.OurServerDTO
 import domain.model.auth.AuthLoginBody
 import domain.model.auth.AuthLoginResponse
 import domain.model.auth.AuthRefreshBody
 import domain.model.auth.FingerprintBody
+import domain.model.auth.firebase.FirebaseRequestBody
+import domain.model.auth.firebase.OurServer
 import domain.repository.AuthRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -286,6 +290,26 @@ class AuthRepositoryImpl(
                // logManager.writeLogToDB(e.stackTraceToString())
             }
             return null
+        }
+    }
+
+    override suspend fun sendRegisterFireBaseData(firebaseRequestBody: FirebaseRequestBody) {
+        val firebaseRequestBodyDTO = firebaseRequestBody.mapToData()
+
+        val response = httpClient.post("user/firebase") {
+            contentType(ContentType.Application.Json)
+            setBody(body = firebaseRequestBodyDTO)
+        }
+
+        if (response.status.isSuccess()) {
+            val result = response.body<OurServerDTO>()
+            if (result.data.result) {
+                Logger.d{"4444 sendRegisterFireBaseData isSuccess result=" + result.data.result}
+            } else {
+                Logger.d{"4444 sendRegisterFireBaseData isSuccess result=" + result.data.result}
+            }
+        } else {
+            Logger.d{"4444 sendRegisterFireBaseData Failure"}
         }
     }
 }

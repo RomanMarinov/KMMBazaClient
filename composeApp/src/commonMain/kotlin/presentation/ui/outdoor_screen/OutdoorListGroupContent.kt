@@ -1,5 +1,3 @@
-package presentation.ui.domofon_screen
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,54 +41,52 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import domain.model.user_info.Sputnik
+import domain.model.user_info.Dvr
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import kmm.composeapp.generated.resources.Res
-import kmm.composeapp.generated.resources.ic_lock
 import kmm.composeapp.generated.resources.ic_play
 import kmm.composeapp.generated.resources.ic_share
 import org.jetbrains.compose.resources.vectorResource
 import presentation.ui.add_address.AddAddressBottomSheet
+import presentation.ui.outdoor_screen.OutdoorScreenViewModel
 import util.AddAddressButtonHelper
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.navigateToWebViewHelper
 import util.shimmerEffect
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DomofonListGroupContent(
-    items: List<Sputnik>?,
+fun OutdoorListGroupContent(
+    items: List<Dvr>?,
     isLoading: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
-    onGoDomofonContentList: () -> Unit,
+    onGoOutdoorContentList: () -> Unit,
     onAddrId: (Int) -> Unit,
-    viewModel: DomofonScreenViewModel,
+    viewModel: OutdoorScreenViewModel,
     onShowSnackBarUnlockDoorStatus: (Boolean) -> Unit,
     navHostController: NavHostController
 ) {
-
     val lazyListState = rememberLazyListState()
     val pullToRefreshState = rememberPullToRefreshState()
 
-    val groupItems: Map<Int, List<Sputnik>>? = items?.groupBy { it.addrId }
+    val groupItems: Map<Int, List<Dvr>>? = items?.groupBy { it.addrId }
     groupItems?.let {
-        val listSputnikByFullControl = groupItems.flatMap { mapEntry ->
-            mapEntry.value.filter { sputnik ->
-                sputnik.fullControl
-            }
-        }
-        val groupItems1 = items.groupBy { sputnik ->
-            sputnik.addrId
+
+        val groupItems1: List<List<Dvr>> = items.groupBy { dvr ->
+            dvr.addrId
         }.values.toList()
 
-        Box(  modifier = modifier
-            .nestedScroll(pullToRefreshState.nestedScrollConnection)) {
+        Box(
+            modifier = modifier
+                .nestedScroll(pullToRefreshState.nestedScrollConnection)
+        ) {
             LazyColumn(
                 state = lazyListState,
-                contentPadding = PaddingValues(bottom = 16.dp),
+                contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
                 modifier = Modifier
                     //.navigationBarsPadding()
                     .fillMaxSize()
@@ -98,26 +94,26 @@ fun DomofonListGroupContent(
                 ,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
-                item {
-                    PermissionBannerContent()
-                }
-
                 item {
                     TopTitleContentGroup(
                         navHostController = navHostController
                     )
                 }
 
-                items(listSputnikByFullControl) { sputnik ->
-                    val listSputnikItem: List<Sputnik> =
-                        groupItems1.flatten().filter { it.addrId == sputnik.addrId }
+                items(groupItems1) { listOutdoorItem ->
+//                    val listOutdoorItem: List<Dvr> = groupItems1.flatten().filter {
+//                        it.addrId == dvr.addrId }
+
+                    // сюда надо передать список объектов dvr у которых группа по addrId
+
+                    val dvr = listOutdoorItem.first()
+
 
                     GroupContentItem(
-                        sputnikControl = sputnik,
-                        listSputnik = listSputnikItem,
-                        onGoDomofonContentList = {
-                            onGoDomofonContentList()
+                        dvrControl = dvr,
+                        listOutdoorItem = listOutdoorItem,
+                        onGoOutdoorContentList = {
+                            onGoOutdoorContentList()
                         },
                         onAddrId = {
                             onAddrId(it)
@@ -191,7 +187,7 @@ fun TopTitleContentGroup(
 
     if (isShowBottomSheet.value) {
         AddAddressBottomSheet(
-            fromScreen = ScreenRoute.DomofonScreen.route,
+            fromScreen = ScreenRoute.OutdoorScreen.route,
             onShowCurrentBottomSheet = {
                 isShowBottomSheet.value = it
             }
@@ -200,17 +196,15 @@ fun TopTitleContentGroup(
 }
 
 
-
-
 @Composable
 fun GroupContentItem(
-    sputnikControl: Sputnik,
-    listSputnik: List<Sputnik>,
-    onGoDomofonContentList: () -> Unit,
+    dvrControl: Dvr,
+    listOutdoorItem: List<Dvr>,
+    onGoOutdoorContentList: () -> Unit,
     onAddrId: (Int) -> Unit,
     navHostController: NavHostController,
     onShowSnackBarUnlockDoorStatus: (Boolean) -> Unit,
-    viewModel: DomofonScreenViewModel
+    viewModel: OutdoorScreenViewModel
 ) {
 
     val isOpenDoor = remember { mutableStateOf(false) }
@@ -247,7 +241,7 @@ fun GroupContentItem(
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = sputnikControl.title,
+                        text = dvrControl.title,
                     )
                 }
 
@@ -297,7 +291,7 @@ fun GroupContentItem(
                 }
             }
 
-            val title = getTitle(listSputnik.size)
+            val title = getTitle(listOutdoorItem.size)
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -332,7 +326,7 @@ fun GroupContentItem(
                                     .padding(start = 16.dp, end = 16.dp)
                             )
                         },
-                        resource = asyncPainterResource(sputnikControl.previewUrl),
+                        resource = asyncPainterResource(dvrControl.previewUrl),
                         contentDescription = "",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -350,9 +344,9 @@ fun GroupContentItem(
                             .clickable {
                                 navigateToWebViewHelper(
                                     navHostController = navHostController,
-                                    route = ScreenRoute.DomofonScreen.route,
-                                    address = sputnikControl.title,
-                                    videoUrl = sputnikControl.videoUrl
+                                    route = ScreenRoute.OutdoorScreen.route,
+                                    address = dvrControl.title,
+                                    videoUrl = dvrControl.videoUrl
                                 )
                             }
                     )
@@ -374,33 +368,12 @@ fun GroupContentItem(
                                 .clickable {
                                     navigateToWebViewHelper(
                                         navHostController = navHostController,
-                                        route = ScreenRoute.DomofonScreen.route,
-                                        address = sputnikControl.title,
-                                        videoUrl = sputnikControl.videoUrl
+                                        route = ScreenRoute.OutdoorScreen.route,
+                                        address = dvrControl.title,
+                                        videoUrl = dvrControl.videoUrl
                                     )
                                 }
                         )
-
-                        if (sputnikControl.fullControl) {
-                            Icon(
-                                vectorResource(Res.drawable.ic_lock),
-                                contentDescription = "lock",
-                                tint = Color.White,
-                                modifier = Modifier
-                                    //.weight(1f)
-                                    //.fillMaxWidth()
-                                    .size(80.dp)
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .clickable {
-                                        viewModel.onClickUnLock(deviceId = sputnikControl.deviceID)
-//                                        scope.launch {
-//                                            onShowSnackBarUnlockDoorStatus(true)
-//                                            delay(500L)
-//
-//                                        }
-                                    }
-                            )
-                        }
                     }
                 }
             }
@@ -414,8 +387,8 @@ fun GroupContentItem(
                 ElevatedButton(
                     shape = RoundedCornerShape(8.dp),
                     onClick = {
-                        onGoDomofonContentList()
-                        onAddrId(sputnikControl.addrId)
+                        onGoOutdoorContentList()
+                        onAddrId(dvrControl.addrId)
                     },
                     content = {
                         Text(
