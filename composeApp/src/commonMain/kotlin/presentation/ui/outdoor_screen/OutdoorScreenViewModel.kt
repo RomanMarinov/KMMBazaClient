@@ -3,6 +3,7 @@ package presentation.ui.outdoor_screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import domain.repository.CommonRepository
 import domain.repository.UserInfoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -15,7 +16,8 @@ import presentation.ui.outdoor_screen.model.OutdoorUiState
 
 class OutdoorScreenViewModel(
 //    private val outdoorRepository: OutdoorRepository
-    private val userInfoRepository: UserInfoRepository
+    private val userInfoRepository: UserInfoRepository,
+    private val commonRepository: CommonRepository
 ) : ViewModel() {
 
     private var _isLoading = MutableStateFlow(false)
@@ -24,8 +26,12 @@ class OutdoorScreenViewModel(
     private var _outDoorsUiState: MutableStateFlow<OutdoorUiState> = MutableStateFlow(OutdoorUiState(emptyList()))
     val outDoorsUiState: StateFlow<OutdoorUiState?> = _outDoorsUiState
 
+    private var _link: MutableStateFlow<String?> = MutableStateFlow("")
+    val link: StateFlow<String?> = _link
+
     init {
         getOutdoors(false)
+        getLinkOutdoorDescription()
     }
 
     fun getOutdoors(isLoading: Boolean) {
@@ -39,6 +45,13 @@ class OutdoorScreenViewModel(
                 }
             }
             _isLoading.value = false
+        }
+    }
+
+    private fun getLinkOutdoorDescription() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val link = commonRepository.getPublicInfo().links?.outdoorDVR
+            _link.value = link
         }
     }
 }

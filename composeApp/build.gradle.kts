@@ -33,7 +33,7 @@ kotlin {
             //            export(project("io.github.mirzemehdi:kmpnotifier:0.6.0"))
             baseName = "ComposeApp"
             isStatic = true
-            export(libs.kmpNotifier) // пока убрал
+           export(libs.kmpNotifier) // пока убрал
 
 
             //          export(project("io.github.mirzemehdi:kmpnotifier:0.6.0"))
@@ -176,6 +176,8 @@ kotlin {
             api(libs.kmpNotifier)
 
 
+            // lottie (для android как обычно, для ios lottie file поместить в строку)
+            implementation("io.github.alexzhirkevich:compottie:1.1.2")
         }
 
         iosMain {
@@ -188,6 +190,7 @@ kotlin {
 //                implementation("dev.gitlive:firebase-messaging:1.12.0")
 //                implementation("dev.gitlive:firebase-installations:1.12.0")
                 api(libs.kmpNotifier)
+
             }
             //sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
@@ -348,8 +351,9 @@ dependencies {
 
     implementation(libs.firebase.perf.ktx)
 
-
-
+//
+//    // lottie
+//    implementation("com.airbnb.android:lottie-compose:4.0.0")
 }
 
 

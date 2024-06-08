@@ -21,7 +21,7 @@ val viewModelModule = module {
     // Функция get()позволяет попросить Koin разрешить необходимую зависимость.
 
     factory { HomeScreenViewModel(get()) }
-    factory { OutdoorScreenViewModel(get()) }
+    factory { OutdoorScreenViewModel(get(),get()) }
     factory { DomofonScreenViewModel(get(), get()) }
     factory { MapScreenViewModel(get()) }
     factory { HelpScreenViewModel(get()) }

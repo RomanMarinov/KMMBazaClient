@@ -28,7 +28,7 @@
 
 
     <string name="home_name_nav">Baza.net</string>
-    <string name="outdoor_name_nav">Мой двор</string>
+    <string name="outdoor_name_nav">Двор</string>
     <string name="map_name_nav">Карта</string>
     <string name="domofon_name_nav">Домофон</string>
     <string name="help_name_nav">Помощь</string>
@@ -56,7 +56,7 @@
 
     <string name="help_title_first">Часто задаваемые вопросы</string>
     <string name="help_title_second">Посмотрите наиболее поппулярные темы обращений к нашим специалистам. Возможно, эти ответы смогут решить вашу проблему.</string>
-    <string name="help_check_internet">Проверить скорость интернета</string>
+    <string name="help_check_internet">Проверить</string>
     <string name="help_make_question">Задайте нам вопрос</string>
     <string name="help_make_question_desc">Любые вопросы, которые не требуют моментального реагирования, мы настоятельно просим задавать в любой удобный мессенджер.\n\nВам ответят те же технические специалисты, которые принимают звонки.</string>
     <string name="help_title_support">Единая служба техподдержки</string>

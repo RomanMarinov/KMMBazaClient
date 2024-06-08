@@ -3,7 +3,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
 import co.touchlab.kermit.Logger
+import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import di.commonModule
+import kmm.composeapp.generated.resources.Res
+import kmm.composeapp.generated.resources.ic_home
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.context.startKoin
 import presentation.ui.auth_activity.AuthActivityContent
 import presentation.ui.splash_activity.SplashActivityContent
@@ -17,6 +22,17 @@ fun MainViewController() = ComposeUIViewController {
     val snackBarStateAuthPhone = remember { mutableIntStateOf(-1) }
     val snackBarStateAuthWiFi = remember { mutableStateOf("") }
     val snackBarStateWarning = remember { mutableStateOf(false) }
+
+
+
+
+    NotifierManager.initialize(
+        NotificationPlatformConfiguration.Ios(
+            showPushNotification = true,
+            askNotificationPermissionOnStart = true
+        )
+    )
+
 
     SplashActivityContent(
         onMoveToNextActivity = {

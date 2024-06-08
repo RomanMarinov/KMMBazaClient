@@ -28,6 +28,8 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -55,9 +57,11 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import presentation.ui.add_address.AddAddressBottomSheet
+import presentation.ui.outdoor_screen.OpenUrlFromOutdoorPlatform
 import presentation.ui.outdoor_screen.OutdoorScreenViewModel
 import util.ColorCustomResources
 import util.ScreenRoute
+import util.SnackBarHostHelper
 import util.navigateToWebViewHelper
 import util.shimmerEffect
 
@@ -95,7 +99,9 @@ fun OutdoorListContent(
 
             if (!isLoading && (items.isEmpty())) {
                 item {
-                    PresentationContent()
+                    PresentationContent(
+                        viewModel = viewModel
+                    )
                 }
             }
 
@@ -140,8 +146,13 @@ fun OutdoorListContent(
 }
 
 @Composable
-fun PresentationContent() {
+fun PresentationContent(
+    viewModel: OutdoorScreenViewModel
+) {
+    val link by viewModel.link.collectAsState()
+
     val isShowBottomSheet = remember { mutableStateOf(false) }
+    val isOpenUrlFromOutdoorPlatform = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -167,22 +178,24 @@ fun PresentationContent() {
                 modifier = Modifier
                     .fillMaxSize(),
                 contentDescription = null,
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.Crop
             )
         }
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             ElevatedButton(
                 modifier = Modifier
-                    .fillMaxWidth()
+                   // .fillMaxWidth()
                     .padding(16.dp),
 //                .shadow(2.dp, RoundedCornerShape(2.dp)),
 
                 onClick = {
-
+                    isOpenUrlFromOutdoorPlatform.value = true
                 },
                 content = { Text(stringResource(Res.string.outdoor_more_info)) },
                 colors = ButtonDefaults.buttonColors(
@@ -196,7 +209,8 @@ fun PresentationContent() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
+            //    .padding(top = 16.dp)
+            ,
             //.weight(1f),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
@@ -251,6 +265,13 @@ fun PresentationContent() {
                     isShowBottomSheet.value = it
                 }
             )
+        }
+
+        if (isOpenUrlFromOutdoorPlatform.value) {
+            link?.let {
+                OpenUrlFromOutdoorPlatform().execute(it)
+                isOpenUrlFromOutdoorPlatform.value = false
+            }
         }
     }
 }

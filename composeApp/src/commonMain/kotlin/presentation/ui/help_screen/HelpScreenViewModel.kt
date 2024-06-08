@@ -2,6 +2,8 @@ package presentation.ui.help_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import co.touchlab.kermit.Logger
 import domain.repository.CommonRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -23,8 +25,12 @@ class HelpScreenViewModel(
         HelpOfficesUiState(emptyList()))
     val officesUiState: StateFlow<HelpOfficesUiState> = _officesUiState
 
+    private var _phone: MutableStateFlow<String?> = MutableStateFlow(null)
+    val phone: StateFlow<String?> = _phone
+
     init {
         getPublicInfo()
+        getCallHelpPhoneNumber()
     }
 
     private fun getPublicInfo() {
@@ -42,6 +48,13 @@ class HelpScreenViewModel(
                     it.copy(offices = officesCam)
                 }
             }
+        }
+    }
+
+    private fun getCallHelpPhoneNumber() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val phone = commonRepository.getPublicInfo().contacts?.support?.phoneContact?.dialer
+            _phone.value = phone
         }
     }
 }

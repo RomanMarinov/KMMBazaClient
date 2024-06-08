@@ -151,6 +151,7 @@ fun HelpScreen(
                             isRefreshing = false
                         }
                     },
+                    viewModel = viewModel,
                     navHostController = navHostController
                 )
             }
