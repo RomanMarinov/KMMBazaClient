@@ -31,6 +31,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +55,9 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import presentation.ui.add_address.AddAddressBottomSheet
+import presentation.ui.domofon_screen.TopTitleContentGroup
+import util.AddAddressButtonHelper
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.navigateToWebViewHelper
@@ -64,7 +68,7 @@ import util.shimmerEffect
 fun OutdoorContentWithRefresh(
     items: List<Dvr>,
     // content: @Composable (T) -> Unit,
-    isRefreshing: Boolean,
+    isLoading: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
@@ -84,6 +88,14 @@ fun OutdoorContentWithRefresh(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+
+            item {
+                TopTitleOutdoorContentGroup(
+                    navHostController = navHostController
+                )
+            }
+
+
             items(items) { dvr ->
                 ContentLazyList(
                     dvr = dvr,
@@ -99,8 +111,8 @@ fun OutdoorContentWithRefresh(
             }
         }
 
-        LaunchedEffect(isRefreshing) {
-            if (isRefreshing) {
+        LaunchedEffect(isLoading) {
+            if (isLoading) {
                 pullToRefreshState.startRefresh()
             } else {
                 pullToRefreshState.endRefresh()
@@ -113,41 +125,54 @@ fun OutdoorContentWithRefresh(
             containerColor = Color.White,
             contentColor = ColorCustomResources.colorBazaMainBlue
         )
+    }
+}
 
-        SnackbarHost(
-            hostState = snackbarHostState,
-            snackbar = {
-                Snackbar(
-                    modifier = Modifier
-                        .padding(8.dp),
-//                    dismissAction = {
-//                        Logger.d { " 4444 2 snackBarState.value=" + snackBarState.value }
-//                        snackBarState.value = false
-//                    },
-                    actionOnNewLine = true,
-                    action = {
-                        Button(modifier = Modifier.padding(8.dp), onClick = {
-                            snackbarHostState.currentSnackbarData?.dismiss()
-                        }) {
-                            Text("Да понятно")
-                        }
-                    },
-                    shape = RoundedCornerShape(20.dp),
-                ) {
-                    Text(text = "Написать реализацию для создания ярлыка")
-                }
-            },
+@Composable
+fun TopTitleOutdoorContentGroup(
+    navHostController: NavHostController
+) {
+    val isShowBottomSheet = remember { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp),
+        // horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-            //.navigationBarsPadding()
-            // .padding(paddingValue)
+                .weight(1f)
+                .padding(end = 16.dp),
+            //.fillMaxWidth()
+            verticalAlignment = Alignment.CenterVertically,
+            // horizontalArrangement = Arrangement.Start
+        ) {
+            Text(
+                modifier = Modifier,
+                text = "Адреса",
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        AddAddressButtonHelper(
+            onShowBottomSheet = {
+                isShowBottomSheet.value = it
+            }
         )
-
-
     }
 
+    if (isShowBottomSheet.value) {
+        AddAddressBottomSheet(
+            fromScreen = ScreenRoute.OutdoorScreen.route,
+            onShowCurrentBottomSheet = {
+                isShowBottomSheet.value = it
+            }
+        )
+    }
 }
+
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -205,13 +230,7 @@ fun ContentLazyList(
                         Row(
                             modifier = Modifier
                                 .clickable {
-                                    CoroutineScope(Dispatchers.Main).launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = "Hey look a snackbar",
-                                            actionLabel = "Hide",
-                                            duration = SnackbarDuration.Short
-                                        )
-                                    }
+
                                 }
                                 .fillMaxHeight()
                                 .padding(start = 8.dp),
@@ -228,7 +247,7 @@ fun ContentLazyList(
                             Text(
                                 modifier = Modifier
                                     //.fillMaxWidth()
-                                    .padding(start = 16.dp, end = 8.dp),
+                                    .padding(start = 8.dp, end = 8.dp),
                                 text = stringResource(Res.string.outdoor_create_shortcut),
                                 color = ColorCustomResources.colorBazaMainBlue
                             )

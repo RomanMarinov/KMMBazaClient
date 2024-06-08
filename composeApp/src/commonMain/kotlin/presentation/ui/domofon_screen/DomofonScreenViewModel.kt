@@ -34,12 +34,12 @@ class DomofonScreenViewModel(
 
 
     init {
-        getSputnik()
+        getSputnik(isLoading = false)
     }
 
-    fun getSputnik() {
+    fun getSputnik(isLoading: Boolean) {
         viewModelScope.launch {
-            _isLoading.value = true
+            _isLoading.value = isLoading
             val domofons: Domofon? = userInfoRepository.getUserInfo().data.domofon
 
             Logger.d("4444 sputnikUiState=" + domofons?.sputnik)

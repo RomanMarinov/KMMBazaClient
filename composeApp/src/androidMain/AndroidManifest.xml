@@ -1,70 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-<uses-feature
-    android:name="android.hardware.camera"
-    android:required="false" />
-<uses-feature
-    android:name="android.hardware.telephony"
-    android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
 
 
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.CALL_PHONE" />
-<uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
-<application
-    android:name=".ui.MainApplication"
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@android:style/Theme.Material.Light.NoActionBar"
-    android:usesCleartextTraffic="true">
-    <activity
-        android:name=".SplashActivity"
-        android:exported="true"
-        android:label="@string/title_activity_splash"
-        android:theme="@android:style/Theme.Material.Light.NoActionBar">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    <activity
-        android:name=".AuthActivity"
-        android:exported="true"
-        android:label="@string/title_activity_call"
-        android:theme="@android:style/Theme.Material.Light.NoActionBar">
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-    </activity>
-    <activity
-        android:name=".MainActivity"
-        android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
-        android:exported="true">
+    <application
+        android:name=".ui.MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:label="@string/title_activity_splash"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AuthActivity"
+            android:exported="true"
+            android:label="@string/title_activity_call"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
+            android:exported="true">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-    </activity>
-    <provider
-        android:name=".ComposeFileProvider"
-        android:authorities="${applicationId}.provider"
-        android:exported="false"
-        android:grantUriPermissions="true">
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+         -->
         <meta-data
-            android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/path_provider" />
-    </provider>
-</application>
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_home" />
+
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message.  -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/color_outdoor_create_shortcut" />
+
+        <provider
+            android:name=".ComposeFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/path_provider" />
+        </provider>
+    </application>
 
 </manifest>

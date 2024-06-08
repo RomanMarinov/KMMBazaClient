@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
+import com.mmk.kmpnotifier.permission.permissionUtil
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
@@ -28,6 +29,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 // https://www.youtube.com/watch?v=IHs0yPa2Nv4
 
 class MainActivity : ComponentActivity() {
+
+    private val permissionUtil by permissionUtil()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,6 +73,11 @@ class MainActivity : ComponentActivity() {
 //                    showPushNotification = true,
 //                )
 //            )
+        }
+
+        permissionUtil.askNotificationPermission {
+            Logger.d("4444 HasNotification Permission: $it")
+           // AppLogger.d("HasNotification Permission: $it")
         }
     }
 

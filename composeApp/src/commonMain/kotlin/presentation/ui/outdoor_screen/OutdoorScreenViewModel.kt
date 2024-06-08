@@ -22,7 +22,7 @@ class OutdoorScreenViewModel(
     val isLoading = _isLoading.asStateFlow()
 
     private var _outDoorsUiState: MutableStateFlow<OutdoorUiState> = MutableStateFlow(OutdoorUiState(emptyList()))
-    val outDoorsUiState: StateFlow<OutdoorUiState> = _outDoorsUiState
+    val outDoorsUiState: StateFlow<OutdoorUiState?> = _outDoorsUiState
 
     init {
         getOutdoors(false)

@@ -52,10 +52,17 @@ foundationAndroid = "1.6.7"
 firebaseCrashlyticsBuildtools = "3.0.0"
 androidx-data-store = "1.1.1" #at the time of this article
 
-kmpNotifier = "0.3.0"
-googleServices="4.4.0"
-firebaseCrashlytics = "2.9.9"
-firebaseBom="32.4.1"
+kmpNotifier = "0.6.0"
+#googleServices="4.4.0"
+#firebaseCrashlytics = "2.9.9"
+#firebaseBom="32.4.1"
+#firebasePerfKtx = "21.0.1"
+
+googleServices="4.4.2"
+firebaseCrashlytics = "3.0.1"
+firebaseBom="33.1.0"
+firebasePerfKtx = "21.0.1"
+
 
 [libraries]
 accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version.ref = "accompanistCoil" }
@@ -115,7 +122,7 @@ kmpNotifier = { group = "io.github.mirzemehdi", name = "kmpnotifier", version.re
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
-firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
+firebase-perf-ktx = { group = "com.google.firebase", name = "firebase-perf-ktx", version.ref = "firebasePerfKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
