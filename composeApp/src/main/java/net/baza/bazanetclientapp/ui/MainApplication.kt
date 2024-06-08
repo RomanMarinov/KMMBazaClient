@@ -101,7 +101,7 @@ class MainApplication : Application() {
 
 
 
-
+// ПЕРЕПИСАТЬ
         NotifierManager.initialize(
             NotificationPlatformConfiguration.Android(
                 notificationIconResId = R.drawable.ic_home,
@@ -190,10 +190,6 @@ object AppInitializer {
             onApplicationStart()
             modules(commonModule())
         }
-//        if (isDebug) AppLogger.initialize()
-//
-//        Purchases.logLevel = LogLevel.DEBUG
-//        Purchases.configure(if (isAndroid()) BuildConfig.REVENUECAT_API_KEY_ANDROID else BuildConfig.REVENUECAT_API_KEY_IOS)
     }
 
     private fun org.koin.core.KoinApplication.onApplicationStart() {
@@ -201,8 +197,6 @@ object AppInitializer {
             override fun onNewToken(token: String) {
                 Logger.d("4444 FirebaseOnNewToken: $token")
 // FirebaseOnNewToken: cx2TV1hpSMi3C9JaqBB21k:APA91bFlxh7vHiqcPtt6-zWEQzPjlD1uTWF-F76AU_Rs7ywn6Yp5QgiVAEBxqZCVlVU4xberwNz1-ObBUed0fMCOcjkbZIY_IaLhYJ10enClnJcbr5iJdf_mR2SrnNnTT7Lqq5Rb7EBi
-// FirebaseOnNewToken: cx2TV1hpSMi3C9JaqBB21k:APA91bFlxh7vHiqcPtt6-zWEQzPjlD1uTWF-F76AU_Rs7ywn6Yp5QgiVAEBxqZCVlVU4xberwNz1-ObBUed0fMCOcjkbZIY_IaLhYJ10enClnJcbr5iJdf_mR2SrnNnTT7Lqq5Rb7EBi
-            //                AppLogger.d("FirebaseOnNewToken: $token")
             }
         })
        // GoogleAuthProvider.create(GoogleAuthCredentials(serverId = "400988245981-u6ajdq65cv1utc6b0j7mtnhc5ap54kbd.apps.googleusercontent.com"))

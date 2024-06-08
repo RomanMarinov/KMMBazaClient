@@ -60,7 +60,7 @@ kotlin {
             api(libs.firebase.analytics)
             api(libs.firebase.crashlytics)
 
-
+            implementation(libs.firebase.messaging)
 
             api(libs.kmpNotifier)
         }
@@ -351,9 +351,6 @@ dependencies {
 
     implementation(libs.firebase.perf.ktx)
 
-//
-//    // lottie
-//    implementation("com.airbnb.android:lottie-compose:4.0.0")
 }
 
 

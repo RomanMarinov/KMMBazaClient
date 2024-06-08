@@ -62,7 +62,7 @@ googleServices="4.4.2"
 firebaseCrashlytics = "3.0.1"
 firebaseBom="33.1.0"
 firebasePerfKtx = "21.0.1"
-
+firebase-messaging = "24.0.0"
 
 [libraries]
 accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version.ref = "accompanistCoil" }
@@ -123,6 +123,8 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 firebase-perf-ktx = { group = "com.google.firebase", name = "firebase-perf-ktx", version.ref = "firebasePerfKtx" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" ,version.ref="firebase-messaging"}
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -258,7 +258,7 @@ fun LazyListScope.homeOrderCard(
                         .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
                     shape = RoundedCornerShape(8.dp),
                     onClick = {
-
+                        openBottomSheet(true)
                     },
                     content = { Text(stringResource(Res.string.home_button_order)) },
                     colors = ButtonDefaults.buttonColors(

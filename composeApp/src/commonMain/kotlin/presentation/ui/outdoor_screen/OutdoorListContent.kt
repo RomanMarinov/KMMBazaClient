@@ -278,7 +278,6 @@ fun PresentationContent(
 
 @Composable
 fun ContentLazyListItemBottom() {
-
     val isShowBottomSheet = remember { mutableStateOf(false) }
 
     Row(
