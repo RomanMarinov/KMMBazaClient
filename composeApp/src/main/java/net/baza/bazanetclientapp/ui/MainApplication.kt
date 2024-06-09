@@ -59,19 +59,15 @@ package net.baza.bazanetclientapp.ui
 //import org.koin.core.context.startKoin
 
 import android.app.Application
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import co.touchlab.kermit.Logger
-import com.google.firebase.FirebaseApp
 import com.google.firebase.perf.metrics.AddTrace
 import com.mmk.kmpnotifier.notification.NotifierManager
-import com.mmk.kmpnotifier.notification.PayloadData
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import di.commonModule
 import net.baza.bazanetclientapp.R
+import net.baza.bazanetclientapp.di.onLibraryInitialized
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.core.KoinApplication
 import org.koin.core.context.GlobalContext.startKoin
 
 // koin documentation
@@ -102,6 +98,8 @@ class MainApplication : Application() {
 
 
 // ПЕРЕПИСАТЬ
+
+
         NotifierManager.initialize(
             NotificationPlatformConfiguration.Android(
                 notificationIconResId = R.drawable.ic_home,
@@ -139,22 +137,22 @@ class MainApplication : Application() {
 //            }
 //        })
 
-//        //Получать сообщения типа уведомления
-        NotifierManager.addListener(object : NotifierManager.Listener {
-            override fun onPushNotification(title: String?, body: String?) {
-                Logger.d("4444 Push Notification notification title: $title")
-                Logger.d("4444 Push Notification notification body: $body")
-            }
-        })
-
-
+////        //Получать сообщения типа уведомления
+//        NotifierManager.addListener(object : NotifierManager.Listener {
+//            override fun onPushNotification(title: String?, body: String?) {
+//                Logger.d("4444 Push Notification notification title: $title")
+//                Logger.d("4444 Push Notification notification body: $body")
+//            }
+//        })
 //
-        // Получение полезных данных
-        NotifierManager.addListener(object : NotifierManager.Listener {
-            override fun onPayloadData(data: PayloadData) {
-                Logger.d("4444 Push Notification payloadData: $data") //PayloadData is just typeAlias for Map<String,*>.
-            }
-        })
+//
+////
+//        // Получение полезных данных
+//        NotifierManager.addListener(object : NotifierManager.Listener {
+//            override fun onPayloadData(data: PayloadData) {
+//                Logger.d("4444 Push Notification payloadData: $data") //PayloadData is just typeAlias for Map<String,*>.
+//            }
+//        })
 
 //        startKoin {
 //            // помогает отслеживать и понимать, что происходит во время инициализации и работы Koin в вашем Android-приложении
@@ -167,7 +165,11 @@ class MainApplication : Application() {
 
 
     }
+
+
 }
+
+
 
 object AppInitializer {
 
@@ -187,20 +189,23 @@ object AppInitializer {
             androidLogger()
             // используется для доступа к ресурсам приложения, управления жизненным циклом и других операций, которые требуют доступа к контексту Android
             androidContext(context)
-            onApplicationStart()
+          //  onApplicationStart()
             modules(commonModule())
+//                .also {
+//                it.koin.onLibraryInitialized()
+//            }
         }
     }
 
-    private fun org.koin.core.KoinApplication.onApplicationStart() {
-        NotifierManager.addListener(object : NotifierManager.Listener {
-            override fun onNewToken(token: String) {
-                Logger.d("4444 FirebaseOnNewToken: $token")
-// FirebaseOnNewToken: cx2TV1hpSMi3C9JaqBB21k:APA91bFlxh7vHiqcPtt6-zWEQzPjlD1uTWF-F76AU_Rs7ywn6Yp5QgiVAEBxqZCVlVU4xberwNz1-ObBUed0fMCOcjkbZIY_IaLhYJ10enClnJcbr5iJdf_mR2SrnNnTT7Lqq5Rb7EBi
-            }
-        })
-       // GoogleAuthProvider.create(GoogleAuthCredentials(serverId = "400988245981-u6ajdq65cv1utc6b0j7mtnhc5ap54kbd.apps.googleusercontent.com"))
-    }
+//    private fun org.koin.core.KoinApplication.onApplicationStart() {
+//        NotifierManager.addListener(object : NotifierManager.Listener {
+//            override fun onNewToken(token: String) {
+//                Logger.d("4444 FirebaseOnNewToken: $token")
+//// FirebaseOnNewToken: cx2TV1hpSMi3C9JaqBB21k:APA91bFlxh7vHiqcPtt6-zWEQzPjlD1uTWF-F76AU_Rs7ywn6Yp5QgiVAEBxqZCVlVU4xberwNz1-ObBUed0fMCOcjkbZIY_IaLhYJ10enClnJcbr5iJdf_mR2SrnNnTT7Lqq5Rb7EBi
+//            }
+//        })
+//       // GoogleAuthProvider.create(GoogleAuthCredentials(serverId = "400988245981-u6ajdq65cv1utc6b0j7mtnhc5ap54kbd.apps.googleusercontent.com"))
+//    }
 }
 
 

@@ -158,23 +158,23 @@ fun SuccessRequestResult(
         ScreenRoute.OutdoorScreen.route -> {
             description = stringResource(Res.string.wait_request_result_details)
         }
-//        Constants.FromFragmentMarkers.FROM_DVR_REQUEST_PHONE -> {
+//        net.baza.bazanetclientapp.Constants.FromFragmentMarkers.FROM_DVR_REQUEST_PHONE -> {
 //            showViewsInCommonCase(detail = resources.getString(R.string.dvr_request_result_details))
 //        }
 
-//        Constants.FromFragmentMarkers.FROM_BAZA,
-//        Constants.FromFragmentMarkers.FROM_CHANGE_TARIFF,
-//        Constants.FromFragmentMarkers.FROM_DOMOFON_REQUEST_PHONE -> {
+//        net.baza.bazanetclientapp.Constants.FromFragmentMarkers.FROM_BAZA,
+//        net.baza.bazanetclientapp.Constants.FromFragmentMarkers.FROM_CHANGE_TARIFF,
+//        net.baza.bazanetclientapp.Constants.FromFragmentMarkers.FROM_DOMOFON_REQUEST_PHONE -> {
 //            showViewsInCommonCase(detail = resources.getString(R.string.service_request_result_details))
 //        }
 //
 //
-//        Constants.FromFragmentMarkers.FROM_MOBILE_REQUEST -> {
+//        net.baza.bazanetclientapp.Constants.FromFragmentMarkers.FROM_MOBILE_REQUEST -> {
 //            showViewsInCommonCase(detail = resources.getString(R.string.mobile_request_result_details))
 //        }
 //
 //
-//        Constants.FromFragmentMarkers.FROM_STATIC_IP_REQUEST -> {
+//        net.baza.bazanetclientapp.Constants.FromFragmentMarkers.FROM_STATIC_IP_REQUEST -> {
 //            showViewsInCommonCase(detail = resources.getString(R.string.wait_static_ip_request_result_details))
 //        }
     }

@@ -6,7 +6,7 @@
 //import com.dev_marinov.chatalyze.domain.model.auth.PairOfTokens
 //import com.dev_marinov.chatalyze.domain.repository.AuthRepository
 //import com.dev_marinov.chatalyze.domain.repository.PreferencesDataStoreRepository
-//import com.dev_marinov.chatalyze.presentation.util.Constants
+//import com.dev_marinov.chatalyze.presentation.util.net.baza.bazanetclientapp.Constants
 //import com.dev_marinov.chatalyze.presentation.util.DecodeToken
 //import com.dev_marinov.chatalyze.presentation.util.TokenPayload
 //import com.google.gson.Gson
@@ -46,7 +46,7 @@
 //
 //            var res = context.url.build()
 //            Log.d("4444", " qwe NewUpdateTokenInterceptor res=" + res)
-//            if (context.url.toString().contains(Constants.PART_URL_MESSAGES)) {
+//            if (context.url.toString().contains(net.baza.bazanetclientapp.Constants.PART_URL_MESSAGES)) {
 //
 //                runBlocking {
 //                    Log.d("4444", " проверушка 3")
@@ -148,7 +148,7 @@
 //        val gson = Gson()
 //        val json = gson.toJson(userTokensDetails)
 //        val body = TextContent(json, ContentType.Application.Json)
-//        val url = BuildConfig.API_URL_HTTP + Constants.PART_URL_UPDATE_TOKENS
+//        val url = BuildConfig.API_URL_HTTP + net.baza.bazanetclientapp.Constants.PART_URL_UPDATE_TOKENS
 //
 //        val client = HttpClient(CIO)
 //

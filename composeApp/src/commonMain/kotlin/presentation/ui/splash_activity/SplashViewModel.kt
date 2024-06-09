@@ -46,6 +46,7 @@ class SplashViewModel(
     }
 
     private fun getAndSaveFireBaseToken() {
+        Logger.d("4444 getAndSaveFireBaseToken NotifierManager.getPushNotifier().getToken()")
         viewModelScope.launch(Dispatchers.IO) {
             val fireBaseToken = NotifierManager.getPushNotifier().getToken()
             fireBaseToken?.let {
@@ -123,7 +124,7 @@ class SplashViewModel(
 //            var response: Response<OurServer>? = null
 //
 //            when(tokenData.typeToken) {
-//                Constants.Auth.HUAWEI_TOKEN -> {
+//                net.baza.bazanetclientapp.Constants.Auth.HUAWEI_TOKEN -> {
 //                    typeToken = tokenData.typeToken
 //                    response = repository.sendRegisterFireBaseData(
 //                        firebaseToken = tokenData.token,
@@ -132,7 +133,7 @@ class SplashViewModel(
 //                        typeToken = tokenData.typeToken
 //                    )
 //                }
-//                Constants.Auth.FIREBASE_TOKEN -> {
+//                net.baza.bazanetclientapp.Constants.Auth.FIREBASE_TOKEN -> {
 //                    typeToken = tokenData.typeToken
 //                    response = repository.sendRegisterFireBaseData(
 //                        firebaseToken = tokenData.token,
@@ -146,11 +147,11 @@ class SplashViewModel(
 //            return if (response?.isSuccessful == false) { // если ошибка FireBase, то удаляем запись из Prefs
 //                appAuth.removeFirebaseTokenFromPrefs()
 //                when(typeToken) {
-//                    Constants.Auth.HUAWEI_TOKEN -> {
+//                    net.baza.bazanetclientapp.Constants.Auth.HUAWEI_TOKEN -> {
 //                        logManager.writeLogToDB("Не удалось зарегистрировать HuaweiT")
 //                        writeAndSendFirebaseErrorLog("Ошибка получения токена Huawei")
 //                    }
-//                    Constants.Auth.FIREBASE_TOKEN -> {
+//                    net.baza.bazanetclientapp.Constants.Auth.FIREBASE_TOKEN -> {
 //                        logManager.writeLogToDB("Не удалось зарегистрировать Firebase")
 //                        writeAndSendFirebaseErrorLog("Ошибка получения токена Firebase")
 //                    }
@@ -158,10 +159,10 @@ class SplashViewModel(
 //                false
 //            } else {
 //                when(typeToken) {
-//                    Constants.Auth.HUAWEI_TOKEN -> {
+//                    net.baza.bazanetclientapp.Constants.Auth.HUAWEI_TOKEN -> {
 //                        logManager.writeLogToDB("Успешно зарегистрировали Huawei")
 //                    }
-//                    Constants.Auth.FIREBASE_TOKEN -> {
+//                    net.baza.bazanetclientapp.Constants.Auth.FIREBASE_TOKEN -> {
 //                        logManager.writeLogToDB("Успешно зарегистрировали Firebase")
 //                    }
 //                }
@@ -170,10 +171,10 @@ class SplashViewModel(
 //        } catch (e: Exception) {
 //            e.printStackTrace()
 //            when(typeToken) {
-//                Constants.Auth.HUAWEI_TOKEN -> {
+//                net.baza.bazanetclientapp.Constants.Auth.HUAWEI_TOKEN -> {
 //                    logManager.writeLogToDB("Ошибка регистрации Huawei")
 //                }
-//                Constants.Auth.FIREBASE_TOKEN -> {
+//                net.baza.bazanetclientapp.Constants.Auth.FIREBASE_TOKEN -> {
 //                    logManager.writeLogToDB("Ошибка регистрации Firebase")
 //                }
 //            }

@@ -63,6 +63,8 @@ kotlin {
             implementation(libs.firebase.messaging)
 
             api(libs.kmpNotifier)
+
+            implementation(libs.androidx.startup.runtime)
         }
         commonMain.dependencies {
 //            implementation(compose.runtime) // до ветки
@@ -174,6 +176,7 @@ kotlin {
 
 
             api(libs.kmpNotifier)
+
 
 
             // lottie (для android как обычно, для ios lottie file поместить в строку)
@@ -350,7 +353,7 @@ dependencies {
     /////////////////////////
 
     implementation(libs.firebase.perf.ktx)
-
+    api(libs.kmpNotifier)
 }
 
 

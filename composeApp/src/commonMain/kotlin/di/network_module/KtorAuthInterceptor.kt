@@ -248,7 +248,7 @@ class KtorAuthInterceptor(
 //        scope.requestPipeline.intercept(HttpRequestPipeline.Render) { response ->
 //
 //            Log.d("4444", " qwe NewAuthInterceptor res=" + context.url.build())
-//            if (context.url.toString().contains(Constants.PART_URL_MESSAGES)) {
+//            if (context.url.toString().contains(net.baza.bazanetclientapp.Constants.PART_URL_MESSAGES)) {
 //                val refreshToken = authRepositoryProvider.get().getRefreshTokensFromDataStore.first()
 //                val accessToken = authRepositoryProvider.get().getAccessTokensFromDataStore.first()
 //                if (accessToken.isNotEmpty()) {

@@ -4,7 +4,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
 import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.notification.NotifierManager
-import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
+
+import net.baza.bazanetclientapp.notification.configuration.NotificationPlatformConfiguration
 import di.commonModule
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_home
@@ -26,12 +27,14 @@ fun MainViewController() = ComposeUIViewController {
 
 
 
-    NotifierManager.initialize(
-        NotificationPlatformConfiguration.Ios(
-            showPushNotification = true,
-            askNotificationPermissionOnStart = true
-        )
+
+
+    val configuration =  NotificationPlatformConfiguration.Ios(
+        showPushNotification = true,
+        askNotificationPermissionOnStart = true
     )
+
+    NotifierManager.initialize(configuration = configuration)
 
 
     SplashActivityContent(

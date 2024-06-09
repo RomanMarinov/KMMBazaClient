@@ -1,0 +1,138 @@
+{
+  "project_info": {
+    "project_number": "353579907362",
+    "firebase_url": "https://bazanetclientapp.firebaseio.com",
+    "project_id": "bazanetclientapp",
+    "storage_bucket": "bazanetclientapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353579907362:android:dca2a034ca58bc19418d7b",
+        "android_client_info": {
+          "package_name": "net.baza.bazanetapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353579907362-akduulns771bvtddsqmk4lmefmnq8110.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.baza.bazanetapp",
+            "certificate_hash": "db23c4c5ff9353921937764ffaba85ff1fcdfdbf"
+          }
+        },
+        {
+          "client_id": "353579907362-2t0cv4d0iuimtjl2arld2o36uunfbl1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk4azi8n8jQdQ4Gk70U9X0yyI5Av_cMJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353579907362-2t0cv4d0iuimtjl2arld2o36uunfbl1p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "353579907362-2udp0lm9v8i5m3h644f5gv02al8jia2u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.baza.bazanetclientappios",
+                "app_store_id": "1540912517"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353579907362:android:3bcef652a7fe7631418d7b",
+        "android_client_info": {
+          "package_name": "net.baza.bazanetclientapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353579907362-fjulpsoddsf2ns6gas402inl42o2nt4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.baza.bazanetclientapp",
+            "certificate_hash": "db23c4c5ff9353921937764ffaba85ff1fcdfdbf"
+          }
+        },
+        {
+          "client_id": "353579907362-2t0cv4d0iuimtjl2arld2o36uunfbl1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk4azi8n8jQdQ4Gk70U9X0yyI5Av_cMJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353579907362-2t0cv4d0iuimtjl2arld2o36uunfbl1p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "353579907362-2udp0lm9v8i5m3h644f5gv02al8jia2u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.baza.bazanetclientappios",
+                "app_store_id": "1540912517"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353579907362:android:300fa52f3a4e39c2418d7b",
+        "android_client_info": {
+          "package_name": "net.baza.clientapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353579907362-2t0cv4d0iuimtjl2arld2o36uunfbl1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk4azi8n8jQdQ4Gk70U9X0yyI5Av_cMJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353579907362-2t0cv4d0iuimtjl2arld2o36uunfbl1p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "353579907362-2udp0lm9v8i5m3h644f5gv02al8jia2u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.baza.bazanetclientappios",
+                "app_store_id": "1540912517"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

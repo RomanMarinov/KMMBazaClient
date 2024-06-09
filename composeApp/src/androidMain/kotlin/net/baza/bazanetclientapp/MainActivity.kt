@@ -16,10 +16,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import co.touchlab.kermit.Logger
+import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
+//import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
 import com.mmk.kmpnotifier.notification.NotifierManager
-import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import com.mmk.kmpnotifier.permission.permissionUtil
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
 // навигация лакнера проще
@@ -34,6 +34,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         setContent {
             Logger.d("4444 MainActivity(Home) loaded")
@@ -81,10 +83,41 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        NotifierManager.onCreateOrOnNewIntent(intent)
+    }
 
+//    fun onCreateOrOnNewIntent(intent: Intent?) {
+//        if (intent == null) return
+//        val extras = intent.extras ?: bundleOf()
+//        val payloadData = mutableMapOf<String, Any>()
+//
+//        val isNotificationClicked =
+//            extras.containsKey(ACTION_NOTIFICATION_CLICK)
+//                    || extras.containsKey(KEY_ANDROID_FIREBASE_NOTIFICATION)
+//                    || payloadData.containsKey(ACTION_NOTIFICATION_CLICK)
+//
+//        extras.keySet().forEach { key ->
+//            val value = extras.get(key)
+//            value?.let { payloadData[key] = it }
+//        }
+//
+//
+//        if (extras.containsKey(KEY_ANDROID_FIREBASE_NOTIFICATION))
+//            notification.NotifierManagerImpl.onPushPayloadData(payloadData.minus(ACTION_NOTIFICATION_CLICK))
+//        if (isNotificationClicked)
+//            notification.NotifierManagerImpl.onNotificationClicked(payloadData.minus(ACTION_NOTIFICATION_CLICK))
+//    }
 
 
 }
+//internal fun notification.NotifierManagerImpl.shouldShowNotification(): Boolean {
+//    val configuration =
+//        notification.NotifierManagerImpl.getConfiguration() as? NotificationPlatformConfiguration.Android
+//    return configuration?.showPushNotification ?: true
+//}
+
 
 @Composable
 fun LifecycleOwnerMainActivity() {
