@@ -3,6 +3,7 @@
 package presentation.ui.home_screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,7 +44,8 @@ import util.TextUtils
 fun HomeScreen(
     bottomNavigationPaddingValue: PaddingValues,
     navHostController: NavHostController,
-    viewModel: HomeScreenViewModel = koinInject()
+    viewModel: HomeScreenViewModel = koinInject(),
+    onShowIncomingCallActivity: () -> Unit
 ) {
     val userInfo by viewModel.userInfo.collectAsStateWithLifecycle()
 
@@ -71,7 +73,11 @@ fun HomeScreen(
 //                        actionIconContentColor = Color.Red
 //                    ),
                     title = {
-                        Column(horizontalAlignment = Alignment.Start) {
+                        Column(
+                            horizontalAlignment = Alignment.Start,
+                            modifier = Modifier.clickable {
+                                onShowIncomingCallActivity()
+                            }) {
                             var name = ""
                             userInfo?.data?.profile?.firstName?.let {
                                 name = if (it.isNotEmpty()) {

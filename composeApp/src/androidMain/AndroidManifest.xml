@@ -9,12 +9,10 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -27,12 +25,17 @@
         android:theme="@android:style/Theme.Material.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".IncomingCallActivity"
+            android:exported="false"
+            android:label="@string/title_activity_incoming_call"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true"
-
             android:theme="@android:style/Theme.Material.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -41,11 +44,13 @@
             android:exported="true"
             android:label="@string/title_activity_call"
             android:theme="@android:style/Theme.Material.Light.NoActionBar">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".MainActivity"
@@ -59,18 +64,21 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="net.baza.bazanetclientapp.androidx-startup"
             android:exported="false"
             tools:node="merge">
+
             <!-- This entry makes ExampleLoggerInitializer discoverable. -->
-            <meta-data  android:name="net.baza.bazanetclientapp.di.ContextInitializer"
+            <meta-data
+                android:name="net.baza.bazanetclientapp.di.ContextInitializer"
                 android:value="androidx.startup" />
 
-<!--            <meta-data-->
-<!--                android:name="com.mmk.kmpnotifier.di.ContextInitializer"-->
-<!--                android:value="androidx.startup" />-->
+            <!-- <meta-data -->
+            <!-- android:name="com.mmk.kmpnotifier.di.ContextInitializer" -->
+            <!-- android:value="androidx.startup" /> -->
         </provider>
 
         <service
@@ -80,17 +88,17 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-         -->
+        <!--  Set custom default icon. This is used when no icon is set for incoming notification messages. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_home" />
-
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message.  -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/color_outdoor_create_shortcut" />
+            android:resource="@android:color/holo_red_dark" />
 
         <provider
             android:name=".ComposeFileProvider"

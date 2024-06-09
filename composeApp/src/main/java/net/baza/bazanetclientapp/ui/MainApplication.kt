@@ -103,7 +103,7 @@ class MainApplication : Application() {
         NotifierManager.initialize(
             NotificationPlatformConfiguration.Android(
                 notificationIconResId = R.drawable.ic_home,
-                notificationIconColorResId = R.color.color_outdoor_create_shortcut,
+                notificationIconColorResId = R.color.colorBazaMainRed,
                 notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
                     id = "CHANNEL_ID_GENERAL",
                     name = "General"

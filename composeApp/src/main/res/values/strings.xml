@@ -4,4 +4,5 @@
     <string name="title_activity_main_application2">MainApplication2</string>
     <string name="title_activity_call">AuthActivity</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_incoming_call">IncomingCallActivity</string>
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <color name="color_outdoor_create_shortcut">#FF0000</color>
+    <color name="colorBazaMainBlue">#4B8D9D</color>
+    <color name="colorBazaMainRed">#C96065</color>
 </resources>

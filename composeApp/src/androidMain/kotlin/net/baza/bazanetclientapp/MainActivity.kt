@@ -56,6 +56,9 @@ class MainActivity : ComponentActivity() {
             App(
                 onMoveToAuthActivity = {
                     startActivity(Intent(this, AuthActivity::class.java))
+                },
+                onShowIncomingCallActivity = {
+                    startActivity(Intent(this, IncomingCallActivity::class.java))
                 }
             )
             LifecycleOwnerMainActivity()

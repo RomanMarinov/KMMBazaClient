@@ -58,12 +58,18 @@ data class BottomNavigationItem(
 
 @Composable
 fun App(
-    onMoveToAuthActivity: () -> Unit
+    onMoveToAuthActivity: () -> Unit,
+    onShowIncomingCallActivity: () -> Unit
 ) {
     KoinContext {
-        AppContent(onMoveToAuthActivity = {
-            onMoveToAuthActivity()
-        })
+        AppContent(
+            onMoveToAuthActivity = {
+                onMoveToAuthActivity()
+            },
+            onShowIncomingCallActivity = {
+                onShowIncomingCallActivity()
+            }
+        )
     }
 }
 
@@ -80,7 +86,8 @@ fun GetCurrentEntry(
 @Composable
 @Preview
 fun AppContent(
-    onMoveToAuthActivity: () -> Unit
+    onMoveToAuthActivity: () -> Unit,
+    onShowIncomingCallActivity: () -> Unit
 ) {
     MaterialTheme {
 
@@ -228,6 +235,9 @@ fun AppContent(
                         navHostController = navHostController,
                         onMoveToAuthActivity = {
                             onMoveToAuthActivity()
+                        },
+                        onShowIncomingCallActivity = {
+                            onShowIncomingCallActivity()
                         }
                     )
                 }

@@ -45,14 +45,18 @@ data class ScreenB(
 fun NavHostScreenScenes(
     bottomNavigationPaddingValue: PaddingValues,
     navHostController: NavHostController,
-    onMoveToAuthActivity: () -> Unit
+    onMoveToAuthActivity: () -> Unit,
+    onShowIncomingCallActivity: () -> Unit
 ) {
 
     NavHost(navController = navHostController, startDestination = ScreenRoute.HomeScreen.route) {
         composable(route = ScreenRoute.HomeScreen.route) {
             HomeScreen(
                 bottomNavigationPaddingValue = bottomNavigationPaddingValue,
-                navHostController = navHostController)
+                navHostController = navHostController,
+                onShowIncomingCallActivity = {
+                    onShowIncomingCallActivity()
+                })
         }
 
         composable(
