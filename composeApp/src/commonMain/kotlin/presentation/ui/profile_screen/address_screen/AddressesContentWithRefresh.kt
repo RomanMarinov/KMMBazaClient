@@ -34,12 +34,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,16 +55,22 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import domain.add_address.Data
 import domain.model.user_info.AdditionalAddresses
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_account
 import kmm.composeapp.generated.resources.ic_add_address
+import kmm.composeapp.generated.resources.ic_attach_photo
 import kmm.composeapp.generated.resources.ic_basket
 import kmm.composeapp.generated.resources.ic_home
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
+import presentation.ui.attach_photo.AttachPhotoBottomSheet
 import presentation.ui.profile_screen.address_screen.utils.VerifyStatus
 import util.ColorCustomResources
 import util.ProgressBarHelper
+import util.ScreenRoute
 import util.ShimmerListOutdoorOrDomofonHelper
 import util.SnackBarHostHelper
 
@@ -75,7 +83,8 @@ enum class SnackBarAddressDeleted {
 @Composable
 fun AddressContentWithRefresh(
     additionalAddresses: List<AdditionalAddresses>,
-    onRefresh: Any,
+    isLoading: Boolean,
+    onRefresh: () -> Unit,
     navHostController: NavHostController,
     onMoveToAuthActivity: () -> Unit,
     viewModel: AddressesScreenViewModel
@@ -101,7 +110,7 @@ fun AddressContentWithRefresh(
             if (it) {
                 isShowProgressBarAddressDelete.value = false
                 isShowSnackBarAddressDeleted.value = SnackBarAddressDeleted.SUCCESS_DELETED
-                viewModel.getUserInfo() // обновление списка
+                viewModel.getUserInfo(isLoading = false) // обновление списка
             } else {
                 isShowProgressBarAddressDelete.value = false
                 isShowSnackBarAddressDeleted.value = SnackBarAddressDeleted.FAILURE_DELETED
@@ -164,6 +173,27 @@ fun AddressContentWithRefresh(
                 }
             )
         }
+
+        if (pullToRefreshState.isRefreshing) {
+            LaunchedEffect(true) {
+                onRefresh()
+            }
+        }
+
+        LaunchedEffect(isLoading) {
+            if (isLoading) {
+                pullToRefreshState.startRefresh()
+            } else {
+                pullToRefreshState.endRefresh()
+            }
+        }
+
+        PullToRefreshContainer(
+            state = pullToRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter),
+            containerColor = Color.White,
+            contentColor = ColorCustomResources.colorBazaMainBlue
+        )
     }
 }
 
@@ -186,6 +216,8 @@ fun LazyListScope.addressesContentList(
         Spacer(modifier = Modifier.height(8.dp))
 
         val verifyStatus = VerifyStatus.getStatus(additionalAddresses = address)
+        val addressString =
+            "${address.city}, ${address.street} дом ${address.home}, кв. ${address.flat}"
 
         ShimmerListOutdoorOrDomofonHelper(
             isLoading = isLoading,
@@ -230,7 +262,7 @@ fun LazyListScope.addressesContentList(
                             ) {
                                 Row {
                                     Text(
-                                        text = "${address.city}, ${address.street} дом ${address.home}, кв. ${address.flat}",
+                                        text = addressString,
                                         fontWeight = FontWeight.Bold,
                                         modifier = Modifier.weight(2f) // или 1ф
                                     )
@@ -270,6 +302,13 @@ fun LazyListScope.addressesContentList(
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
+                                if (address.verificationStatus == "NOT_VERIFIED") {
+                                    AttachPhotoProfile(
+                                        addressString = addressString,
+                                        additionalAddress = address,
+                                        viewModel = viewModel
+                                    )
+                                }
                                 Divide()
                                 TitleExpand()
                                 val fakeList = listOf(
@@ -313,6 +352,78 @@ fun Divide() {
             .height(1.dp)
             .background(Color.LightGray)
     )
+}
+
+@Composable
+fun AttachPhotoProfile(
+    addressString: String,
+    additionalAddress: AdditionalAddresses,
+    viewModel: AddressesScreenViewModel
+) {
+    val isShowAttachPhotoBottomSheet = remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val dataAddress = Data(
+        id = additionalAddress.id,
+        addrId = additionalAddress.addrId,
+        city = additionalAddress.city,
+        flat = additionalAddress.flat,
+        home = additionalAddress.home,
+        oper = additionalAddress.oper,
+        street = additionalAddress.street,
+        verificationStatus = additionalAddress.verificationStatus,
+        inet = additionalAddress.inet,
+        ktv = additionalAddress.ktv,
+        domofon = additionalAddress.domofon,
+        dvr = additionalAddress.dvr
+    )
+
+    Divide()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                isShowAttachPhotoBottomSheet.value = true
+            }
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Icon(
+            imageVector = vectorResource(Res.drawable.ic_attach_photo),
+            contentDescription = null,
+            tint = ColorCustomResources.colorBazaMainBlue
+        )
+        Text(
+            modifier = Modifier
+                .padding(start = 16.dp),
+            text = "Прикрепить",
+            color = ColorCustomResources.colorBazaMainBlue
+        )
+    }
+
+    if (isShowAttachPhotoBottomSheet.value) {
+        AttachPhotoBottomSheet(
+            address = addressString,
+            dataAddress = dataAddress,
+            navigationFrom = ScreenRoute.ProfileScreen.route,
+            onShowCurrentBottomSheet = {
+                isShowAttachPhotoBottomSheet.value = false
+//                isNextTransitionBottomSheet.value = ScreenBottomSheet.DEFAULT
+//                // сбросить поток чтобы повторно мог открыть ATTACH_BSH с тем же адресом если че
+//                viewModel.resetFlowAddAddressResponse()
+            },
+            onShowPreviousBottomSheet = {
+                scope.launch {
+                    delay(100L)
+                    isShowAttachPhotoBottomSheet.value = false
+                    delay(100L)
+                    viewModel.getUserInfo(isLoading = false)
+                    // так же отпарвить задание за обновление свайп ревреш
+//                    onShowCurrentBottomSheet(false)
+                }
+            }
+        )
+    }
 }
 
 @Composable

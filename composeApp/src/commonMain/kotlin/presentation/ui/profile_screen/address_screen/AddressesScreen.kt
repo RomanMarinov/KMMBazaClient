@@ -19,6 +19,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +54,7 @@ fun AddressScreen(
 ) {
 
     val userInfo by viewModel.userInfo.collectAsStateWithLifecycle()
-
+    val isLoading by viewModel.isLoading.collectAsState()
     Logger.d(" 4444 userInfo=" + userInfo?.data?.additionalAddresses)
     val pullToRefreshState = rememberPullToRefreshState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -140,13 +141,9 @@ fun AddressScreen(
             ) {
                 AddressContentWithRefresh(
                     additionalAddresses = userInfo?.data?.additionalAddresses ?: emptyList(),
-//                    isRefreshing = isRefreshing,
+                    isLoading = isLoading,
                     onRefresh = {
-                        scope.launch {
-                            isRefreshing = true
-                            delay(2000L)
-                            isRefreshing = false
-                        }
+                        viewModel.getUserInfo(isLoading = true)
                     },
                     navHostController = navHostController,
                     onMoveToAuthActivity = {

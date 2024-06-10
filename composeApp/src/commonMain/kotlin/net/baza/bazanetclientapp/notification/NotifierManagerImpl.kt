@@ -20,13 +20,22 @@ import net.baza.bazanetclientapp.di.LibDependencyInitializer
 
 import org.koin.core.component.get
 
+
+
+
+
 internal object NotifierManagerImpl : KMPKoinComponent() {
     private val listeners = mutableListOf<NotifierManager.Listener>()
 
-    // закоментил из-за проблем
+//    // закоментил из-за проблем
 //    fun initialize(configuration: NotificationPlatformConfiguration) {
 //        di.LibDependencyInitializer.initialize(configuration)
 //    }
+
+//    // закоментил из-за проблем
+    fun initialize(configuration: NotificationPlatformConfiguration) {
+        LibDependencyInitializer.initialize(configuration)
+    }
 
     fun getConfiguration(): NotificationPlatformConfiguration = get()
 
@@ -73,8 +82,8 @@ internal object NotifierManagerImpl : KMPKoinComponent() {
 
     private fun requireInitialization() {
         if (LibDependencyInitializer.isInitialized().not()) throw IllegalStateException(
-            "NotifierFactory is not initialized. " +
-                    "Please, initialize NotifierFactory by calling #initialize method"
+            "NotifierFactory не инициализирован». " +
+                    "Пожалуйста, инициализируйте NotifierFactory, вызвав метод #initialize"
         )
     }
 

@@ -34,7 +34,7 @@ fun MainViewController() = ComposeUIViewController {
         askNotificationPermissionOnStart = true
     )
 
-    NotifierManager.initialize(configuration = configuration)
+   // NotifierManager.initialize(configuration = configuration)
 
 
     SplashActivityContent(
@@ -65,6 +65,9 @@ fun MainViewController() = ComposeUIViewController {
             App(
                 onMoveToAuthActivity = {
                     nextActivityState.value = StartActivity.AUTH_ACTIVITY
+                },
+                onShowIncomingCallActivity = {
+
                 }
             )
         }

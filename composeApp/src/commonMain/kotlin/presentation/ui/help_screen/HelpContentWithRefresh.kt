@@ -92,7 +92,7 @@ fun HelpContentWithRefresh(
     itemsFaq: List<Faq>,
     itemsOffices: List<MarkerOffice>,
     // content: @Composable (T) -> Unit,
-    isRefreshing: Boolean,
+    isLoading: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
@@ -108,20 +108,10 @@ fun HelpContentWithRefresh(
             isLoadingState = false
         }
     }
-    /////////////////////////////////////////////
-//    помотреть тут где я на шару писал navigationBarsPadding
-/////////////////////////////////////////////////
-
-//    val colorsList = listOf(Color.LightGray, Color.White)
-
 
     Box(
         modifier = modifier
             .nestedScroll(pullToRefreshState.nestedScrollConnection)
-            // .navigationBarsPadding()
-//            .padding(
-//                bottom = paddingValue.calculateBottomPadding()
-//            )
             .background(ColorCustomResources.colorBackgroundMain)
     ) {
         LazyColumn(
@@ -129,8 +119,6 @@ fun HelpContentWithRefresh(
         ) {
 
             helpContentTitle()
-
-
             helpContentListFaq(
                 lazyListState = lazyListState,
                 listFaq = itemsFaq,
@@ -140,17 +128,12 @@ fun HelpContentWithRefresh(
 //                }
             )
             helpContentSpeedTest()
-
             helpContentMessengers(
                 viewModel = viewModel
             )
-
             helpContentContactTitle()
-
             helpContentContactTowns(itemsOffices = itemsOffices)
-
             helpContentVersionApp()
-
         }
 
         if (pullToRefreshState.isRefreshing) {
@@ -159,8 +142,8 @@ fun HelpContentWithRefresh(
             }
         }
 
-        LaunchedEffect(isRefreshing) {
-            if (isRefreshing) {
+        LaunchedEffect(isLoading) {
+            if (isLoading) {
                 pullToRefreshState.startRefresh()
             } else {
                 pullToRefreshState.endRefresh()
@@ -170,13 +153,10 @@ fun HelpContentWithRefresh(
         PullToRefreshContainer(
             state = pullToRefreshState,
             modifier = Modifier.align(Alignment.TopCenter),
-            //  modifier = Modifier.align(Alignment.CenterHorizontally),
-
+            containerColor = Color.White,
+            contentColor = ColorCustomResources.colorBazaMainBlue
         )
-
-
     }
-
 }
 
 @OptIn(ExperimentalResourceApi::class)

@@ -44,7 +44,7 @@ import org.koin.compose.koinInject
 import util.ColorCustomResources
 import util.ScreenRoute
 
-@OptIn(ExperimentalResourceApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelpScreen(
     bottomNavigationPaddingValue: PaddingValues,
@@ -53,6 +53,7 @@ fun HelpScreen(
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val faqUiState by viewModel.faqUiState.collectAsStateWithLifecycle()
     val officesUiState by viewModel.officesUiState.collectAsStateWithLifecycle()
 
@@ -85,7 +86,6 @@ fun HelpScreen(
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Bold
                         )
-
                     },
                     navigationIcon = {
                         IconButton(
@@ -143,13 +143,9 @@ fun HelpScreen(
                 HelpContentWithRefresh(
                     itemsFaq = faqUiState.faq,
                     itemsOffices = officesUiState.offices,
-                    isRefreshing = isRefreshing,
+                    isLoading = isLoading,
                     onRefresh = {
-                        scope.launch {
-                            isRefreshing = true
-                            delay(2000L)
-                            isRefreshing = false
-                        }
+                        viewModel.getPublicInfo(isLoading = true)
                     },
                     viewModel = viewModel,
                     navHostController = navHostController

@@ -7,6 +7,7 @@ import net.baza.bazanetclientapp.firebase.FirebasePushNotifierImpl
 import net.baza.bazanetclientapp.notification.NotificationChannelFactory
 import com.mmk.kmpnotifier.notification.PushNotifier
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
+import com.mmk.kmpnotifier.permission.AndroidPermissionUtil
 import com.mmk.kmpnotifier.permission.PermissionUtil
 import net.baza.bazanetclientapp.notification.AndroidNotifier
 import net.baza.bazanetclientapp.permission.AndroidMockPermissionUtil
@@ -27,11 +28,12 @@ internal class ContextInitializer : Initializer<Unit> {
     }
 }
 
-
 internal actual val platformModule = module {
+
+//    AndroidMockPermissionUtil
     factory { Platform.Android } bind Platform::class
     single { applicationContext }
-    factoryOf(::AndroidMockPermissionUtil) bind PermissionUtil::class
+    //factoryOf(::AndroidPermissionUtil) bind PermissionUtil::class
     factory {
         val configuration =
             get<NotificationPlatformConfiguration>() as NotificationPlatformConfiguration.Android
@@ -50,4 +52,26 @@ internal actual val platformModule = module {
 
 }
 
+
+//internal actual val platformModule = module {
+//    factory { Platform.Android } bind Platform::class
+//    single { applicationContext }
+//    factoryOf(::AndroidPermissionUtil)
+//    factory {
+//        val configuration =
+//            get<NotificationPlatformConfiguration>() as NotificationPlatformConfiguration.Android
+//        AndroidNotifier(
+//            context = get(),
+//            androidNotificationConfiguration = configuration,
+//            notificationChannelFactory = NotificationChannelFactory(
+//                context = get(),
+//                channelData = configuration.notificationChannelData
+//            ),
+//            permissionUtil = get()
+//        )
+//    } bind Notifier::class
+//
+//    factoryOf(::FirebasePushNotifierImpl) bind PushNotifier::class
+//
+//}
 

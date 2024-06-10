@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import presentation.ui.help_screen.model.HelpFaqUiState
@@ -17,6 +18,9 @@ import presentation.ui.help_screen.model.HelpOfficesUiState
 class HelpScreenViewModel(
     private val commonRepository: CommonRepository
 ) : ViewModel() {
+
+    private var _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
     private var _faqUiState: MutableStateFlow<HelpFaqUiState> = MutableStateFlow(HelpFaqUiState(emptyList()))
     val faqUiState: StateFlow<HelpFaqUiState> = _faqUiState
@@ -29,11 +33,11 @@ class HelpScreenViewModel(
     val phone: StateFlow<String?> = _phone
 
     init {
-        getPublicInfo()
-        getCallHelpPhoneNumber()
+        getPublicInfo(isLoading = false)
     }
 
-    private fun getPublicInfo() {
+    fun getPublicInfo(isLoading: Boolean) {
+        _isLoading.value = isLoading
         viewModelScope.launch(Dispatchers.IO) {
             val res = commonRepository.getPublicInfo()
 
@@ -48,13 +52,11 @@ class HelpScreenViewModel(
                     it.copy(offices = officesCam)
                 }
             }
-        }
-    }
 
-    private fun getCallHelpPhoneNumber() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val phone = commonRepository.getPublicInfo().contacts?.support?.phoneContact?.dialer
+            val phone = res.contacts?.support?.phoneContact?.dialer
             _phone.value = phone
+
+            _isLoading.value = false
         }
     }
 }

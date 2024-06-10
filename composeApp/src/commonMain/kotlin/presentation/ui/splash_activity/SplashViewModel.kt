@@ -14,6 +14,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import util.StartActivity
 import util.TextUtils
 
@@ -48,7 +49,10 @@ class SplashViewModel(
     private fun getAndSaveFireBaseToken() {
         Logger.d("4444 getAndSaveFireBaseToken NotifierManager.getPushNotifier().getToken()")
         viewModelScope.launch(Dispatchers.IO) {
-            val fireBaseToken = NotifierManager.getPushNotifier().getToken()
+
+//            NotifierManagerImpl.getPushNotifier().getToken()
+            val fireBaseToken = NotifierManagerImpl.getPushNotifier().getToken()
+//            val fireBaseToken = NotifierManager.getPushNotifier().getToken()
             fireBaseToken?.let {
                 _fireBaseToken.value = it
             }

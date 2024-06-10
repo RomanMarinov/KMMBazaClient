@@ -19,6 +19,7 @@ import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
 //import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
 import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.permission.AndroidPermissionUtil
 import com.mmk.kmpnotifier.permission.permissionUtil
 
 
@@ -80,6 +81,8 @@ class MainActivity : ComponentActivity() {
 //            )
         }
 
+        AndroidPermissionUtil(this)
+
         permissionUtil.askNotificationPermission {
             Logger.d("4444 HasNotification Permission: $it")
            // AppLogger.d("HasNotification Permission: $it")
@@ -88,6 +91,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        Log.d("4444", " override fun onNewIntent")
         NotifierManager.onCreateOrOnNewIntent(intent)
     }
 

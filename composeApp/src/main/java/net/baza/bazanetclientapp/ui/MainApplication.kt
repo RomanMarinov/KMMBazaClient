@@ -63,9 +63,12 @@ import co.touchlab.kermit.Logger
 import com.google.firebase.perf.metrics.AddTrace
 import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
+import com.mmk.kmpnotifier.permission.AndroidPermissionUtil
 import di.commonModule
 import net.baza.bazanetclientapp.R
+import net.baza.bazanetclientapp.di.ContextInitializer
 import net.baza.bazanetclientapp.di.onLibraryInitialized
+import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
@@ -99,17 +102,24 @@ class MainApplication : Application() {
 
 // ПЕРЕПИСАТЬ
 
+        ContextInitializer().create(this)
 
-        NotifierManager.initialize(
-            NotificationPlatformConfiguration.Android(
-                notificationIconResId = R.drawable.ic_home,
-                notificationIconColorResId = R.color.colorBazaMainRed,
-                notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
-                    id = "CHANNEL_ID_GENERAL",
-                    name = "General"
-                )
+        val configuration = NotificationPlatformConfiguration.Android(
+            notificationIconResId = R.drawable.ic_home,
+            notificationIconColorResId = R.color.colorBazaMainRed,
+            notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
+                id = "CHANNEL_ID_GENERAL",
+                name = "General"
             )
         )
+
+
+        NotifierManagerImpl.initialize(configuration = configuration)
+
+
+
+//        NotifierManager.initialize(configuration = configuration)
+        Logger.d("4444 MainApplication NotifierManager.initialize")
 
         AppInitializer.initialize(this)
 

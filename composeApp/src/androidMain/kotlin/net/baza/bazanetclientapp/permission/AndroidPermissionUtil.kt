@@ -1,19 +1,19 @@
-//package permission
+//package net.baza.bazanetclientapp.permission
 //
 //import android.Manifest
 //import android.os.Build
 //import androidx.activity.ComponentActivity
 //import androidx.activity.result.contract.ActivityResultContracts
-//import extensions.hasPermission
+//import net.baza.bazanetclientapp.extensions.hasPermission
 //
 ///**
-// * in Activity
+// * в Активности
 // *
-// * private val permissionUtil by permissionUtil()
+// * частное значение PermissionUtil с помощью PermissionUtil()
 // *
-// * then #onCreate method
-// * permissionUtil.askNotificationPermission {
-// *  println("HasNotification Permission: $it")
+// * затем метод #onCreate
+// * PermissionUtil.askNotificationPermission {
+// * println("Разрешение на уведомление: $it")
 // * }
 // *
 // */
@@ -22,7 +22,7 @@
 //}
 //
 ///**
-// * Android notification utility class for making it easier to ask permission from user.
+// * Класс утилиты уведомлений Android, упрощающий запрос разрешения у пользователя.
 // */
 //public class AndroidPermissionUtil(private val activity: ComponentActivity)  {
 //

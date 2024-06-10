@@ -8,5 +8,5 @@ fun commonModule() = listOf(
     repositoryModule,
     viewModelModule,
     getDatastoreModulePlatform(),
-    platformModule
+    //platformModule
 )
