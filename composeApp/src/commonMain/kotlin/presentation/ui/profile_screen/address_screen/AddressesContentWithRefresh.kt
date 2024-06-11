@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +27,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -63,9 +66,11 @@ import kmm.composeapp.generated.resources.ic_add_address
 import kmm.composeapp.generated.resources.ic_attach_photo
 import kmm.composeapp.generated.resources.ic_basket
 import kmm.composeapp.generated.resources.ic_home
+import kmm.composeapp.generated.resources.ic_plus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
+import presentation.ui.add_address.AddAddressBottomSheet
 import presentation.ui.attach_photo.AttachPhotoBottomSheet
 import presentation.ui.profile_screen.address_screen.utils.VerifyStatus
 import util.ColorCustomResources
@@ -121,7 +126,6 @@ fun AddressContentWithRefresh(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -339,6 +343,76 @@ fun LazyListScope.addressesContentList(
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp)
                 .clip(RoundedCornerShape(10.dp))
+        )
+    }
+
+    item {
+        AddAddress()
+    }
+}
+
+@Composable
+fun AddAddress() {
+
+    val isShowBottomSheet = remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)
+        ,
+        //.weight(1f),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End
+    ) {
+        Box(
+            modifier = Modifier,
+            //.fillMaxWidth(),
+
+        ) {
+            Card(
+                modifier = Modifier
+                    //.fillMaxWidth()
+                    .height(40.dp),
+                shape = RoundedCornerShape(100.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .clickable {
+//                                onShowBottomSheet(true)
+                            isShowBottomSheet.value = true
+                        }
+                        .fillMaxHeight()
+                        .padding(start = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(24.dp),
+                        imageVector = vectorResource(Res.drawable.ic_plus),
+                        contentDescription = null,
+                        tint = ColorCustomResources.colorBazaMainBlue
+                    )
+                    Text(
+                        modifier = Modifier
+                            //.fillMaxWidth()
+                            .padding(start = 8.dp, end = 8.dp),
+                        text = "Новый адрес",
+                        color = ColorCustomResources.colorBazaMainBlue
+                    )
+                }
+            }
+        }
+    }
+
+    if (isShowBottomSheet.value) {
+        AddAddressBottomSheet(
+            fromScreen = ScreenRoute.ProfileScreen.route,
+            onShowCurrentBottomSheet = {
+                isShowBottomSheet.value = it
+            }
         )
     }
 }

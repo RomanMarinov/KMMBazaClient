@@ -12,6 +12,7 @@ import presentation.ui.home_screen.HomeScreenViewModel
 import presentation.ui.internet_tv_screen.InternetTvScreenViewModel
 import presentation.ui.map_screen.MapScreenViewModel
 import presentation.ui.outdoor_screen.OutdoorScreenViewModel
+import presentation.ui.payment_service_screen.PaymentServiceViewModel
 import presentation.ui.profile_screen.ProfileScreenViewModel
 import presentation.ui.profile_screen.address_screen.AddressesScreenViewModel
 import presentation.ui.splash_activity.SplashViewModel
@@ -42,7 +43,7 @@ val viewModelModule = module {
 
     factory { AddressesScreenViewModel(get(), get()) }
 
-//    factory { RequestAddressViewModel(get()) }
+    factory { PaymentServiceViewModel() }
 
 }
 

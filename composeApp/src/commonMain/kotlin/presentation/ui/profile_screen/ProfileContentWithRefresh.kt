@@ -52,8 +52,10 @@ import kmm.composeapp.generated.resources.ic_profile_setting
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.koinInject
 import presentation.ui.auth_activity.AuthPlatform
+import presentation.ui.profile_screen.phone_number.PhoneNumberBottomSheet
 import util.ColorCustomResources
 import util.ScreenRoute
+import util.TextUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,6 +69,7 @@ fun ProfileContentWithRefresh(
     val snackBarHostState = remember { SnackbarHostState() }
     var isLoading = remember { mutableStateOf(true) }
 
+    val userInfo by viewModel.userInfo.collectAsStateWithLifecycle()
     val logout by viewModel.logout.collectAsStateWithLifecycle()
     logout?.let {
         if (it) {
@@ -108,6 +111,15 @@ fun ProfileContentWithRefresh(
 //                )
 //            )
     ) {
+
+
+        var phone = ""
+        userInfo?.data?.profile?.phone?.let {
+            if (it != 0L) {
+                phone = TextUtils.getPhoneAsFormattedString(it)
+            }
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -124,7 +136,9 @@ fun ProfileContentWithRefresh(
 //                   // openBottomSheetPersonalAccountState.value = it
 //                }
             )
+
             profilePhoneNumberCard(
+                phone = phone
                 //openBottomSheet = {
                 //openBottomSheetOrderState.value = it
                 //}
@@ -133,7 +147,7 @@ fun ProfileContentWithRefresh(
                 //    navigator = navigator
             )
             profilePaymentServiceCard(
-                //    navigator = navigator
+                navHostController = navHostController
             )
 
             profileYourAddressesCard(
@@ -266,8 +280,13 @@ fun LazyListScope.profileNameCard(
     }
 }
 
-fun LazyListScope.profilePhoneNumberCard() {
+fun LazyListScope.profilePhoneNumberCard(
+    phone: String
+) {
     item {
+
+        val isShowPhoneNumberBottomSheet = remember { mutableStateOf(false) }
+
         ElevatedCard(
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
@@ -280,7 +299,7 @@ fun LazyListScope.profilePhoneNumberCard() {
                     .fillMaxWidth()
                     .background(Color.White)
                     .clickable {
-                        //openBottomSheet(true)
+                        isShowPhoneNumberBottomSheet.value = true
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -295,10 +314,7 @@ fun LazyListScope.profilePhoneNumberCard() {
                 ) {
                     Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
-                                // openBottomSheet(false)
-                            },
+                            .fillMaxSize(),
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
@@ -321,10 +337,11 @@ fun LazyListScope.profilePhoneNumberCard() {
                         fontSize = 16.sp,
                         color = Color.Black
                     )
+
                     Text(
                         modifier = Modifier
                             .padding(top = 8.dp, end = 16.dp, bottom = 16.dp),
-                        text = "+7 999 999 99 99",
+                        text = phone,
                         fontSize = 16.sp,
                         color = Color.Gray
                     )
@@ -341,9 +358,15 @@ fun LazyListScope.profilePhoneNumberCard() {
                             .padding(16.dp)
                     )
                 }
-
-
             }
+        }
+
+        if (isShowPhoneNumberBottomSheet.value) {
+            PhoneNumberBottomSheet(
+                onShowBottomSheet = {
+                    isShowPhoneNumberBottomSheet.value = false
+                }
+            )
         }
     }
 }
@@ -428,7 +451,9 @@ fun LazyListScope.profilePersonAccountCard() {
     }
 }
 
-fun LazyListScope.profilePaymentServiceCard() {
+fun LazyListScope.profilePaymentServiceCard(
+    navHostController: NavHostController
+) {
     item {
         ElevatedCard(
             shape = RoundedCornerShape(8.dp),
@@ -442,7 +467,7 @@ fun LazyListScope.profilePaymentServiceCard() {
                     .fillMaxWidth()
                     .background(Color.White)
                     .clickable {
-                        //openBottomSheet(true)
+                        navHostController.navigate(ScreenRoute.PaymentServiceScreen.route)
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {

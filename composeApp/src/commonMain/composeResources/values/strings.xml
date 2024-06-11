@@ -21,6 +21,7 @@
     <string name="profile_title">Профиль</string>
     <string name="addresses_title">Адреса</string>
     <string name="history_call_title">История звонков</string>
+    <string name="payment_service_title">Оплата услуг</string>
 
 <!--    home-->
     <string name="home_personal_account">Добавить новый лицевой счет или уже существующий для оплаты услуг за своих близких</string>

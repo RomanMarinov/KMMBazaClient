@@ -1,4 +1,5 @@
-package presentation.ui.request_address
+package util
+
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -36,7 +37,7 @@ import kotlinx.coroutines.launch
 import util.ColorCustomResources
 
 @Composable
-fun RequestAddressPhoneNumberTransformation(
+fun PhoneNumberTransformationHelper(
     inputTextPhoneNumber: String,
     errorLineColorClick: Color,
     onInputTextPhoneNumber: (String) -> Unit,
