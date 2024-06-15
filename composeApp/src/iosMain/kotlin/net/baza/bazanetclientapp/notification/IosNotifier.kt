@@ -1,9 +1,11 @@
-package notification
+package net.baza.bazanetclientapp.notification
 
+import com.mmk.kmpnotifier.notification.Notifier
 import com.mmk.kmpnotifier.notification.NotifierManager
-import extensions.onNotificationClicked
-import extensions.onUserNotification
-import extensions.shouldShowNotification
+import net.baza.bazanetclientapp.extensions.onNotificationClicked
+import net.baza.bazanetclientapp.extensions.onUserNotification
+import net.baza.bazanetclientapp.extensions.shouldShowNotification
+import net.baza.bazanetclientapp.permission.IosPermissionUtil
 import platform.UserNotifications.UNMutableNotificationContent
 import platform.UserNotifications.UNNotification
 import platform.UserNotifications.UNNotificationContent
@@ -17,8 +19,10 @@ import platform.UserNotifications.UNUserNotificationCenterDelegateProtocol
 import platform.darwin.NSObject
 import kotlin.random.Random
 
+
+// класс для управления отправкой уведомления на ios устройстве
 internal class IosNotifier(
-    private val permissionUtil: permission.IosPermissionUtil,
+    private val permissionUtil: IosPermissionUtil,
     private val notificationCenter: UNUserNotificationCenter,
 ) : Notifier {
 
@@ -78,7 +82,7 @@ internal class IosNotifier(
             val notificationContent = willPresentNotification.request.content
             NotifierManager.onUserNotification(notificationContent)
             if (NotifierManager.shouldShowNotification(notificationContent)) withCompletionHandler(
-                permission.IosPermissionUtil.NOTIFICATION_PERMISSIONS
+                IosPermissionUtil.NOTIFICATION_PERMISSIONS
             )
         }
     }

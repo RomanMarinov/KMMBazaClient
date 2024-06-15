@@ -295,21 +295,25 @@ class AuthRepositoryImpl(
 
     override suspend fun sendRegisterFireBaseData(firebaseRequestBody: FirebaseRequestBody) {
         val firebaseRequestBodyDTO = firebaseRequestBody.mapToData()
-
-        val response = httpClient.post("user/firebase") {
-            contentType(ContentType.Application.Json)
-            setBody(body = firebaseRequestBodyDTO)
-        }
-
-        if (response.status.isSuccess()) {
-            val result = response.body<OurServerDTO>()
-            if (result.data.result) {
-                Logger.d{"4444 sendRegisterFireBaseData isSuccess result=" + result.data.result}
-            } else {
-                Logger.d{"4444 sendRegisterFireBaseData isSuccess result=" + result.data.result}
+        Logger.d{"4444 sendRegisterFireBaseData body=" + firebaseRequestBody}
+        try {
+            val response = httpClient.post("user/firebase") {
+                contentType(ContentType.Application.Json)
+                setBody(body = firebaseRequestBodyDTO)
             }
-        } else {
-            Logger.d{"4444 sendRegisterFireBaseData Failure"}
+
+            if (response.status.isSuccess()) {
+                val result = response.body<OurServerDTO>()
+                if (result.data.result) {
+                    Logger.d{"4444 sendRegisterFireBaseData isSuccess result=" + result.data.result}
+                } else {
+                    Logger.d{"4444 sendRegisterFireBaseData isSuccess result=" + result.data.result}
+                }
+            } else {
+                Logger.d{"4444 sendRegisterFireBaseData Failure"}
+            }
+        } catch (e: Exception) {
+            Logger.d{"4444 try catch sendRegisterFireBaseData e=" + e}
         }
     }
 }

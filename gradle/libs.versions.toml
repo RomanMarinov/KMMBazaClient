@@ -38,7 +38,7 @@ androidx-startup-runtime = "1.1.1"
 #koinBom = "3.6.0-wasm-alpha2"
 #koinCore = "3.3.2"
 
-kotlin = "2.0.0-RC1"
+kotlin = "2.0.0"
 #kotlin = "1.9.23"
 coroutines_version = "1.8.0"
 ktorClientCore = "2.3.10"
@@ -53,13 +53,13 @@ foundationAndroid = "1.6.7"
 firebaseCrashlyticsBuildtools = "3.0.0"
 androidx-data-store = "1.1.1" #at the time of this article
 
-kmpNotifier = "0.6.0"
+kmpNotifier = "1.0.0"
 #googleServices="4.4.0"
 #firebaseCrashlytics = "2.9.9"
 #firebaseBom="32.4.1"
 #firebasePerfKtx = "21.0.1"
 
-googleServices="4.4.2"
+googleServices="4.4.0"
 firebaseCrashlytics = "3.0.1"
 firebaseBom="33.1.0"
 firebasePerfKtx = "21.0.1"
@@ -136,7 +136,7 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }

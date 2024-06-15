@@ -16,7 +16,9 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
 
-
+<!--    это разрешение, которое позволяет вашему приложению управлять блокировкой активности устройства, чтобы его экран не отключался приложением во время работы или выполнения определенных задач.-->
+<!--    шло с firebase-->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:name=".ui.MainApplication"
@@ -86,23 +88,23 @@
         </provider>
 
         <service
-            android:name=".firebase.MyFirebaseMessagingService"
+            android:name="net.baza.bazanetclientapp.firebase.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <!--  Set custom default icon. This is used when no icon is set for incoming notification messages. -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_home" />
-        <!--
- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message.
-        -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@android:color/holo_red_dark" />
+<!--        <meta-data-->
+<!--            android:name="com.google.firebase.messaging.default_notification_icon"-->
+<!--            android:resource="@drawable/ic_notificationicon" />-->
+<!--        &lt;!&ndash;-->
+<!-- Set color used with incoming notification messages. This is used when no color is set for the incoming-->
+<!--             notification message.-->
+<!--        &ndash;&gt;-->
+<!--        <meta-data-->
+<!--            android:name="com.google.firebase.messaging.default_notification_color"-->
+<!--            android:resource="@color/colorBazaMainRed" />-->
 
         <provider
             android:name=".ComposeFileProvider"

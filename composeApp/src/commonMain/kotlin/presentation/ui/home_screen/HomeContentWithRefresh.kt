@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -50,6 +51,7 @@ import kmm.composeapp.generated.resources.home_img_mobile
 import kmm.composeapp.generated.resources.home_img_outdoor
 import kmm.composeapp.generated.resources.home_personal_account
 import kmm.composeapp.generated.resources.ic_plus
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -69,7 +71,7 @@ fun HomeContentWithRefresh(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
     navHostController: NavHostController,
-    //paddingValue: PaddingValues,
+    viewModel: HomeScreenViewModel
 ) {
     val scope = rememberCoroutineScope()
 
@@ -111,6 +113,8 @@ fun HomeContentWithRefresh(
                 //.padding(bottom = paddingValue.calculateBottomPadding()
              //   )
         ) {
+            sendSelfPush(viewModel = viewModel)
+
             homePersonalAccountCard(
                 openBottomSheet = {
                     openBottomSheetPersonalAccountState.value = it
@@ -170,7 +174,36 @@ fun HomeContentWithRefresh(
         )
     }
 }
+fun LazyListScope.sendSelfPush(
+    viewModel: HomeScreenViewModel
+){
+    item {
+        val scope = rememberCoroutineScope()
 
+        ElevatedCard(
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+        ) {
+            Row(modifier = Modifier
+                .fillMaxWidth() .background(Color.Red)
+                .clickable {
+                    scope.launch {
+                        viewModel.sendSelfPush()
+                    }
+                },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center) {
+                Text(
+                    text = "Отправить себе пуш",
+                    color = Color.White
+                )
+            }
+        }
+    }
+}
 fun LazyListScope.homePersonalAccountCard(
     openBottomSheet: (Boolean) -> Unit,
 ) {

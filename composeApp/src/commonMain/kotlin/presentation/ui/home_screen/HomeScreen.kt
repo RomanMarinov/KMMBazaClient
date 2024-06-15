@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import kmm.composeapp.generated.resources.Res
+import kmm.composeapp.generated.resources.ic_plus
 import kmm.composeapp.generated.resources.ic_profile
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -144,7 +145,7 @@ fun HomeScreen(
                         }
                     },
                     navHostController = navHostController,
-                   // paddingValue = paddingValues
+                   viewModel = viewModel
                 )
             }
         }

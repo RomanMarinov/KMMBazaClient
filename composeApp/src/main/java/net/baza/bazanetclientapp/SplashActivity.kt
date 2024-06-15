@@ -94,8 +94,7 @@ class SplashActivity : ComponentActivity() {
 }
 
 internal fun NotifierManagerImpl.shouldShowNotification(): Boolean {
-    val configuration =
-        NotifierManagerImpl.getConfiguration() as? NotificationPlatformConfiguration.Android
+    val configuration = NotifierManagerImpl.getConfiguration() as? NotificationPlatformConfiguration.Android
     return configuration?.showPushNotification ?: true
 }
 

@@ -1,48 +1,39 @@
+//import net.baza.bazanetclientapp.notification.configuration.NotificationPlatformConfiguration
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
 import co.touchlab.kermit.Logger
-import com.mmk.kmpnotifier.notification.NotifierManager
-
-import net.baza.bazanetclientapp.notification.configuration.NotificationPlatformConfiguration
+import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import di.commonModule
-import kmm.composeapp.generated.resources.Res
-import kmm.composeapp.generated.resources.ic_home
-import org.jetbrains.compose.resources.vectorResource
+import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import org.koin.core.context.startKoin
 import presentation.ui.auth_activity.AuthActivityContent
 import presentation.ui.splash_activity.SplashActivityContent
 import util.SnackBarHostHelper
 import util.StartActivity
 
-
 fun MainViewController() = ComposeUIViewController {
+    Logger.d("4444 MainViewController IOS")
 
     val nextActivityState = remember { mutableStateOf(StartActivity.DEFAULT) }
     val snackBarStateAuthPhone = remember { mutableIntStateOf(-1) }
     val snackBarStateAuthWiFi = remember { mutableStateOf("") }
     val snackBarStateWarning = remember { mutableStateOf(false) }
-
-
-
-
-
-
-    val configuration =  NotificationPlatformConfiguration.Ios(
-        showPushNotification = true,
-        askNotificationPermissionOnStart = true
-    )
-
-   // NotifierManager.initialize(configuration = configuration)
-
+//    val configuration =  NotificationPlatformConfiguration.Ios(
+//        showPushNotification = true,
+//        askNotificationPermissionOnStart = true
+//    )
+////    NotifierManager.initialize(configuration = configuration)
+//
+//    NotifierManagerImpl.initialize(configuration = configuration)
 
     SplashActivityContent(
         onMoveToNextActivity = {
             nextActivityState.value = it // или AUTH_ACTIVITY или MAIN_ACTIVITY
         }
     )
-    // по идее всегда должна быть true после первой иниц
+
     when (nextActivityState.value) {
         StartActivity.AUTH_ACTIVITY -> {
             AuthActivityContent(
@@ -108,8 +99,28 @@ fun MainViewController() = ComposeUIViewController {
     }
 }
 
+@Throws(Exception::class)
 fun initKoin() {
+
+
+    val configuration =  NotificationPlatformConfiguration.Ios(
+        showPushNotification = true,
+        askNotificationPermissionOnStart = true
+    )
+//    NotifierManager.initialize(configuration = configuration)
+
+    NotifierManagerImpl.initialize(configuration = configuration)
+
+
+
+
+
+    Logger.d("4444 MainViewController initKoin IOS")
     startKoin {
         modules(commonModule())
+
+
     }
+
+
 }

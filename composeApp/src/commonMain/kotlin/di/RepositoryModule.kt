@@ -1,5 +1,7 @@
 package di
 
+import com.mmk.kmpnotifier.notification.PushNotifier
+import com.mmk.kmpnotifier.permission.PermissionUtil
 import data.add_address.remote.AddAddressRepositoryImpl
 import data.auth.local.AppPreferencesRepository
 import data.auth.remote.AuthRepositoryImpl
@@ -22,7 +24,7 @@ import org.koin.core.module.dsl.withOptions
 import org.koin.dsl.module
 
 val repositoryModule = module {
-
+    co.touchlab.kermit.Logger.d("4444 repositoryModule")
     single<OutdoorRepository> { OutdoorRepositoryImpl(get()) } withOptions {
         createdAtStart()
     }
@@ -54,6 +56,13 @@ val repositoryModule = module {
     single<HistoryCallRepository> { HistoryCallRepositoryImpl(get()) }  withOptions {
         createdAtStart()
     }
+
+
+//    single { NotifierManagerImpl } withOptions {
+//        createdAtStart()
+//    }
+
+    //single<PermissionUtil> { AndroidNotifier() }
 
 }
 

@@ -15,6 +15,7 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
 val networkModule = module {
+    co.touchlab.kermit.Logger.d("4444 networkModule")
     single<HttpClient> {
         HttpClient() {
 

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 
+// проверка разрешения POST_NOTIFICATIONS
 internal val Context.notificationManager
     get() = this.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
 

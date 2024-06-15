@@ -31,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.CacheDrawModifierNode
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -59,6 +60,10 @@ enum class DomofonContent {
     LIST_GROUP, LIST, LIST_ZERO, DEFAULT
 }
 
+enum class ShowCameraState {
+    ENABLED, DISABLED, DEFAULT
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DomofonScreen(
@@ -75,6 +80,7 @@ fun DomofonScreen(
     val pullToRefreshState = rememberPullToRefreshState()
 
     val snackbarHostState = remember { SnackbarHostState() }
+    val isShowEnableCamera = remember { mutableStateOf(ShowCameraState.DEFAULT) }
 
     val domofonContentState = remember { mutableStateOf(DomofonContent.DEFAULT) }
     val addrIdFromGroup = remember { mutableIntStateOf(-1) }
@@ -225,6 +231,9 @@ fun DomofonScreen(
                                 },
                                 snackbarHostState = snackbarHostState,
                                 navHostController = navHostController,
+                                onShowEnableCamera = { volume ->
+                                    isShowEnableCamera.value = volume
+                                },
                                 viewModel = viewModel
                             )
                         }
@@ -240,6 +249,9 @@ fun DomofonScreen(
                                 },
                                 snackbarHostState = snackbarHostState,
                                 navHostController = navHostController,
+                                onShowEnableCamera = { volume ->
+                                    isShowEnableCamera.value = volume
+                                },
                                 viewModel = viewModel
                             )
                         }
@@ -283,6 +295,9 @@ fun DomofonScreen(
                                     },
                                     snackbarHostState = snackbarHostState,
                                     navHostController = navHostController,
+                                    onShowEnableCamera = { volume ->
+                                        isShowEnableCamera.value = volume
+                                    },
                                     viewModel = viewModel
                                 )
                             }
@@ -320,7 +335,27 @@ fun DomofonScreen(
 //                    )
 
 
+                    when (isShowEnableCamera.value) {
+                        ShowCameraState.ENABLED -> {
+                            SnackBarHostHelper.ShortShortTime(
+                                message = "Звонки включены",
+                                onFinishTime = {
+                                    viewModel.resetSnackBarUnLockState()
+                                }
+                            )
+                        }
 
+                        ShowCameraState.DISABLED -> {
+                            SnackBarHostHelper.ShortShortTime(
+                                message = "Звонки отключены",
+                                onFinishTime = {
+                                    viewModel.resetSnackBarUnLockState()
+                                }
+                            )
+                        }
+
+                        ShowCameraState.DEFAULT -> {}
+                    }
 
                     when (statusDomofonUnlockDoor) {
                         UnLockState.OPENED_DOOR -> {

@@ -47,16 +47,16 @@ class SplashViewModel(
     }
 
     private fun getAndSaveFireBaseToken() {
-        Logger.d("4444 getAndSaveFireBaseToken NotifierManager.getPushNotifier().getToken()")
-        viewModelScope.launch(Dispatchers.IO) {
-
-//            NotifierManagerImpl.getPushNotifier().getToken()
-            val fireBaseToken = NotifierManagerImpl.getPushNotifier().getToken()
-//            val fireBaseToken = NotifierManager.getPushNotifier().getToken()
-            fireBaseToken?.let {
-                _fireBaseToken.value = it
-            }
-        }
+//        Logger.d("4444 getAndSaveFireBaseToken NotifierManager.getPushNotifier().getToken()")
+//        viewModelScope.launch(Dispatchers.IO) {
+//
+////            NotifierManagerImpl.getPushNotifier()
+//            val fireBaseToken = NotifierManagerImpl.getPushNotifier().getToken()
+////            val fireBaseToken = NotifierManager.getPushNotifier().getToken()
+//            fireBaseToken?.let {
+//                _fireBaseToken.value = it
+//            }
+//        }
     }
 
     fun checkAndUpdateToken() {
@@ -69,7 +69,7 @@ class SplashViewModel(
                 val response = authRepository.refreshTokenSync()
                 if (response?.status?.isSuccess() == true) {
                    // registerFirebase()
-                    sendRegisterFireBaseData()
+                    //sendRegisterFireBaseData()
                     _nextScreen.value = StartActivity.MAIN_ACTIVITY
                     Logger.d("4444 REFRESH HOME_ACTIVITY")
                 } else if (response?.status?.isSuccess() == false || response == null) {
@@ -79,7 +79,7 @@ class SplashViewModel(
             } else { // если токен актуален, то регистрируем FireBase и переходим на главную страницу
                 Logger.d("REFRESH AccessToken актуален, регистрируем Firebase - SplashScreen/checkTokenAndRefresh()")
                // registerFirebase()
-                sendRegisterFireBaseData()
+               // sendRegisterFireBaseData()
                 _nextScreen.value = StartActivity.MAIN_ACTIVITY
             }
         }
@@ -105,17 +105,16 @@ class SplashViewModel(
         Logger.d("4444 MainActivityViewModel sendRegisterFireBaseData")
 
         val fingerPrint = appPreferencesRepository.fetchInitialPreferences().fingerPrint
+        val platformName = GetPlatformName().getName()
 
+        Logger.d("4444 platformName="+ platformName)
         val firebaseRequestBody = FirebaseRequestBody(
             firebaseToken = _fireBaseToken.value,
             fingerprint = fingerPrint,
             version = 1,
-            device = "android"
-
+            device = platformName
         )
-
-
-
+        // пока не решу проблему на ios
         authRepository.sendRegisterFireBaseData(firebaseRequestBody = firebaseRequestBody)
 
 

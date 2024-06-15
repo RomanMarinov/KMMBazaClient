@@ -1,14 +1,15 @@
-package permission
+package net.baza.bazanetclientapp.permission
 
 
 import com.mmk.kmpnotifier.permission.PermissionUtil
+import net.baza.bazanetclientapp.notification.IosNotifier
 import platform.UserNotifications.UNAuthorizationOptionAlert
 import platform.UserNotifications.UNAuthorizationOptionBadge
 import platform.UserNotifications.UNAuthorizationOptionSound
 import platform.UserNotifications.UNAuthorizationStatusAuthorized
 import platform.UserNotifications.UNUserNotificationCenter
 
-// не трогать
+
 internal class IosPermissionUtil(private val notificationCenter: UNUserNotificationCenter) :
     PermissionUtil {
     companion object {
@@ -28,7 +29,7 @@ internal class IosPermissionUtil(private val notificationCenter: UNUserNotificat
         notificationCenter.requestAuthorizationWithOptions(NOTIFICATION_PERMISSIONS) { isGranted, _ ->
             if (isGranted) {
                 UNUserNotificationCenter.currentNotificationCenter().delegate =
-                    notification.IosNotifier.NotificationDelegate()
+                    IosNotifier.NotificationDelegate()
                 onPermissionGranted()
             }
         }

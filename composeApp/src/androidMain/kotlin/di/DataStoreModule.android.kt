@@ -1,5 +1,6 @@
 package di
 
+import co.touchlab.kermit.Logger
 import data.auth.local.AppPreferencesRepository
 import data.auth.local.dataStoreFileName
 import data.auth.local.getDataStore
@@ -8,7 +9,7 @@ import org.koin.dsl.module
 
 
 internal actual fun getDatastoreModulePlatform() = module {
-
+    Logger.d("4444 getDatastoreModulePlatform")
     single {
         getDataStore {
             androidContext().filesDir?.resolve(dataStoreFileName)?.absolutePath

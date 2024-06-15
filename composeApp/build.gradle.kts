@@ -1,19 +1,18 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
-//    alias(libs.plugins.compose.compiler)
-
     kotlin("plugin.serialization") version "2.0.0"
-//    id("com.google.gms.google-services") version "4.3.4" apply false
-   // id("com.google.gms.google-services")
 
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
+
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
@@ -23,26 +22,26 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            //            export(project("io.github.mirzemehdi:kmpnotifier:0.6.0"))
             baseName = "ComposeApp"
             isStatic = true
+            //  export(project("io.github.mirzemehdi:kmpnotifier:1.0.0"))
+            //export("io.github.mirzemehdi:kmpnotifier-iossimulatorarm64:1.0.0")
            export(libs.kmpNotifier) // пока убрал
-
-
-            //          export(project("io.github.mirzemehdi:kmpnotifier:0.6.0"))
-            // export("io.github.mirzemehdi:kmpnotifier:1.0.0")
-//            export("dev.icerock.moko:resources:0.23.0")
-//            export("dev.icerock.moko:graphics:0.9.0")
+           // export("com.google.firebase:firebase-config-interop:16.0.1")
+            freeCompilerArgs += listOf(
+                "-Xbinary=bundleId=net.baza.bazanetclientapp",
+                "-Xinline-classes" // Инлайнинг помогает уменьшить накладные расходы, связанные с вызовом функций
+            )
         }
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
@@ -66,18 +65,14 @@ kotlin {
 
             implementation(libs.androidx.startup.runtime)
             implementation(compose.material3)
+            implementation("com.squareup.picasso:picasso:2.71828")
+
         }
         commonMain.dependencies {
-//            implementation(compose.runtime) // до ветки
-//            implementation(compose.foundation) // до ветки
             implementation(compose.material3)
             // implementation(compose.ui) // до ветки
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-
-            //https://github.com/Tlaster/PreCompose/blob/master/docs/setup.md
-            //  api(compose.foundation) // до ветки
-            //    api(compose.animation) // до ветки
 //            api(libs.precompose)
 //            // api(libs.precompose.molecule) // For Molecule intergration
 //            api(libs.precompose.viewmodel) // For ViewModel intergration
@@ -86,102 +81,58 @@ kotlin {
 //            implementation("androidx.navigation:navigation-compose:2.8.0-beta01")
             implementation(libs.kotlinx.serialization.json)
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
-
-
-//            ////////////////////////
-//            // CompositionLocal LocalLifecycleOwner not present
-//            implementation("androidx.compose.ui:ui:1.6.7")
-//            implementation("androidx.compose.runtime:runtime:1.6.7")
-//            implementation("androidx.compose.foundation:foundation:1.6.7")
-//            implementation("androidx.compose.animation:animation:1.6.7")
-//            implementation("androidx.compose.material:material:1.6.7")
-
-//            implementation("androidx.compose.ui:ui:1.7.0-beta01")
-//            implementation("androidx.compose.runtime:runtime:1.7.0-beta01")
-//            implementation("androidx.compose.foundation:foundation:1.7.0-beta01")
-//            implementation("androidx.compose.animation:animation:1.7.0-beta01")
-//            implementation("androidx.compose.material:material:1.7.0-beta01")
-//            /////////////////////////
-
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.logging)
-
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.content.negotiation)
-
             //implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.serialization)
-
-
             implementation(libs.kermit.v203) //Add latest version
-
             // отключил для теста на работу koin
             implementation(libs.koin.core)
-
             implementation(libs.koin.compose) // в этом проблема
-
 //            implementation("org.jetbrains.compose.annotation-internal:annotation:1.6.2")
             //implementation(libs.koin.android)
             //implementation(libs.koin.androidx.compose)
-
             //api("dev.icerock.moko:resources:0.23.0")
-
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-
             // implementation(libs.kotlinx.coroutines.core)
             implementation("media.kamel:kamel-image:0.9.4")
-
-
             //implementation("org.jetbrains.kotlin:kotlin-serialization:2.0.0-RC1")
-
             implementation("net.thauvin.erik.urlencoder:urlencoder-lib:1.5.0")
             //implementation("io.github.kevinnzou:compose-webview:0.33.6")
-
             implementation("io.github.kevinnzou:compose-webview-multiplatform:1.9.2")
-
 //            implementation("com.google.accompanist:accompanist-webview:0.34.0")
             implementation("com.google.accompanist:accompanist-permissions:0.35.1-alpha")
-
 //            implementation("dev.icerock.moko:resources:0.23.0")
             //implementation("org.osmdroid:osmdroid-android:6.1.11")
-
-
             // это перепроверить надо ли это
             implementation("org.osmdroid:osmdroid-android:6.1.16")
 //            implementation("tech.utsmankece:osm-android-compose:0.0.3")
 //            implementation("com.google.maps.android:maps-compose:4.4.0")
 //            implementation("com.google.android.gms:play-services-maps:18.2.0")
-            ///////////
-
-
             //  implementation("androidx.datastore:datastore-core-jvm:1.1.1")
-
             implementation(libs.androidx.data.store.core)
             implementation(libs.androidx.datastore.core)
             // https://otsembo.hashnode.dev/jetpack-datastore-a-multiplatform-solution
             implementation("org.jetbrains.kotlinx:atomicfu:0.23.2")
-
-
             // implementation(libs.androidx.lifecycle.viewmodel.compose)
-
-
-            //
             //  implementation("com.squareup.okio:okio:3.9.0")
-
             implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
 // https://mvnrepository.com/artifact/io.github.mirzemehdi/kmpnotifier
             //implementation("io.github.mirzemehdi:kmpnotifier:0.6.0")
 //            implementation("com.google.gms.google-services:4.4.2")
             //api("io.github.mirzemehdi:kmpnotifier:0.6.0")
            // api("io.github.mirzemehdi:kmpnotifier:1.0.0")
-
-
             api(libs.kmpNotifier)
-
-
-
             // lottie (для android как обычно, для ios lottie file поместить в строку)
             implementation("io.github.alexzhirkevich:compottie:1.1.2")
+//            implementation("co.touchlab:kermit-gradle-plugin:2.0.2")
+            implementation("co.touchlab:kermit:2.0.2")
+            implementation("co.touchlab:kermit-crashlytics:2.0.2")
+
+//            implementation("com.google.fireflations-interop:17.2.0")
+//            implementation("com.google.firebase:firebase-config-interop:16.0.1")
         }
 
         iosMain {
@@ -190,18 +141,21 @@ kotlin {
                 implementation(libs.ktor.client.darwin)
                 // implementation("io.github.mirzemehdi:kmpnotifier:0.6.0")
                 //api("io.github.mirzemehdi:kmpnotifier:1.0.0")
-
 //                implementation("dev.gitlive:firebase-messaging:1.12.0")
 //                implementation("dev.gitlive:firebase-installations:1.12.0")
+                //api("io.github.mirzemehdi:kmpnotifier-iossimulatorarm64:1.0.0")
                 api(libs.kmpNotifier)
+//                api("io.github.mirzemehdi:kmpnotifier-iossimulatorarm64:1.0.0")
+                //export("io.github.mirzemehdi:kmpnotifier-iosarm64:0.6.0")
+              //  api("io.github.mirzemehdi:kmpnotifier-iosarm64:0.6.0")
+                //api(libs.koin.core)
 
+//                api("com.google.firebase:firebase-installations-interop:17.2.0")
+//                api("com.google.firebase:firebase-config-interop:16.0.1")
             }
             //sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-
             //resources.srcDirs("src/commonMain/resources","src/iosMain/resources")
 //            resources.srcDirs("src/commonMain/resources","src/iosMain/resources")
-
-
         }
         task("testClasses")
     }
@@ -261,6 +215,13 @@ android {
         implementation("androidx.compose.material:material:1.7.0-alpha08")
     }
 }
+
+//  с пушами когда ios
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+//    kotlinOptions {
+//        freeCompilerArgs += listOf("-Xbinary=bundleId=net.baza.bazanetclientapp")
+//    }
+//}
 
 dependencies {
     implementation(libs.androidx.core) // корутины
@@ -355,9 +316,8 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
 
     /////////////////////////
-
     implementation(libs.firebase.perf.ktx)
-    api(libs.kmpNotifier)
+   // api(libs.kmpNotifier)
 }
 
 

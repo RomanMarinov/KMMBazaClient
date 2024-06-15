@@ -98,7 +98,8 @@ fun HistoryCallScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            navHostController.popBackStack()
+                            navHostController.navigateUp()
+//                            navHostController.popBackStack()
                         }
                     ) {
                         Icon(

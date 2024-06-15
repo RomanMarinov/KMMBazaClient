@@ -60,6 +60,7 @@ package net.baza.bazanetclientapp.ui
 
 import android.app.Application
 import co.touchlab.kermit.Logger
+import com.google.firebase.FirebaseApp
 import com.google.firebase.perf.metrics.AddTrace
 import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
@@ -82,42 +83,19 @@ class MainApplication : Application() {
         super.onCreate()
         Logger.d("4444 MainApplication loaded")
 
-
-
-
-////        /**
-////         * По умолчанию значение showPushNotification истинно.
-////         * Если для параметра showPushNotification установлено значение false, push-уведомление на переднем плане не будет отображаться пользователю.
-////         * Вы по-прежнему можете получать содержимое уведомлений, используя метод прослушивателя #onPushNotification.
-////         */
-//        NotifierManager.initialize(
-//            configuration = NotificationPlatformConfiguration.Android(
-//                notificationIconResId = R.drawable.ic_launcher_foreground,
-//                showPushNotification = true,
-//            )
-//        )
-//        FirebaseApp.initializeApp(this)
-
-
-
-// ПЕРЕПИСАТЬ
-
-        ContextInitializer().create(this)
+       // ContextInitializer().create(this)
 
         val configuration = NotificationPlatformConfiguration.Android(
-            notificationIconResId = R.drawable.ic_home,
+            notificationIconResId = R.drawable.ic_notificationicon,
             notificationIconColorResId = R.color.colorBazaMainRed,
             notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
-                id = "CHANNEL_ID_GENERAL",
+                id = "CHANNEL_ID",
                 name = "General"
-            )
+            ),
+            showPushNotification = true // показывать на переднем плане
         )
 
-
         NotifierManagerImpl.initialize(configuration = configuration)
-
-
-
 //        NotifierManager.initialize(configuration = configuration)
         Logger.d("4444 MainApplication NotifierManager.initialize")
 
@@ -182,7 +160,7 @@ class MainApplication : Application() {
 
 
 object AppInitializer {
-
+    @Throws(Exception::class)
     fun initialize(
        // isDebug: Boolean = false,
         //onKoinStart: KoinApplication.() -> Unit,

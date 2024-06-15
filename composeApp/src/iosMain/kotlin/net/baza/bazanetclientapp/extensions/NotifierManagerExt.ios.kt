@@ -1,14 +1,15 @@
-package extensions
+package net.baza.bazanetclientapp.extensions
 
-import net.baza.bazanetclientapp.Constants.KEY_IOS_FIREBASE_NOTIFICATION
 import com.mmk.kmpnotifier.notification.NotifierManager
+import net.baza.bazanetclientapp.Constants.KEY_IOS_FIREBASE_NOTIFICATION
 import com.mmk.kmpnotifier.notification.PayloadData
-import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
+
 import net.baza.bazanetclientapp.notification.NotifierManagerImpl
+import net.baza.bazanetclientapp.notification.configuration.NotificationPlatformConfiguration
 import platform.UserNotifications.UNNotificationContent
 /***
  * Чтобы получить полезную нагрузку данных уведомления, необходимо вызвать эту функцию.
- * Приложение iOS Swift сделало функциюReceiveRemoteNotification
+ * Приложение iOS Swift сделало функцию ReceiveRemoteNotification
  *
  * Пример:
  *
@@ -20,8 +21,8 @@ import platform.UserNotifications.UNNotificationContent
  * ```
  */
 /***
- * In order to receive notification data payload this functions needs to be called in
- * ios Swift side application didReceiveRemoteNotification function
+ * Чтобы получить полезную нагрузку данных уведомления, необходимо вызвать эту функцию.
+ *  * Приложение iOS Swift сделало функцию ReceiveRemoteNotification
  *
  * Example:
  *

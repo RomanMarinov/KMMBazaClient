@@ -1,6 +1,7 @@
 package net.baza.bazanetclientapp.permission
 
 import android.content.Context
+import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.permission.PermissionUtil
 import net.baza.bazanetclientapp.extensions.hasNotificationPermission
 
@@ -17,12 +18,12 @@ internal class AndroidMockPermissionUtil(private val context: Context) : Permiss
         onPermissionResult(context.hasNotificationPermission())
     }
 
+
     override fun askNotificationPermission(onPermissionGranted: () -> Unit) = Unit.also {
-        println(
-            "In Android this function is just a mock. You need to ask permission in Activity " +
-                    "using like below: \n" +
-                    "val permissionUtil by permissionUtil()\n" +
-                    "permissionUtil.askNotificationPermission() \n"
+        Logger.d(
+            "4444 Android эта функция — просто макет. Вам нужно спросить разрешение в Activity"
+        + "используя, как показано ниже: val permissionUtil by PermissionUtil()\n" +
+                "permissionUtil.askNotificationPermission() \n"
         )
     }
 }

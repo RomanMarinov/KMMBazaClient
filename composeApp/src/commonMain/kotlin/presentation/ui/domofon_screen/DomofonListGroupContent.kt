@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -57,6 +58,8 @@ import util.ColorCustomResources
 import util.ScreenRoute
 import util.navigateToWebViewHelper
 import util.shimmerEffect
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -251,58 +254,58 @@ fun GroupContentItem(
                     )
                 }
 
-                Row(
-                    modifier = Modifier,
-                    //.fillMaxWidth()
-                    //.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Box(
-                        modifier = Modifier,
-                        //.fillMaxWidth(),
-                        contentAlignment = Alignment.CenterEnd,
-                    ) {
-                        Card(
-                            modifier = Modifier
-                                //.fillMaxWidth()
-                                .height(40.dp),
-                            shape = RoundedCornerShape(100.dp),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-                            colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBazaMainBlue),
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .clickable {
-                                        isShare.value = true
-                                    }
-                                    .fillMaxHeight()
-                                    .padding(8.dp)
-                                    .background(ColorCustomResources.colorBazaMainBlue),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.End
-                            ) {
-
-
-                                Icon(
-                                    modifier = Modifier
-                                        .size(24.dp),
-                                    imageVector = vectorResource(Res.drawable.ic_share),
-                                    contentDescription = null,
-                                    tint = Color.White
-                                )
-                            }
-                        }
-                    }
-                }
+//                Row(
+//                    modifier = Modifier,
+//                    //.fillMaxWidth()
+//                    //.weight(1f),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.End
+//                ) {
+//                    Box(
+//                        modifier = Modifier,
+//                        //.fillMaxWidth(),
+//                        contentAlignment = Alignment.CenterEnd,
+//                    ) {
+//                        Card(
+//                            modifier = Modifier
+//                                //.fillMaxWidth()
+//                                .height(40.dp),
+//                            shape = RoundedCornerShape(100.dp),
+//                            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+//                            colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBazaMainBlue),
+//                        ) {
+//                            Row(
+//                                modifier = Modifier
+//                                    .clickable {
+//                                        isShare.value = true
+//                                    }
+//                                    .fillMaxHeight()
+//                                    .padding(8.dp)
+//                                    .background(ColorCustomResources.colorBazaMainBlue),
+//                                verticalAlignment = Alignment.CenterVertically,
+//                                horizontalArrangement = Arrangement.End
+//                            ) {
+//
+//
+//                                Icon(
+//                                    modifier = Modifier
+//                                        .size(24.dp),
+//                                    imageVector = vectorResource(Res.drawable.ic_share),
+//                                    contentDescription = null,
+//                                    tint = Color.White
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
             }
 
             val title = getTitle(listSputnik.size)
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = title
-            )
+//            Text(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                text = title
+//            )
 
             Column(
                 modifier = Modifier
@@ -409,8 +412,43 @@ fun GroupContentItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                horizontalArrangement = Arrangement.Center
+                verticalAlignment = Alignment.CenterVertically,
+                //horizontalArrangement = Arrangement.
             ) {
+
+                Card(
+                    modifier = Modifier
+                        //.fillMaxWidth()
+                        .height(40.dp),
+                    shape = RoundedCornerShape(100.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBazaMainBlue),
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .clickable {
+                                isShare.value = true
+                            }
+                            .fillMaxHeight()
+                            .padding(8.dp)
+                            .background(ColorCustomResources.colorBazaMainBlue),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+
+
+                        Icon(
+                            modifier = Modifier
+                                .size(24.dp),
+                            imageVector = vectorResource(Res.drawable.ic_share),
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
                 ElevatedButton(
                     shape = RoundedCornerShape(8.dp),
                     onClick = {
@@ -421,7 +459,7 @@ fun GroupContentItem(
                         Text(
                             modifier = Modifier
                                 .padding(start = 16.dp, end = 16.dp),
-                            text = "Другие камеры"
+                            text = title
                         )
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -430,6 +468,7 @@ fun GroupContentItem(
                     ),
                     //shape = RoundedCornerShape(10.dp)
                 )
+                Spacer(modifier = Modifier.weight(1f))
             }
         }
     }
@@ -441,13 +480,424 @@ fun GroupContentItem(
 private fun getTitle(size: Int): String {
     var title = ""
     if (size == 1) {
-        title = "По этому адресу Вам доступна $size камера"
+        title = "Доступна $size камера"
     }
     if (size in 2..4) {
-        title = "По этому адресу Вам доступно $size камеры"
+        title = "Еще доступно $size камеры"
     }
     if (size >= 5) {
-        title = "По этому адресу Вам доступно $size камер"
+        title = "Еще доступно $size камер"
     }
     return title
 }
+
+//private fun getTitle(size: Int): String {
+//    var title = ""
+//    if (size == 1) {
+//        title = "По этому адресу Вам доступна $size камера"
+//    }
+//    if (size in 2..4) {
+//        title = "По этому адресу Вам доступно $size камеры"
+//    }
+//    if (size >= 5) {
+//        title = "По этому адресу Вам доступно $size камер"
+//    }
+//    return title
+//}
+
+
+//////////////////////////////////////////////////////
+//
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun DomofonListGroupContent(
+//    items: List<Sputnik>?,
+//    isLoading: Boolean,
+//    onRefresh: () -> Unit,
+//    modifier: Modifier = Modifier,
+//    onGoDomofonContentList: () -> Unit,
+//    onAddrId: (Int) -> Unit,
+//    viewModel: DomofonScreenViewModel,
+//    onShowSnackBarUnlockDoorStatus: (Boolean) -> Unit,
+//    navHostController: NavHostController
+//) {
+//
+//    val lazyListState = rememberLazyListState()
+//    val pullToRefreshState = rememberPullToRefreshState()
+//
+//    val groupItems: Map<Int, List<Sputnik>>? = items?.groupBy { it.addrId }
+//    groupItems?.let {
+//        val listSputnikByFullControl = groupItems.flatMap { mapEntry ->
+//            mapEntry.value.filter { sputnik ->
+//                sputnik.fullControl
+//            }
+//        }
+//        val groupItems1 = items.groupBy { sputnik ->
+//            sputnik.addrId
+//        }.values.toList()
+//
+//        Box(  modifier = modifier
+//            .nestedScroll(pullToRefreshState.nestedScrollConnection)) {
+//            LazyColumn(
+//                state = lazyListState,
+//                contentPadding = PaddingValues(bottom = 16.dp),
+//                modifier = Modifier
+//                    //.navigationBarsPadding()
+//                    .fillMaxSize()
+//                //.navigationBarsPadding()
+//                ,
+//                verticalArrangement = Arrangement.spacedBy(16.dp)
+//            ) {
+//
+//                item {
+//                    PermissionBannerContent()
+//                }
+//
+//                item {
+//                    TopTitleContentGroup(
+//                        navHostController = navHostController
+//                    )
+//                }
+//
+//                items(listSputnikByFullControl) { sputnik ->
+//                    val listSputnikItem: List<Sputnik> =
+//                        groupItems1.flatten().filter { it.addrId == sputnik.addrId }
+//
+//                    GroupContentItem(
+//                        sputnikControl = sputnik,
+//                        listSputnik = listSputnikItem,
+//                        onGoDomofonContentList = {
+//                            onGoDomofonContentList()
+//                        },
+//                        onAddrId = {
+//                            onAddrId(it)
+//                        },
+//                        onShowSnackBarUnlockDoorStatus = {
+//                            onShowSnackBarUnlockDoorStatus(it)
+//                        },
+//                        navHostController = navHostController, viewModel = viewModel
+//                    )
+//                }
+//            }
+//
+//            if (pullToRefreshState.isRefreshing) {
+//                LaunchedEffect(true) {
+//                    onRefresh()
+//                }
+//            }
+//
+//            LaunchedEffect(isLoading) {
+//                if (isLoading) {
+//                    pullToRefreshState.startRefresh()
+//                } else {
+//                    pullToRefreshState.endRefresh()
+//                }
+//            }
+//
+//            PullToRefreshContainer(
+//                state = pullToRefreshState,
+//                modifier = Modifier.align(Alignment.TopCenter),
+//                containerColor = Color.White,
+//                contentColor = ColorCustomResources.colorBazaMainBlue
+//            )
+//        }
+//    }
+//}
+//
+//@Composable
+//fun TopTitleContentGroup(
+//    navHostController: NavHostController
+//) {
+//    val isShowBottomSheet = remember { mutableStateOf(false) }
+//
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(start = 16.dp, end = 16.dp),
+//        // horizontalArrangement = Arrangement.Start,
+//        verticalAlignment = Alignment.CenterVertically
+//    ) {
+//        Row(
+//            modifier = Modifier
+//                .weight(1f)
+//                .padding(end = 16.dp),
+//            //.fillMaxWidth()
+//            verticalAlignment = Alignment.CenterVertically,
+//            // horizontalArrangement = Arrangement.Start
+//        ) {
+//            Text(
+//                modifier = Modifier,
+//                text = "Адреса",
+//                fontWeight = FontWeight.Bold
+//            )
+//        }
+//
+//        AddAddressButtonHelper(
+//            onShowBottomSheet = {
+//                isShowBottomSheet.value = it
+//            }
+//        )
+//    }
+//
+//    if (isShowBottomSheet.value) {
+//        AddAddressBottomSheet(
+//            fromScreen = ScreenRoute.DomofonScreen.route,
+//            onShowCurrentBottomSheet = {
+//                isShowBottomSheet.value = it
+//            }
+//        )
+//    }
+//}
+//
+//
+//
+//
+//@Composable
+//fun GroupContentItem(
+//    sputnikControl: Sputnik,
+//    listSputnik: List<Sputnik>,
+//    onGoDomofonContentList: () -> Unit,
+//    onAddrId: (Int) -> Unit,
+//    navHostController: NavHostController,
+//    onShowSnackBarUnlockDoorStatus: (Boolean) -> Unit,
+//    viewModel: DomofonScreenViewModel
+//) {
+//
+//    val isOpenDoor = remember { mutableStateOf(false) }
+//    val isShare = remember { mutableStateOf(false) }
+//    val scope = rememberCoroutineScope()
+//
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(start = 16.dp, end = 16.dp),
+//        shape = RoundedCornerShape(10.dp),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+//        colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBazaMainBlue),
+//    ) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                // .navigationBarsPadding()
+//                .background(Color.White)
+//                .padding(16.dp)
+//        ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+//                // horizontalArrangement = Arrangement.Start,
+//                verticalAlignment = Alignment.Bottom
+//            ) {
+//                Row(
+//                    modifier = Modifier
+//                        .weight(1f)
+//                        .padding(end = 16.dp),
+//                    //.fillMaxWidth()
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    // horizontalArrangement = Arrangement.Start
+//                ) {
+//                    Text(
+//                        modifier = Modifier,
+//                        text = sputnikControl.title,
+//                    )
+//                }
+//
+//                Row(
+//                    modifier = Modifier,
+//                    //.fillMaxWidth()
+//                    //.weight(1f),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.End
+//                ) {
+//                    Box(
+//                        modifier = Modifier,
+//                        //.fillMaxWidth(),
+//                        contentAlignment = Alignment.CenterEnd,
+//                    ) {
+//                        Card(
+//                            modifier = Modifier
+//                                //.fillMaxWidth()
+//                                .height(40.dp),
+//                            shape = RoundedCornerShape(100.dp),
+//                            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+//                            colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBazaMainBlue),
+//                        ) {
+//                            Row(
+//                                modifier = Modifier
+//                                    .clickable {
+//                                        isShare.value = true
+//                                    }
+//                                    .fillMaxHeight()
+//                                    .padding(8.dp)
+//                                    .background(ColorCustomResources.colorBazaMainBlue),
+//                                verticalAlignment = Alignment.CenterVertically,
+//                                horizontalArrangement = Arrangement.End
+//                            ) {
+//
+//
+//                                Icon(
+//                                    modifier = Modifier
+//                                        .size(24.dp),
+//                                    imageVector = vectorResource(Res.drawable.ic_share),
+//                                    contentDescription = null,
+//                                    tint = Color.White
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//            val title = getTitle(listSputnik.size)
+//            Text(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                text = title
+//            )
+//
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 16.dp)
+//            ) {
+//                Box(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    KamelImage(
+//                        onLoading = {
+//                            Box(
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .shimmerEffect()
+//                                    .height(200.dp)
+//                                    .padding(start = 16.dp, end = 16.dp)
+//                            )
+//                        },
+//                        onFailure = {
+//                            Box(
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .shimmerEffect()
+//                                    .height(200.dp)
+//                                    .padding(start = 16.dp, end = 16.dp)
+//                            )
+//                        },
+//                        resource = asyncPainterResource(sputnikControl.previewUrl),
+//                        contentDescription = "",
+//                        contentScale = ContentScale.Crop,
+//                        modifier = Modifier
+//                            .clip(RoundedCornerShape(10.dp))
+//
+////                        .placeholder(
+////                            color = Color.Gray,
+////                            shape = RoundedCornerShape(8.dp) // Опционально, если нужно закруглить углы
+////                        )
+////                        .shimmer(
+////                            baseColor = Color.LightGray,
+////                            highlightColor = Color.Gray,
+////                            animationSpec = shimmerAnimationSpec
+////                        )
+//                            .clickable {
+//                                navigateToWebViewHelper(
+//                                    navHostController = navHostController,
+//                                    route = ScreenRoute.DomofonScreen.route,
+//                                    address = sputnikControl.title,
+//                                    videoUrl = sputnikControl.videoUrl
+//                                )
+//                            }
+//                    )
+//
+//                    Row(
+//                        modifier = Modifier.fillMaxWidth(),
+//                        horizontalArrangement = Arrangement.SpaceAround,
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Icon(
+//                            vectorResource(Res.drawable.ic_play),
+//                            contentDescription = "play",
+//                            tint = Color.White,
+//                            modifier = Modifier
+//                                //.fillMaxWidth()
+//                                // .weight(1f)
+//                                .size(80.dp)
+//                                .clip(RoundedCornerShape(20.dp))
+//                                .clickable {
+//                                    navigateToWebViewHelper(
+//                                        navHostController = navHostController,
+//                                        route = ScreenRoute.DomofonScreen.route,
+//                                        address = sputnikControl.title,
+//                                        videoUrl = sputnikControl.videoUrl
+//                                    )
+//                                }
+//                        )
+//
+//                        if (sputnikControl.fullControl) {
+//                            Icon(
+//                                vectorResource(Res.drawable.ic_lock),
+//                                contentDescription = "lock",
+//                                tint = Color.White,
+//                                modifier = Modifier
+//                                    //.weight(1f)
+//                                    //.fillMaxWidth()
+//                                    .size(80.dp)
+//                                    .clip(RoundedCornerShape(20.dp))
+//                                    .clickable {
+//                                        viewModel.onClickUnLock(deviceId = sputnikControl.deviceID)
+////                                        scope.launch {
+////                                            onShowSnackBarUnlockDoorStatus(true)
+////                                            delay(500L)
+////
+////                                        }
+//                                    }
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 16.dp),
+//                horizontalArrangement = Arrangement.Center
+//            ) {
+//                ElevatedButton(
+//                    shape = RoundedCornerShape(8.dp),
+//                    onClick = {
+//                        onGoDomofonContentList()
+//                        onAddrId(sputnikControl.addrId)
+//                    },
+//                    content = {
+//                        Text(
+//                            modifier = Modifier
+//                                .padding(start = 16.dp, end = 16.dp),
+//                            text = "Другие камеры"
+//                        )
+//                    },
+//                    colors = ButtonDefaults.buttonColors(
+//                        contentColor = Color.White,
+//                        containerColor = ColorCustomResources.colorBazaMainBlue
+//                    ),
+//                    //shape = RoundedCornerShape(10.dp)
+//                )
+//            }
+//        }
+//    }
+//
+//    if (isShare.value) {
+//    }
+//}
+//
+//private fun getTitle(size: Int): String {
+//    var title = ""
+//    if (size == 1) {
+//        title = "По этому адресу Вам доступна $size камера"
+//    }
+//    if (size in 2..4) {
+//        title = "По этому адресу Вам доступно $size камеры"
+//    }
+//    if (size >= 5) {
+//        title = "По этому адресу Вам доступно $size камер"
+//    }
+//    return title
+//}

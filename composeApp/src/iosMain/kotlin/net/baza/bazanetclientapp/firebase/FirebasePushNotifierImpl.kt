@@ -1,4 +1,4 @@
-package firebase
+package net.baza.bazanetclientapp.firebase
 
 import cocoapods.FirebaseMessaging.FIRMessaging
 import cocoapods.FirebaseMessaging.FIRMessagingDelegateProtocol
@@ -11,7 +11,6 @@ import platform.darwin.NSObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-
 @OptIn(ExperimentalForeignApi::class)
 internal class FirebasePushNotifierImpl : PushNotifier {
 
@@ -21,13 +20,11 @@ internal class FirebasePushNotifierImpl : PushNotifier {
         FIRMessaging.messaging().delegate = FirebaseMessageDelegate()
     }
 
-
     override suspend fun getToken(): String? = suspendCoroutine { cont ->
         FIRMessaging.messaging().tokenWithCompletion { token, error ->
             cont.resume(token)
             error?.let { println("Error while getting token: $error") }
         }
-
     }
 
     override suspend fun deleteMyToken() = suspendCoroutine { cont ->

@@ -2,7 +2,9 @@ package net.baza.bazanetclientapp.di
 
 import android.content.Context
 import androidx.startup.Initializer
+import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.notification.Notifier
+
 import net.baza.bazanetclientapp.firebase.FirebasePushNotifierImpl
 import net.baza.bazanetclientapp.notification.NotificationChannelFactory
 import com.mmk.kmpnotifier.notification.PushNotifier
@@ -20,23 +22,24 @@ internal lateinit var applicationContext: Context
 
 internal class ContextInitializer : Initializer<Unit> {
     override fun create(context: Context) {
+        Logger.d("4444 platformModule ContextInitializer")
         applicationContext = context.applicationContext
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> {
+        Logger.d("4444 platformModule dependencies")
         return emptyList()
     }
 }
 
 internal actual val platformModule = module {
-
+        Logger.d("4444 platformModule")
 //    AndroidMockPermissionUtil
     factory { Platform.Android } bind Platform::class
     single { applicationContext }
-    //factoryOf(::AndroidPermissionUtil) bind PermissionUtil::class
+    factoryOf(::AndroidMockPermissionUtil) bind PermissionUtil::class
     factory {
-        val configuration =
-            get<NotificationPlatformConfiguration>() as NotificationPlatformConfiguration.Android
+        val configuration = get<NotificationPlatformConfiguration>() as NotificationPlatformConfiguration.Android
         AndroidNotifier(
             context = get(),
             androidNotificationConfiguration = configuration,

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import presentation.ui.outdoor_screen.model.OutdoorUiState
 
-class OutdoorScreenViewModel(
+class OutdoorScreenViewModel @Throws(Exception::class) constructor(
 //    private val outdoorRepository: OutdoorRepository
     private val userInfoRepository: UserInfoRepository,
     private val commonRepository: CommonRepository
@@ -30,6 +30,7 @@ class OutdoorScreenViewModel(
     val link: StateFlow<String?> = _link
 
     init {
+        Logger.d("4444 OutdoorScreenViewModel")
         getOutdoors(false)
         getLinkOutdoorDescription()
     }
