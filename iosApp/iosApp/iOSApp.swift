@@ -1,6 +1,7 @@
 import SwiftUI
 import ComposeApp
 import FirebaseCore
+import Firebase
 import FirebaseMessaging
 import UserNotifications
 import Foundation
@@ -85,20 +86,46 @@ import UserNotificationsUI
 //    }
 //}
 
+class AppDelegate: NSObject, UIApplicationDelegate {
+
+    
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+
+      FirebaseApp.configure() //important
+      
+              // Настройка уведомлений
+              let askPermission = true // Или false, в зависимости от ваших требований
+//              NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
+    return true
+  }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Foundation.Data) {
+        
+        
+        
+        print("AppDelegate deviceToken= \(deviceToken.base64EncodedString())")
+        Messaging.messaging().apnsToken = deviceToken
+  }
+}
 
 @main
 struct iOSApp: App {
     
-   // @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
      
-       
     init() {
         print("iOSApp: ->")
-
             do {
-     //           FirebaseApp.configure() // Важно
+                //FirebaseApp.configure() // Важно
+                
+                
+                
                 try MainViewControllerKt.doInitKoin()
-              
+                
+                
+                
+                
             } catch {
                 // Обработка исключения
                 print("Error initializing Koin: \(error)")
