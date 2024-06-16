@@ -33,7 +33,8 @@ import kmm.composeapp.generated.resources.map_title
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import presentation.ui.map_screen.map_screen_bottom_sheet.BottomSheetCityCam
 import presentation.ui.map_screen.map_screen_bottom_sheet.BottomSheetDomofonCam
 import presentation.ui.map_screen.map_screen_bottom_sheet.BottomSheetOffice
@@ -42,20 +43,23 @@ import presentation.ui.map_screen.model.MarkerDetail
 import util.ScreenRoute
 import util.Strings
 
+class MapScreenViewModelProvider : KoinComponent {
+    val mapScreenViewModel: MapScreenViewModel by inject()
+}
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
 fun MapScreen(
     bottomNavigationPaddingValue: PaddingValues,
-    navHostController: NavHostController,
-    viewModel: MapScreenViewModel = koinInject(),
+    navHostController: NavHostController
 ) {
-
+    val viewModelProvider = MapScreenViewModelProvider()
+    val viewModel = viewModelProvider.mapScreenViewModel
     // анимация топбара при скроле
     // https://www.youtube.com/watch?v=EqCvUETekjk
 
     val markerDetailTitleTypeState = remember { mutableStateOf("") }
     val markerDetailState = remember { mutableStateOf(MarkerDetail()) }
-
 
     var isRefreshing by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()

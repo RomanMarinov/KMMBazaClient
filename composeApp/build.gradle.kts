@@ -62,7 +62,7 @@ kotlin {
             implementation(libs.firebase.messaging)
 
             api(libs.kmpNotifier)
-
+            implementation(libs.koin.core)
             implementation(libs.androidx.startup.runtime)
             implementation(compose.material3)
             implementation("com.squareup.picasso:picasso:2.71828")
@@ -90,7 +90,9 @@ kotlin {
             implementation(libs.kermit.v203) //Add latest version
             // отключил для теста на работу koin
             implementation(libs.koin.core)
-            implementation(libs.koin.compose) // в этом проблема
+
+            //api("io.github.hoc081098:kmp-viewmodel:0.8.0")
+            //implementation(libs.koin.compose) // в этом проблема
 //            implementation("org.jetbrains.compose.annotation-internal:annotation:1.6.2")
             //implementation(libs.koin.android)
             //implementation(libs.koin.androidx.compose)
@@ -230,7 +232,7 @@ dependencies {
     // отключил для теста на работу koin
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.compose)
+   // implementation(libs.koin.compose)
 
     // отключил для теста на работу koin
     implementation(libs.koin.core)

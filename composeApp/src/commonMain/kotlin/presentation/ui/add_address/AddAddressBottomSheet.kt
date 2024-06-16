@@ -70,7 +70,8 @@ import kmm.composeapp.generated.resources.ic_close
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import presentation.ui.attach_photo.AttachPhotoBottomSheet
 import presentation.ui.domofon_screen.model.CheckData
 import presentation.ui.domofon_screen.model.ScreenBottomSheet
@@ -200,14 +201,19 @@ fun TopTitle(
     }
 }
 
+class AddAddressViewModelProvider : KoinComponent {
+    val addAddressViewModel: AddAddressViewModel by inject()
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AutoComplete(
     fromScreen: String,
-    viewModel: AddAddressViewModel = koinInject(),
     onShowCurrentBottomSheet: (Boolean) -> Unit
 ) {
+    val viewModelProvider = AddAddressViewModelProvider()
+    val viewModel = viewModelProvider.addAddressViewModel
+
     val addresses by viewModel.addresses.collectAsStateWithLifecycle()
     val errorNetwork by viewModel.errorNetwork.collectAsStateWithLifecycle()
     val addAddressResponse by viewModel.addAddressResponse.collectAsStateWithLifecycle()

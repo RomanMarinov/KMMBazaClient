@@ -11,14 +11,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import co.touchlab.kermit.Logger
+import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
-import net.baza.bazanetclientapp.notification.NotifierManagerImpl
+//import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import presentation.ui.splash_activity.SplashActivityContent
 import util.StartActivity
 
@@ -49,6 +54,7 @@ class SplashActivity : ComponentActivity() {
             SplashActivityContent(
                 onMoveToNextActivity = {
                     nextActivityState.value = it
+                    Logger.d("4444 nextActivityState")
                 }
             )
 
@@ -68,6 +74,29 @@ class SplashActivity : ComponentActivity() {
                 }
             }
             LifecycleOwnerSplashActivity()
+
+
+//            val configuration =  NotificationPlatformConfiguration.Android(
+//                notificationIconResId = R.drawable.ic_home,
+//                notificationIconColorResId = Color.CYAN,
+//                notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
+//                    id = "CHANNEL_ID_GENERAL",
+//                    name = "General"
+//                )
+//            )
+//            NotifierManager.initialize(configuration = configuration)
+//            var myPushNotificationToken by remember { mutableStateOf("") }
+//            LaunchedEffect(true) {
+//                println("LaunchedEffectApp is called")
+//                NotifierManager.addListener(object : NotifierManager.Listener {
+//                    override fun onNewToken(token: String) {
+//                        myPushNotificationToken = token
+//                        println("onNewToken: $token")
+//                    }
+//                })
+//                myPushNotificationToken = NotifierManager.getPushNotifier().getToken() ?: ""
+//                Logger.d("4444 myPushNotificationToken=" + myPushNotificationToken)
+//            }
 
 
             // тут не надо
@@ -93,17 +122,14 @@ class SplashActivity : ComponentActivity() {
     }
 }
 
-internal fun NotifierManagerImpl.shouldShowNotification(): Boolean {
-    val configuration = NotifierManagerImpl.getConfiguration() as? NotificationPlatformConfiguration.Android
-    return configuration?.showPushNotification ?: true
-}
+//internal fun NotifierManagerImpl.shouldShowNotification(): Boolean {
+//    val configuration = NotifierManagerImpl.getConfiguration() as? NotificationPlatformConfiguration.Android
+//    return configuration?.showPushNotification ?: true
+//}
 
 
 @Composable
 fun LifecycleOwnerSplashActivity() {
-
-
-
     val localLifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(
         key1 = localLifecycleOwner,

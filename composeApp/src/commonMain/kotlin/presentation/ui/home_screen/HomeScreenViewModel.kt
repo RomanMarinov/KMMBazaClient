@@ -2,7 +2,9 @@ package presentation.ui.home_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.touchlab.kermit.Logger
+import com.mmk.kmpnotifier.notification.NotifierManager
 import data.auth.local.AppPreferencesRepository
 import domain.model.auth.firebase.FirebaseRequestBody
 import domain.model.auth.firebase.FirebaseRequestBodyTEST
@@ -13,13 +15,16 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import net.baza.bazanetclientapp.notification.NotifierManagerImpl
+//import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import presentation.ui.splash_activity.GetPlatformName
 
 class HomeScreenViewModel(
     private val userInfoRepository: UserInfoRepository,
-    private val appPreferencesRepository: AppPreferencesRepository
+    private val appPreferencesRepository: AppPreferencesRepository,
+
 ) : ViewModel() {
+
+
 
     private val _userInfo: MutableStateFlow<UserInfo?> = MutableStateFlow(null)
     var userInfo: StateFlow<UserInfo?> = _userInfo
@@ -40,8 +45,8 @@ class HomeScreenViewModel(
         Logger.d("4444 MainActivityViewModel sendRegisterFireBaseData")
 
 
-        val fireBaseToken = NotifierManagerImpl.getPushNotifier().getToken()
-//            val fireBaseToken = NotifierManager.getPushNotifier().getToken()
+        //val fireBaseToken = NotifierManagerImpl.getPushNotifier().getToken()
+            val fireBaseToken = NotifierManager.getPushNotifier().getToken()
 
 
         val fingerPrint = appPreferencesRepository.fetchInitialPreferences().fingerPrint

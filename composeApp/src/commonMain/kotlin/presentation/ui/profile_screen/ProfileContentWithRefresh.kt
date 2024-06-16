@@ -50,21 +50,29 @@ import kmm.composeapp.generated.resources.ic_profile_card
 import kmm.composeapp.generated.resources.ic_profile_post_card
 import kmm.composeapp.generated.resources.ic_profile_setting
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import presentation.ui.auth_activity.AuthPlatform
 import presentation.ui.profile_screen.phone_number.PhoneNumberBottomSheet
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.TextUtils
 
+class  ProfileScreenViewModelProvider : KoinComponent {
+    val profileScreenViewModel: ProfileScreenViewModel by inject()
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileContentWithRefresh(
     onRefresh: Any,
     navHostController: NavHostController,
-    onMoveToAuthActivity: () -> Unit,
-    viewModel: ProfileScreenViewModel = koinInject()
+    onMoveToAuthActivity: () -> Unit
 ) {
+
+    val viewModelProvider = ProfileScreenViewModelProvider()
+    val viewModel = viewModelProvider.profileScreenViewModel
+
     val pullToRefreshState = rememberPullToRefreshState()
     val snackBarHostState = remember { SnackbarHostState() }
     var isLoading = remember { mutableStateOf(true) }

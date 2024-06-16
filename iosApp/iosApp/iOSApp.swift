@@ -92,11 +92,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-      FirebaseApp.configure() //important
+     // FirebaseApp.configure() //important
       
               // Настройка уведомлений
               let askPermission = true // Или false, в зависимости от ваших требований
-//              NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
+              NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
     return true
   }
 
@@ -117,7 +117,7 @@ struct iOSApp: App {
     init() {
         print("iOSApp: ->")
             do {
-                //FirebaseApp.configure() // Важно
+                FirebaseApp.configure() // Важно
                 
                 
                 

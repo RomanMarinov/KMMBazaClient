@@ -20,11 +20,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -33,34 +29,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import co.touchlab.kermit.Logger
-import domain.model.user_info.Dvr
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_back
 import kmm.composeapp.generated.resources.ic_profile
-import kmm.composeapp.generated.resources.outdoor_title
 import kmm.composeapp.generated.resources.payment_service_title
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
-import presentation.ui.outdoor_screen.OutdoorContent
-import presentation.ui.outdoor_screen.OutdoorScreenViewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import util.ColorCustomResources
 import util.ScreenRoute
+
+class  PaymentServiceViewModelProvider : KoinComponent {
+    val paymentServiceViewModel: PaymentServiceViewModel by inject()
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentServiceScreen(
     bottomNavigationPaddingValue: PaddingValues,
-    navHostController: NavHostController,
-    viewModel: PaymentServiceViewModel = koinInject()
+    navHostController: NavHostController
 ) {
-    Logger.d { " 4444 OutdoorScreen opened" }
+    Logger.d { " 4444 PaymentServiceScreen opened" }
 
 // анимация топбара при скроле
     // https://www.youtube.com/watch?v=EqCvUETekjk
-
+    val viewModelProvider = PaymentServiceViewModelProvider()
+    val viewModel = viewModelProvider.paymentServiceViewModel
 
     val isLoading = viewModel.isLoading.collectAsState()
     val pullToRefreshState = rememberPullToRefreshState()

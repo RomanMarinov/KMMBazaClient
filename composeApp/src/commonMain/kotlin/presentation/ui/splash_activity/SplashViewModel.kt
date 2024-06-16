@@ -5,16 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import data.auth.local.AppPreferencesRepository
 import domain.model.auth.firebase.FirebaseRequestBody
 import domain.repository.AuthRepository
 import io.ktor.http.isSuccess
+import kmm.composeapp.generated.resources.Res
+import kmm.composeapp.generated.resources.ic_home
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import net.baza.bazanetclientapp.notification.NotifierManagerImpl
+import org.jetbrains.compose.resources.vectorResource
+//import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import util.StartActivity
 import util.TextUtils
 
@@ -187,5 +191,9 @@ class SplashViewModel(
       //  }
 
        // return true
+    }
+
+    fun initHuinit() {
+
     }
 }

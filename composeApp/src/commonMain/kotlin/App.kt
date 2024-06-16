@@ -42,7 +42,8 @@ import kmm.composeapp.generated.resources.outdoor_name_nav
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.KoinContext
+
+import org.koin.core.context.KoinContext
 import util.ColorCustomResources
 import util.NavHostScreenScenes
 import util.ScreenRoute
@@ -61,16 +62,26 @@ fun App(
     onMoveToAuthActivity: () -> Unit,
     onShowIncomingCallActivity: () -> Unit
 ) {
-    KoinContext {
-        AppContent(
-            onMoveToAuthActivity = {
-                onMoveToAuthActivity()
-            },
-            onShowIncomingCallActivity = {
-                onShowIncomingCallActivity()
-            }
-        )
-    }
+
+    AppContent(
+        onMoveToAuthActivity = {
+            onMoveToAuthActivity()
+        },
+        onShowIncomingCallActivity = {
+            onShowIncomingCallActivity()
+        }
+    )
+
+//    KoinContext {
+//        AppContent(
+//            onMoveToAuthActivity = {
+//                onMoveToAuthActivity()
+//            },
+//            onShowIncomingCallActivity = {
+//                onShowIncomingCallActivity()
+//            }
+//        )
+//    }
 }
 
 @Composable

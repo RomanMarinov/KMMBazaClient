@@ -71,29 +71,29 @@
             <!-- </intent-filter> -->
         </activity>
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="net.baza.bazanetclientapp.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
+<!--        <provider-->
+<!--            android:name="androidx.startup.InitializationProvider"-->
+<!--            android:authorities="net.baza.bazanetclientapp.androidx-startup"-->
+<!--            android:exported="false"-->
+<!--            tools:node="merge">-->
 
-            <!-- This entry makes ExampleLoggerInitializer discoverable. -->
-            <meta-data
-                android:name="net.baza.bazanetclientapp.di.ContextInitializer"
-                android:value="androidx.startup" />
+<!--            &lt;!&ndash; This entry makes ExampleLoggerInitializer discoverable. &ndash;&gt;-->
+<!--            <meta-data-->
+<!--                android:name="net.baza.bazanetclientapp.di.ContextInitializer"-->
+<!--                android:value="androidx.startup" />-->
 
-            <!-- <meta-data -->
-            <!-- android:name="com.mmk.kmpnotifier.di.ContextInitializer" -->
-            <!-- android:value="androidx.startup" /> -->
-        </provider>
+<!--            &lt;!&ndash; <meta-data &ndash;&gt;-->
+<!--            &lt;!&ndash; android:name="com.mmk.kmpnotifier.di.ContextInitializer" &ndash;&gt;-->
+<!--            &lt;!&ndash; android:value="androidx.startup" /> &ndash;&gt;-->
+<!--        </provider>-->
 
-        <service
-            android:name="net.baza.bazanetclientapp.firebase.MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+<!--        <service-->
+<!--            android:name=".MyFirebaseMessagingService"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
         <!--  Set custom default icon. This is used when no icon is set for incoming notification messages. -->
 <!--        <meta-data-->
 <!--            android:name="com.google.firebase.messaging.default_notification_icon"-->

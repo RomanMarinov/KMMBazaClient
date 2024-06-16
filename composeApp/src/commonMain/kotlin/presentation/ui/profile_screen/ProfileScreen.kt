@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import co.touchlab.kermit.Logger
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_back
 import kmm.composeapp.generated.resources.ic_profile
@@ -38,6 +39,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import presentation.ui.payment_service_screen.PaymentServiceViewModel
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.SnackBarHostHelper
@@ -49,6 +53,7 @@ fun ProfileScreen(
     navHostController: NavHostController,
     onMoveToAuthActivity: () -> Unit
 ) {
+
     val pullToRefreshState = rememberPullToRefreshState()
     val snackbarHostState = remember { SnackbarHostState() }
     val openBottomSheetPersonalAccountState = remember { mutableStateOf(false) }

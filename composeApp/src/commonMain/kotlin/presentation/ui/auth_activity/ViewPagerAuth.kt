@@ -45,9 +45,15 @@ import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_help_number
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import util.ColorCustomResources
 import util.TextUtils
+
+
+class AuthActivityViewModelProvider : KoinComponent {
+    val authActivityViewModel: AuthActivityViewModel by inject()
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -57,9 +63,12 @@ fun ViewPagerAuth(
     onMoveToMainActivity: () -> Unit,
     onShowSnackBarAuth: (Int) -> Unit,
     onShowSnackBarAuthWiFi: (String) -> Unit,
-    onShowWarning: (Boolean) -> Unit,
-    viewModel: AuthActivityViewModel = koinInject()
+    onShowWarning: (Boolean) -> Unit
 ) {
+
+    val viewModelProvider = AuthActivityViewModelProvider()
+    val viewModel = viewModelProvider.authActivityViewModel
+
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(pageCount = { TabsAuth.entries.size })
     val selectedTabIndex = remember { derivedStateOf { pagerState.currentPage } }

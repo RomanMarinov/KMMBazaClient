@@ -35,22 +35,26 @@ import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.help_title
 import kmm.composeapp.generated.resources.ic_back
 import kmm.composeapp.generated.resources.ic_profile
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import util.ColorCustomResources
 import util.ScreenRoute
+
+class HelpScreenViewModelProvider : KoinComponent {
+    val helpScreenViewModel: HelpScreenViewModel by inject()
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelpScreen(
     bottomNavigationPaddingValue: PaddingValues,
-    navHostController: NavHostController,
-    viewModel: HelpScreenViewModel = koinInject()
+    navHostController: NavHostController
 ) {
+    val viewModelProvider = HelpScreenViewModelProvider()
+    val viewModel = viewModelProvider.helpScreenViewModel
+
     var isRefreshing by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()

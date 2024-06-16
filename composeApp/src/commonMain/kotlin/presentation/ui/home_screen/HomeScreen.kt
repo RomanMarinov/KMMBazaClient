@@ -28,26 +28,36 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+
 import kmm.composeapp.generated.resources.Res
-import kmm.composeapp.generated.resources.ic_plus
 import kmm.composeapp.generated.resources.ic_profile
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.TextUtils
+
+class HomeScreenViewModelProvider : KoinComponent {
+    val homeScreenViewModel: HomeScreenViewModel by inject()
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     bottomNavigationPaddingValue: PaddingValues,
     navHostController: NavHostController,
-    viewModel: HomeScreenViewModel = koinInject(),
+   // viewModel: HomeScreenViewModel = viewModel<HomeScreenViewModel>(),
+    //viewModel: HomeScreenViewModel by inject(),
     onShowIncomingCallActivity: () -> Unit
 ) {
+    val viewModelProvider = HomeScreenViewModelProvider()
+    val viewModel = viewModelProvider.homeScreenViewModel
     val userInfo by viewModel.userInfo.collectAsStateWithLifecycle()
 
     var isRefreshing by remember { mutableStateOf(false) }
@@ -57,12 +67,12 @@ fun HomeScreen(
 //        modifier = Modifier.fillMaxSize(),
 //        color = MaterialTheme.colorScheme.background
 //    ) {
-        Scaffold(
-            modifier = Modifier
-                .fillMaxSize(),
-            topBar = {
-                TopAppBar(
-                    // modifier = Modifier.height(20.dp),
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                // modifier = Modifier.height(20.dp),
 //                    colors = TopAppBarDefaults.smallTopAppBarColors(
 //                        containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
 //                    ),
@@ -73,83 +83,83 @@ fun HomeScreen(
 //                        titleContentColor = Color.Cyan,
 //                        actionIconContentColor = Color.Red
 //                    ),
-                    title = {
-                        Column(
-                            horizontalAlignment = Alignment.Start,
-                            modifier = Modifier.clickable {
-                                onShowIncomingCallActivity()
-                            }) {
-                            var name = ""
-                            userInfo?.data?.profile?.firstName?.let {
-                                name = if (it.isNotEmpty()) {
-                                    ", $it"
-                                } else {
-                                    ""
-                                }
-                            } ?: run {
-                                name = ""
+                title = {
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier.clickable {
+                            onShowIncomingCallActivity()
+                        }) {
+                        var name = ""
+                        userInfo?.data?.profile?.firstName?.let {
+                            name = if (it.isNotEmpty()) {
+                                ", $it"
+                            } else {
+                                ""
                             }
+                        } ?: run {
+                            name = ""
+                        }
 
-                            Text(
-                                text = "Привет$name!",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 24.sp
-                            )
+                        Text(
+                            text = "Привет$name!",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp
+                        )
 
-                            var phone = ""
-                            userInfo?.data?.profile?.phone?.let {
-                                if (it != 0L) {
-                                    phone = TextUtils.getPhoneAsFormattedString(it)
-                                }
+                        var phone = ""
+                        userInfo?.data?.profile?.phone?.let {
+                            if (it != 0L) {
+                                phone = TextUtils.getPhoneAsFormattedString(it)
                             }
-                            Text(text = phone, fontSize = 16.sp)
                         }
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                navHostController.navigate(ScreenRoute.ProfileScreen.route)
-                            }
-                        ) {
-                            Icon(
-                                imageVector = vectorResource(Res.drawable.ic_profile),
-                                contentDescription = "Open profile",
-                                modifier = Modifier
-                                    .size(24.dp)
-                            )
+                        Text(text = phone, fontSize = 16.sp)
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            navHostController.navigate(ScreenRoute.ProfileScreen.route)
                         }
-                    },
-                    modifier = Modifier
-                        .shadow(4.dp)
-                )
-            },
-        ) { homeTopBarPaddingValue ->
+                    ) {
+                        Icon(
+                            imageVector = vectorResource(Res.drawable.ic_profile),
+                            contentDescription = "Open profile",
+                            modifier = Modifier
+                                .size(24.dp)
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .shadow(4.dp)
+            )
+        },
+    ) { homeTopBarPaddingValue ->
 
-            Column(
-                modifier = Modifier.fillMaxSize()
-                    .padding(top = homeTopBarPaddingValue.calculateTopPadding())
-                    .padding(bottom = bottomNavigationPaddingValue.calculateBottomPadding())
-                    //.padding(top = paddingValues.calculateTopPadding())
-                    .background(ColorCustomResources.colorBackgroundMain)
-            ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+                .padding(top = homeTopBarPaddingValue.calculateTopPadding())
+                .padding(bottom = bottomNavigationPaddingValue.calculateBottomPadding())
+                //.padding(top = paddingValues.calculateTopPadding())
+                .background(ColorCustomResources.colorBackgroundMain)
+        ) {
 
 
-                HomeContentWithRefresh(
-                   // items = outDoorsUiState.outdoors,
-                    isRefreshing = isRefreshing,
-                    onRefresh = {
-                        scope.launch {
-                            isRefreshing = true
-                            delay(2000L)
-                            isRefreshing = false
-                        }
-                    },
-                    navHostController = navHostController,
-                   viewModel = viewModel
-                )
-            }
+            HomeContentWithRefresh(
+                // items = outDoorsUiState.outdoors,
+                isRefreshing = isRefreshing,
+                onRefresh = {
+                    scope.launch {
+                        isRefreshing = true
+                        delay(2000L)
+                        isRefreshing = false
+                    }
+                },
+                navHostController = navHostController,
+                viewModel = viewModel
+            )
         }
-   // }
+    }
+    // }
 }
 
 

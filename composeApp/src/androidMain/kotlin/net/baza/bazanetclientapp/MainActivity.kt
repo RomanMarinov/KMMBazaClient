@@ -11,6 +11,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -19,8 +25,11 @@ import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
 //import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
 import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import com.mmk.kmpnotifier.permission.AndroidPermissionUtil
 import com.mmk.kmpnotifier.permission.permissionUtil
+import kmm.composeapp.generated.resources.Res
+import kmm.composeapp.generated.resources.ic_home
 
 
 // навигация лакнера проще
@@ -31,7 +40,7 @@ import com.mmk.kmpnotifier.permission.permissionUtil
 
 class MainActivity : ComponentActivity() {
 
-    private val permissionUtil by permissionUtil()
+    //private val permissionUtil by permissionUtil()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,14 +88,20 @@ class MainActivity : ComponentActivity() {
 //                    showPushNotification = true,
 //                )
 //            )
+            //InitHuinit()
         }
 
-        AndroidPermissionUtil(this)
 
-        permissionUtil.askNotificationPermission {
-            Logger.d("4444 HasNotification Permission: $it")
-           // AppLogger.d("HasNotification Permission: $it")
-        }
+        // потом включить важно загугли
+//        AndroidPermissionUtil(this)
+
+//        permissionUtil.askNotificationPermission {
+//            Logger.d("4444 HasNotification Permission: $it")
+//           // AppLogger.d("HasNotification Permission: $it")
+//        }
+
+
+
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -123,6 +138,31 @@ class MainActivity : ComponentActivity() {
 //    val configuration =
 //        notification.NotifierManagerImpl.getConfiguration() as? NotificationPlatformConfiguration.Android
 //    return configuration?.showPushNotification ?: true
+//}
+
+//@Composable
+//fun InitHuinit() {
+//    val configuration = NotificationPlatformConfiguration.Android(
+//        notificationIconResId = R.drawable.ic_home,
+//        notificationIconColorResId = androidx.compose.ui.graphics.Color.White.toArgb(),
+//        notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
+//            id = "CHANNEL_ID_GENERAL",
+//            name = "General"
+//        )
+//    )
+//    NotifierManager.initialize(configuration = configuration)
+//    var myPushNotificationToken by remember { mutableStateOf("") }
+//    LaunchedEffect(true) {
+//        println("LaunchedEffectApp is called")
+//        NotifierManager.addListener(object : NotifierManager.Listener {
+//            override fun onNewToken(token: String) {
+//                myPushNotificationToken = token
+//                println("onNewToken: $token")
+//            }
+//        })
+//        myPushNotificationToken = NotifierManager.getPushNotifier().getToken() ?: ""
+//        Logger.d("4444 myPushNotificationToken=" + myPushNotificationToken)
+//    }
 //}
 
 

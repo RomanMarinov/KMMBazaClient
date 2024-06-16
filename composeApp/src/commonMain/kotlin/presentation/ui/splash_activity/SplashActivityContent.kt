@@ -13,50 +13,42 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.touchlab.kermit.Logger
-import com.mmk.kmpnotifier.notification.NotifierManager
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.bazanet_logo_svg
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import util.ColorCustomResources
 import util.StartActivity
 
 
-//@Composable
-//fun saveFireBaseTokenTemp(viewModel: SplashViewModel) {
-//    Logger.d("4444 вызван saveFireBaseTokenTemp")
-//    // В этом методе вы можете отправить токен уведомления на сервер.
-//    NotifierManager.addListener(object : NotifierManager.Listener {
-//        override fun onNewToken(token: String) {
-//            Logger.d("4444 FirebaseOnNewToken: $token")
-//
-//            //AppLogger.d("FirebaseOnNewToken: $token")
-//        }
-//    })
-//}
-
+class  SplashViewModelProvider : KoinComponent {
+    val splashViewModel: SplashViewModel by inject()
+}
 
 @Composable
 fun SplashActivityContent(
     onMoveToNextActivity: (StartActivity) -> Unit,
-    viewModel: SplashViewModel = koinInject(),
+//    viewModel: SplashViewModel = view
 ) {
+
+    val viewModel: SplashViewModel = viewModel<SplashViewModel>()
+
+    //
+//    val viewModelProvider = SplashViewModelProvider()
+//    val viewModel = viewModelProvider.splashViewModel
+
     val nextScreen by viewModel.nextScreen.collectAsStateWithLifecycle()
 
 
-
-   // saveFireBaseTokenTemp(viewModel = viewModel)
-
-
-
-
-
-
+    Logger.d("4444 SplashActivityContent loaded")
     LaunchedEffect(nextScreen) {
         nextScreen?.let {
             delay(1000L)
+            Logger.d("4444 nextActivityState delay" )
             onMoveToNextActivity(it)
         }
     }
@@ -81,5 +73,4 @@ fun SplashActivityContent(
     LaunchedEffect(Unit) {
         viewModel.checkAndUpdateToken()
     }
-
 }

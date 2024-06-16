@@ -60,16 +60,16 @@ package net.baza.bazanetclientapp.ui
 
 import android.app.Application
 import co.touchlab.kermit.Logger
-import com.google.firebase.FirebaseApp
 import com.google.firebase.perf.metrics.AddTrace
 import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.notification.PayloadData
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
-import com.mmk.kmpnotifier.permission.AndroidPermissionUtil
+import net.baza.bazanetclientapp.onApplicationStartPlatformSpecific
 import di.commonModule
 import net.baza.bazanetclientapp.R
-import net.baza.bazanetclientapp.di.ContextInitializer
-import net.baza.bazanetclientapp.di.onLibraryInitialized
-import net.baza.bazanetclientapp.notification.NotifierManagerImpl
+//import net.baza.bazanetclientapp.di.ContextInitializer
+//import net.baza.bazanetclientapp.di.onLibraryInitialized
+//import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
@@ -83,78 +83,15 @@ class MainApplication : Application() {
         super.onCreate()
         Logger.d("4444 MainApplication loaded")
 
-       // ContextInitializer().create(this)
-
-        val configuration = NotificationPlatformConfiguration.Android(
-            notificationIconResId = R.drawable.ic_notificationicon,
-            notificationIconColorResId = R.color.colorBazaMainRed,
-            notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
-                id = "CHANNEL_ID",
-                name = "General"
-            ),
-            showPushNotification = true // показывать на переднем плане
-        )
-
-        NotifierManagerImpl.initialize(configuration = configuration)
-//        NotifierManager.initialize(configuration = configuration)
-        Logger.d("4444 MainApplication NotifierManager.initialize")
-
+       //ContextInitializer().create(this)
+        AppInitializer.onApplicationStart()
         AppInitializer.initialize(this)
 
 
 
-//                // В этом методе вы можете отправить токен уведомления на сервер.
-//        NotifierManager.addListener(object : NotifierManager.Listener {
-//            override fun onNewToken(token: String) {
-//                Logger.d("4444 FirebaseOnNewToken: $token")
-//                //AppLogger.d("FirebaseOnNewToken: $token")
-//            }
-//        })
-
-        // Локальное уведомление
-//        val local_notifier = NotifierManager.getLocalNotifier()
-//        val notificationId = local_notifier.notify("Title", "Body")
-//// or you can use below to specify ID yourself
-//        local_notifier.notify(notificationId, "Title", "Body")
-
-//        Прослушивайте изменения токена push-уведомлений
-//        В этом методе вы можете отправить токен уведомления на сервер.
-//        NotifierManager.addListener(object : NotifierManager.Listener {
-//            override fun onNewToken(token: String) {
-//                Logger.d("4444 onNewToken: $token") //Update user token in the server if needed
-//            }
-//        })
-
-////        //Получать сообщения типа уведомления
-//        NotifierManager.addListener(object : NotifierManager.Listener {
-//            override fun onPushNotification(title: String?, body: String?) {
-//                Logger.d("4444 Push Notification notification title: $title")
-//                Logger.d("4444 Push Notification notification body: $body")
-//            }
-//        })
 //
-//
-////
-//        // Получение полезных данных
-//        NotifierManager.addListener(object : NotifierManager.Listener {
-//            override fun onPayloadData(data: PayloadData) {
-//                Logger.d("4444 Push Notification payloadData: $data") //PayloadData is just typeAlias for Map<String,*>.
-//            }
-//        })
-
-//        startKoin {
-//            // помогает отслеживать и понимать, что происходит во время инициализации и работы Koin в вашем Android-приложении
-//            androidLogger()
-//            // используется для доступа к ресурсам приложения, управления жизненным циклом и других операций, которые требуют доступа к контексту Android
-//            androidContext(this@MainApplication)
-//            modules(commonModule())
-//        }
-
-
-
+        //onApplicationStartPlatformSpecific()
     }
-
-
 }
 
 
@@ -166,11 +103,7 @@ object AppInitializer {
         //onKoinStart: KoinApplication.() -> Unit,
         context: MainApplication
     ) {
-//        startKoin {
-//          //  onKoinStart()
-//            modules(appModules)
-//            onApplicationStart()
-//        }
+
 
         startKoin {
             // помогает отслеживать и понимать, что происходит во время инициализации и работы Koin в вашем Android-приложении
@@ -182,18 +115,49 @@ object AppInitializer {
 //                .also {
 //                it.koin.onLibraryInitialized()
 //            }
+
+            AppInitializer.onApplicationStart()
+            //onApplicationStartPlatformSpecific()
         }
     }
 
-//    private fun org.koin.core.KoinApplication.onApplicationStart() {
-//        NotifierManager.addListener(object : NotifierManager.Listener {
-//            override fun onNewToken(token: String) {
-//                Logger.d("4444 FirebaseOnNewToken: $token")
-//// FirebaseOnNewToken: cx2TV1hpSMi3C9JaqBB21k:APA91bFlxh7vHiqcPtt6-zWEQzPjlD1uTWF-F76AU_Rs7ywn6Yp5QgiVAEBxqZCVlVU4xberwNz1-ObBUed0fMCOcjkbZIY_IaLhYJ10enClnJcbr5iJdf_mR2SrnNnTT7Lqq5Rb7EBi
-//            }
-//        })
-//       // GoogleAuthProvider.create(GoogleAuthCredentials(serverId = "400988245981-u6ajdq65cv1utc6b0j7mtnhc5ap54kbd.apps.googleusercontent.com"))
-//    }
+
+    fun onApplicationStart() {
+
+//        val configuration = NotificationPlatformConfiguration.Android(
+//            notificationIconResId = R.drawable.ic_launcher_foreground,
+//            notificationIconColorResId = R.color.colorBazaMainRed,
+//            notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
+//                id = "CHANNEL_ID",
+//                name = "General"
+//            ),
+//            showPushNotification = true // показывать на переднем плане
+//        )
+//
+//        NotifierManager.initialize(configuration)
+
+        onApplicationStartPlatformSpecific()
+        NotifierManager.addListener(object : NotifierManager.Listener {
+            override fun onNewToken(token: String) {
+                println("Push Notification onNewToken: $token")
+            }
+
+            override fun onPushNotification(title: String?, body: String?) {
+                super.onPushNotification(title, body)
+                println("Push Notification notification type message is received: Title: $title and Body: $body")
+            }
+
+            override fun onPayloadData(data: PayloadData) {
+                super.onPayloadData(data)
+                println("Push Notification payloadData: $data")
+            }
+
+            override fun onNotificationClicked(data: PayloadData) {
+                super.onNotificationClicked(data)
+                println("Notification clicked, Notification payloadData: $data")
+            }
+        })
+    }
 }
 
 

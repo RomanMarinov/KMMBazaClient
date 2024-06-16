@@ -18,7 +18,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,13 +26,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.CacheDrawModifierNode
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -47,10 +41,10 @@ import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.domofon_title
 import kmm.composeapp.generated.resources.ic_back
 import kmm.composeapp.generated.resources.ic_profile
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import presentation.ui.domofon_screen.model.UnLockState
 import util.ColorCustomResources
 import util.ScreenRoute
@@ -64,13 +58,18 @@ enum class ShowCameraState {
     ENABLED, DISABLED, DEFAULT
 }
 
+class DomofonScreenViewModelProvider : KoinComponent {
+    val domofonScreenViewModel: DomofonScreenViewModel by inject()
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DomofonScreen(
     bottomNavigationPaddingValue: PaddingValues,
-    navHostController: NavHostController,
-    viewModel: DomofonScreenViewModel = koinInject()
+    navHostController: NavHostController
 ) {
+    val viewModelProvider = DomofonScreenViewModelProvider()
+    val viewModel = viewModelProvider.domofonScreenViewModel
 
     val sputnikUiState by viewModel.domofonUiState.collectAsState()
     val items: List<Sputnik> = sputnikUiState?.domofon?.sputnik ?: emptyList()

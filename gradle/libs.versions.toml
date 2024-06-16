@@ -25,9 +25,16 @@ kermitVersion = "2.0.2" #не повышать
 
 koinAndroid = "3.5.6"
 koinAndroidxCompose = "3.5.6"
-koinCompose = "1.2.0-alpha3"
 koinBom = "3.5.6"
-koinCore = "3.5.6"
+koinComposeMultiplatform = "1.2.0-alpha3"
+
+#koinCompose = "1.2.0-alpha3"
+#koinCore = "3.5.6"
+
+
+
+koinCore = "3.5.6" # не повышать
+koinCompose = "1.2.0-alpha3"
 
 serialization = "1.6.3"
 androidx-lifecycle = "2.8.0-rc03"
@@ -76,7 +83,8 @@ kermit-v203 = { module = "co.touchlab:kermit", version.ref = "kermitVersion" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidxCompose" }
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinCompose" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinComposeMultiplatform" }
+#koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinCompose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }

@@ -54,20 +54,27 @@ import kmm.composeapp.generated.resources.ic_play_history_call
 import kmm.composeapp.generated.resources.ic_profile
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import util.ColorCustomResources
 import util.GetVideoUrl
 import util.ScreenRoute
 import util.SnackBarHostHelper
 import util.navigateToWebViewHelper
 
+class HistoryCallViewModelProvider : KoinComponent {
+    val historyCallScreenViewModel: HistoryCallScreenViewModel by inject()
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryCallScreen(
     bottomNavigationPaddingValue: PaddingValues,
-    navHostController: NavHostController,
-    viewModel: HistoryCallScreenViewModel = koinInject()
+    navHostController: NavHostController
 ) {
+    val viewModelProvider = HistoryCallViewModelProvider()
+    val viewModel = viewModelProvider.historyCallScreenViewModel
+
     val historyCalls by viewModel.historyCalls.collectAsState()
 
     var isRefreshing by remember { mutableStateOf(false) }
@@ -163,8 +170,10 @@ fun HistoryCallScreen(
 fun HistoryCallContentWithRefresh(
     historyCalls: List<HistoryCallAddress>,
     navHostController: NavHostController,
-    viewModel: HistoryCallScreenViewModel = koinInject()
 ) {
+
+    val viewModelProvider = HistoryCallViewModelProvider()
+    val viewModel = viewModelProvider.historyCallScreenViewModel
     val scope = rememberCoroutineScope()
 
     val videoUrl by viewModel.videoUrl.collectAsStateWithLifecycle()

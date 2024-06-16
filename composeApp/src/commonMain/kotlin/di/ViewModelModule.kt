@@ -1,7 +1,10 @@
 package di
 
 //import presentation.ui.map_screen.MapScreenViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.touchlab.kermit.Logger
+import data.auth.local.AppPreferencesRepository
+import domain.repository.UserInfoRepository
 import org.koin.dsl.module
 import presentation.ui.add_address.AddAddressViewModel
 import presentation.ui.attach_photo.AttachPhotoViewModel
@@ -23,7 +26,11 @@ val viewModelModule = module {
     // factory определение, чтобы не хранить какие-либо экземпляры в памяти (избегайте утечек в жизненном цикле Android):
     // Функция get()позволяет попросить Koin разрешить необходимую зависимость.
 
-    factory { HomeScreenViewModel(get(),get()) }
+
+    factory {
+
+        HomeScreenViewModel(get(),get())
+    }
     factory { OutdoorScreenViewModel(get(),get()) }
     factory { DomofonScreenViewModel(get(), get()) }
     factory { MapScreenViewModel(get()) }

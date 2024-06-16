@@ -56,7 +56,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import presentation.ui.add_adress_result.AddAddressResultBottomSheet
 import presentation.ui.add_adress_result.model.ResultSendPhoto
 import presentation.ui.attach_photo.model.Photo
@@ -73,6 +74,10 @@ import util.ProgressBarHelper
 import util.SnackBarHostHelper
 
 
+class AttachPhotoViewModelProvider : KoinComponent {
+    val attachPhotoViewModel: AttachPhotoViewModel by inject()
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AttachPhotoBottomSheet(
@@ -80,9 +85,11 @@ fun AttachPhotoBottomSheet(
     dataAddress: Data?,
     navigationFrom: String,
     onShowCurrentBottomSheet: (Boolean) -> Unit,
-    onShowPreviousBottomSheet: (Boolean) -> Unit,
-    viewModel: AttachPhotoViewModel = koinInject()
+    onShowPreviousBottomSheet: (Boolean) -> Unit
 ) {
+    val viewModelProvider = AttachPhotoViewModelProvider()
+    val viewModel = viewModelProvider.attachPhotoViewModel
+
     val resultSendPhoto by viewModel.resultSendPhoto.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
 

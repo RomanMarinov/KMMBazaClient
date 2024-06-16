@@ -44,8 +44,8 @@ import kmm.composeapp.generated.resources.ic_profile
 import kmm.composeapp.generated.resources.outdoor_title
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
-import presentation.ui.domofon_screen.DomofonContent
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import util.ColorCustomResources
 import util.ScreenRoute
 
@@ -53,17 +53,22 @@ enum class OutdoorContent {
     LIST_GROUP, LIST, LIST_ZERO, DEFAULT
 }
 
+class  OutdoorScreenViewModelProvider : KoinComponent {
+    val outdoorScreenViewModel: OutdoorScreenViewModel by inject()
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OutdoorScreen(
     bottomNavigationPaddingValue: PaddingValues,
-    navHostController: NavHostController,
-    viewModel: OutdoorScreenViewModel = koinInject()
+    navHostController: NavHostController
 ) {
     Logger.d { " 4444 OutdoorScreen opened" }
 
 // анимация топбара при скроле
     // https://www.youtube.com/watch?v=EqCvUETekjk
+    val viewModelProvider = OutdoorScreenViewModelProvider()
+    val viewModel = viewModelProvider.outdoorScreenViewModel
 
     val outDoorsUiState by viewModel.outDoorsUiState.collectAsState()
     val items: List<Dvr> = outDoorsUiState?.outdoors ?: emptyList()

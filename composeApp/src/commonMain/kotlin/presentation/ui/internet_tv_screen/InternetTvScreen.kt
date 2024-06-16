@@ -56,20 +56,24 @@ import kmm.composeapp.generated.resources.internet_tv_title
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import util.ColorCustomResources
 import util.ScreenRoute
+
+class InternetTvScreenViewModelProvider : KoinComponent {
+    val internetTvScreenViewModel: InternetTvScreenViewModel by inject()
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InternetTvScreen(
     bottomNavigationPaddingValue: PaddingValues,
-    navHostController: NavHostController,
-    viewModel: InternetTvScreenViewModel = koinInject()
-    //viewModel: OutdoorScreenViewModel = koinViewModel()
-    // viewModel: OutdoorScreenViewModel =
-
+    navHostController: NavHostController
 ) {
+
+    val viewModelProvider = InternetTvScreenViewModelProvider()
+    val viewModel = viewModelProvider.internetTvScreenViewModel
    // val outDoorsUiState by viewModel.outDoorsUiState.collectAsState()
     val locationsInternetTv by viewModel.locationsTitle.collectAsStateWithLifecycle()
     var isRefreshing by remember { mutableStateOf(false) }
