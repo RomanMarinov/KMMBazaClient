@@ -71,6 +71,7 @@ import kmm.composeapp.generated.resources.ic_close
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import presentation.ui.attach_photo.AttachPhotoBottomSheet
@@ -211,11 +212,12 @@ fun TopTitle(
 @Composable
 fun AutoComplete(
     fromScreen: String,
-    onShowCurrentBottomSheet: (Boolean) -> Unit
+    onShowCurrentBottomSheet: (Boolean) -> Unit,
+    viewModel: AddAddressViewModel = koinInject()
 ) {
 //    val viewModelProvider = AddAddressViewModelProvider()
 //    val viewModel = viewModelProvider.addAddressViewModel
-    val viewModel = koinViewModel<AddAddressViewModel>()
+   // val viewModel = koinViewModel<AddAddressViewModel>()
     val addresses by viewModel.addresses.collectAsStateWithLifecycle()
     val errorNetwork by viewModel.errorNetwork.collectAsStateWithLifecycle()
     val addAddressResponse by viewModel.addAddressResponse.collectAsStateWithLifecycle()

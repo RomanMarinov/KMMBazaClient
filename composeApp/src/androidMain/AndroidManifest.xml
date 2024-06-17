@@ -105,7 +105,13 @@
 <!--        <meta-data-->
 <!--            android:name="com.google.firebase.messaging.default_notification_color"-->
 <!--            android:resource="@color/colorBazaMainRed" />-->
-
+<!--        <service-->
+<!--            android:name="net.baza.service.MyFirebaseMessagingService"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
         <provider
             android:name=".ComposeFileProvider"
             android:authorities="${applicationId}.provider"

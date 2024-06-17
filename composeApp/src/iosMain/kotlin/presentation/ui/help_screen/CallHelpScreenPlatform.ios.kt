@@ -1,6 +1,7 @@
 package presentation.ui.help_screen
 
 import androidx.compose.runtime.Composable
+import com.mmk.kmpnotifier.notification.NotifierManager
 import platform.Foundation.NSURL
 import platform.UIKit.UIApplication
 

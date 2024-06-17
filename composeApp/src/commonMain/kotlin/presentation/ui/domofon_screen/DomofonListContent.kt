@@ -43,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -198,6 +199,8 @@ fun PresentationContent() {
             )
         }
 
+
+        //////////////////////////////////
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -248,7 +251,7 @@ fun PresentationContent() {
                 }
             }
         }
-
+///////////////////////////////////////////////
         if (isShowBottomSheet.value) {
             AddAddressBottomSheet(
                 fromScreen = ScreenRoute.DomofonScreen.route,
@@ -280,70 +283,63 @@ fun ContentLazyListItemTop(
         //horizontalArrangement = Arrangement.SpaceBetween
     ) {
         // history call
-        Row(
-            modifier = Modifier
-               // .weight(1f)
-                .weight(1f)
-
-                .padding(end = 16.dp)
-            ,
-            //.fillMaxWidth()
-
-            //.weight(1f),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Box(
-                modifier = Modifier,
-                //.fillMaxWidth(),
-                contentAlignment = Alignment.CenterStart,
-            ) {
-                Card(
-                    modifier = Modifier
-                        //.fillMaxWidth()
-                        .height(40.dp),
-                    shape = RoundedCornerShape(100.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                ) {
-                    Row(
-                        modifier = Modifier
-                           // .fillMaxWidth()
-                            .fillMaxHeight()
-                            .clickable {
-                                navHostController.navigate(ScreenRoute.HistoryCallScreen.route)
-                            }
-
-                            .padding(start = 8.dp)
-                        ,
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start
-
-
-
-
-
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(24.dp),
-                            imageVector = vectorResource(Res.drawable.ic_call),
-                            contentDescription = null,
-                            tint = ColorCustomResources.colorBazaMainBlue
-                        )
-                        Text(
-                            modifier = Modifier
-                                //.fillMaxWidth()
-                            //    .padding(top = 8.dp)
-                                .padding(start = 8.dp, end = 16.dp)
-                            ,
-                            text = "История",
-                            color = ColorCustomResources.colorBazaMainBlue
-                        )
-                    }
-                }
-            }
-        }
+//        Row(
+//            modifier = Modifier
+//               // .weight(1f)
+//                .weight(1f)
+//
+//                .padding(end = 16.dp)
+//            ,
+//            //.fillMaxWidth()
+//
+//            //.weight(1f),
+//            verticalAlignment = Alignment.CenterVertically,
+//            horizontalArrangement = Arrangement.Start
+//        ) {
+//            Box(
+//                modifier = Modifier,
+//                //.fillMaxWidth(),
+//                contentAlignment = Alignment.CenterStart,
+//            ) {
+//                Card(
+//                    modifier = Modifier
+//                        //.fillMaxWidth()
+//                        .height(40.dp),
+//                    shape = RoundedCornerShape(100.dp),
+//                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+//                    colors = CardDefaults.cardColors(containerColor = Color.White),
+//                ) {
+//                    Row(
+//                        modifier = Modifier
+//                           // .fillMaxWidth()
+//                            .fillMaxHeight()
+//                            .clickable {
+//                                navHostController.navigate(ScreenRoute.HistoryCallScreen.route)
+//                            }
+//                            .padding(start = 8.dp),
+//                        verticalAlignment = Alignment.CenterVertically,
+//                        horizontalArrangement = Arrangement.Start
+//                    ) {
+//                        Icon(
+//                            modifier = Modifier
+//                                .size(24.dp),
+//                            imageVector = vectorResource(Res.drawable.ic_call),
+//                            contentDescription = null,
+//                            tint = ColorCustomResources.colorBazaMainBlue
+//                        )
+//                        Text(
+//                            modifier = Modifier
+//                                //.fillMaxWidth()
+//                            //    .padding(top = 8.dp)
+//                                .padding(start = 8.dp, end = 16.dp)
+//                            ,
+//                            text = "История",
+//                            color = ColorCustomResources.colorBazaMainBlue
+//                        )
+//                    }
+//                }
+//            }
+//        }
 
 
 
@@ -426,7 +422,7 @@ fun ContentLazyListItem(
     var switchCheckedState by remember { mutableStateOf(false) }
     val volumeState = remember { mutableStateOf(true) }
 
-
+    Logger.d("4444 sputnik.title=" + sputnik.title)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -435,77 +431,143 @@ fun ContentLazyListItem(
     ) {
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            // horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier
+                .fillMaxWidth()
+               // .padding(top = 16.dp, bottom = 16.dp)
+            ,
+            //.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+            //horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 16.dp),
-                //.fillMaxWidth()
-                verticalAlignment = Alignment.CenterVertically,
-                // horizontalArrangement = Arrangement.Start
-            ) {
-                Text(
-                    modifier = Modifier,
-                    text = sputnik.title,
-                    fontWeight = FontWeight.Bold
-                )
+            // history call
+
+            if (sputnik.fullControl) {
+                Row(
+                    modifier = Modifier
+                        // .weight(1f)
+                        .weight(1f)
+
+                        .padding(end = 16.dp)
+                    ,
+                    //.fillMaxWidth()
+
+                    //.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Box(
+                        modifier = Modifier,
+                        //.fillMaxWidth(),
+                        contentAlignment = Alignment.CenterStart,
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                //.fillMaxWidth()
+                                .height(40.dp),
+                            shape = RoundedCornerShape(100.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    // .fillMaxWidth()
+                                    .fillMaxHeight()
+                                    .clickable {
+                                        navHostController.navigate(ScreenRoute.HistoryCallScreen.route)
+                                    }
+                                    .padding(start = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Icon(
+                                    modifier = Modifier
+                                        .size(24.dp),
+                                    imageVector = vectorResource(Res.drawable.ic_call),
+                                    contentDescription = null,
+                                    tint = ColorCustomResources.colorBazaMainBlue
+                                )
+                                Text(
+                                    modifier = Modifier
+                                        //.fillMaxWidth()
+                                        //    .padding(top = 8.dp)
+                                        .padding(start = 8.dp, end = 16.dp)
+                                    ,
+                                    text = "История",
+                                    color = ColorCustomResources.colorBazaMainBlue
+                                )
+                            }
+                        }
+                    }
+                }
             }
 
-//            Row(
-//                modifier = Modifier.padding(bottom = 4.dp),
-//                //.fillMaxWidth()
-//                //.weight(1f),
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.End
-//            ) {
-//                Box(
-//                    modifier = Modifier,
-//                    //.fillMaxWidth(),
-//                    contentAlignment = Alignment.CenterEnd,
-//                ) {
-//                    Card(
-//                        modifier = Modifier
-//                            //.fillMaxWidth()
-//                            .heightIn(40.dp),
-//                        shape = RoundedCornerShape(10.dp),
-//                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-//                        colors = CardDefaults.cardColors(containerColor = Color.White),
-//                    ) {
-//                        Column(
-//                            modifier = Modifier
-//                                //.fillMaxWidth()
-//                                .clickable {
-//
-//                                }
-//                                .fillMaxHeight()
-//                                .padding(8.dp),
-//                            verticalArrangement = Arrangement.Center,
-//                            horizontalAlignment = Alignment.CenterHorizontally,
-////                            verticalAlignment = Alignment.CenterVertically,
-////                            horizontalArrangement = Arrangement.End
-//                        ) {
-//                            Icon(
-//                                modifier = Modifier
-//                                    .size(24.dp),
-//                                imageVector = vectorResource(Res.drawable.ic_plus_square),
-//                                contentDescription = null,
-//                                tint = ColorCustomResources.colorBazaMainBlue
-//                            )
-//                            Text(
-//                                modifier = Modifier
-//                                //.fillMaxWidth()
-//                                //    .padding(start = 8.dp, end = 8.dp)
-//                                ,
-//                                text = stringResource(Res.string.outdoor_create_shortcut),
-//                                color = ColorCustomResources.colorBazaMainBlue
-//                            )
-//                        }
-//                    }
-//                }
-//            }
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Box(
+                    modifier = Modifier,
+                    //.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd,
+                ) {
+
+                    Card(
+                        modifier = Modifier
+                            //.fillMaxWidth()
+                            // .align(Alignment.BottomStart)
+                            .heightIn(40.dp),
+                        shape = RoundedCornerShape(20.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                        colors = CardDefaults.cardColors(containerColor = (Color.White)),
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                //.fillMaxWidth()
+                                .clickable {
+
+                                }
+                                .fillMaxHeight()
+                                .padding(8.dp),
+//                        verticalArrangement = Arrangement.Center,
+//                        horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            Icon(
+                                modifier = Modifier.padding(end = 8.dp)
+                                    .size(24.dp),
+                                imageVector = vectorResource(Res.drawable.ic_plus_square),
+                                contentDescription = null,
+                                tint = ColorCustomResources.colorBazaMainBlue,
+                            )
+                            Text(
+                                modifier = Modifier.padding(end = 8.dp),
+                                text = stringResource(Res.string.outdoor_create_shortcut),
+                                color = ColorCustomResources.colorBazaMainBlue,
+                            )
+                        }
+                    }
+
+                }
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                //.weight(1f)
+                .padding(top = 16.dp, bottom = 16.dp),
+            //.fillMaxWidth()
+            verticalAlignment = Alignment.CenterVertically,
+            // horizontalArrangement = Arrangement.Start
+        ) {
+            Text(
+                modifier = Modifier,
+                text = sputnik.title,
+                fontWeight = FontWeight.Bold
+            )
         }
 
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -597,105 +659,96 @@ fun ContentLazyListItem(
                     }
                 }
 
-
-                if (sputnik.fullControl) {
-                    if (volumeState.value) {
-                        Icon(
-                            vectorResource(Res.drawable.ic_camera_on),
-                            contentDescription = "volume",
-                            tint = Color.White,
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .clickable {
-
-                                }
-                                .clip(RoundedCornerShape(10.dp))
-                                .size(50.dp)
-                                .background((Color.White).copy(0.5f))
-                                .clickable {
-                                    volumeState.value = false
-                                    onShowEnableCamera(ShowCameraState.DISABLED)
-                                }
-                        )
-
-
-                    } else {
-                        Icon(
-                            vectorResource(Res.drawable.ic_camera_off),
-                            contentDescription = "volume",
-                            tint = Color.White,
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .clip(RoundedCornerShape(10.dp))
-                                .size(50.dp)
-                                .background((Color.White).copy(0.5f))
-                                .clickable {
-                                    volumeState.value = true
-                                    onShowEnableCamera(ShowCameraState.ENABLED)
-                                }
-                        )
-                    }
-                }
-
-
-
-
-                Card(
-                    modifier = Modifier
-                        //.fillMaxWidth()
-                        .align(Alignment.BottomStart)
-                        .heightIn(40.dp),
-                    shape = RoundedCornerShape(10.dp),
-                   // elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    colors = CardDefaults.cardColors(containerColor = (Color.White).copy(0.6f)),
-                ) {
-                    Row(
-                        modifier = Modifier
-                            //.fillMaxWidth()
-                            .clickable {
-
-                            }
-                            .fillMaxHeight()
-                            .padding(8.dp),
-//                        verticalArrangement = Arrangement.Center,
-//                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Icon(
-                            modifier = Modifier.padding(end = 8.dp)
-                                .size(24.dp),
-                            imageVector = vectorResource(Res.drawable.ic_plus_square),
-                            contentDescription = null,
-                            tint = Color.White
-                        )
-                        TextWithShadow(
-                            text = stringResource(Res.string.outdoor_create_shortcut),
-                            modifier = Modifier)
-                    }
-                }
-
-
-
-
-
-
-
-
-
+//
+//                if (sputnik.fullControl) {
+//                    if (volumeState.value) {
+//                        Icon(
+//                            vectorResource(Res.drawable.ic_camera_on),
+//                            contentDescription = "volume",
+//                            tint = Color.White,
+//                            modifier = Modifier
+//                                .align(Alignment.TopEnd)
+//                                .clickable {
+//
+//                                }
+//                                .clip(RoundedCornerShape(10.dp))
+//                                .size(50.dp)
+//                                .background((Color.White).copy(0.5f))
+//                                .clickable {
+//                                    volumeState.value = false
+//                                    onShowEnableCamera(ShowCameraState.DISABLED)
+//                                }
+//                        )
+//
+//
+//                    } else {
+//                        Icon(
+//                            vectorResource(Res.drawable.ic_camera_off),
+//                            contentDescription = "volume",
+//                            tint = Color.White,
+//                            modifier = Modifier
+//                                .align(Alignment.TopEnd)
+//                                .clip(RoundedCornerShape(10.dp))
+//                                .size(50.dp)
+//                                .background((Color.White).copy(0.5f))
+//                                .clickable {
+//                                    volumeState.value = true
+//                                    onShowEnableCamera(ShowCameraState.ENABLED)
+//                                }
+//                        )
+//                    }
+//                }
 
             }
 
 
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val titleSwitch = if (switchCheckedState) {
-                    ""
-                } else {
-                    ""
+            if (sputnik.fullControl) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                    ,
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+
+                    Text(
+                        modifier = Modifier.padding(end = 16.dp),
+                        text = "Получать звонки"
+                    )
+
+                    Switch(
+                        modifier = Modifier,
+                        //    .padding(start = 16.dp)
+
+                        checked = switchCheckedState,
+                        onCheckedChange = { switchCheckedState = it },
+//                    thumbContent = {
+//                        Icon(
+//                            imageVector = if (switchCheckedState) vectorResource(Res.drawable.ic_camera_on) else vectorResource(Res.drawable.ic_camera_off),
+//                            contentDescription = null,
+////                            modifier = Modifier.size(SwitchDefaults.IconSize)
+//                            modifier = Modifier.size(50.dp, 50.dp)
+//                            )
+//                    },
+                        colors = SwitchDefaults.colors(
+//                    checkedThumbColor = Color.Green,
+//                    checkedIconColor = Color.DarkGray,
+//                    uncheckedThumbColor = Color.Red,
+//                    uncheckedIconColor = Color.LightGray,
+//                    disabledCheckedThumbColor = Color.Green,
+//                    disabledUncheckedThumbColor = Color.Red,
+
+                            checkedTrackColor = Color.White,
+                            checkedThumbColor = ColorCustomResources.colorBazaMainBlue,
+                            checkedIconColor = Color.White,
+                            checkedBorderColor = ColorCustomResources.colorBazaMainBlue,
+
+                            uncheckedThumbColor = Color.Gray,
+                            uncheckedBorderColor = Color.LightGray,
+                            uncheckedTrackColor = Color.White
+                        )
+                    )
                 }
             }
         }

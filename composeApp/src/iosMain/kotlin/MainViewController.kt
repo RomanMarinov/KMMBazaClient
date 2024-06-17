@@ -105,15 +105,35 @@ fun MainViewController() = ComposeUIViewController {
     //var myPushNotificationToken by remember { mutableStateOf("") }
     LaunchedEffect(true) {
         println("LaunchedEffectApp is called")
-        NotifierManager.addListener(object : NotifierManager.Listener {
-            override fun onNewToken(token: String) {
-               // myPushNotificationToken = token
-                println("onNewToken: $token")
-            }
-        })
+
        // myPushNotificationToken = NotifierManager.getPushNotifier().getToken() ?: ""
       //  Logger.d("4444 myPushNotificationToken=" + myPushNotificationToken)
+        NotifierManager.addListener(object : NotifierManager.Listener {
+            override fun onNewToken(token: String) {
+                Logger.d("4444 Push Notification ios onNewToken: $token")
+            }
+
+            override fun onPushNotification(title: String?, body: String?) {
+                super.onPushNotification(title, body)
+                Logger.d("4444 Push Notification  ios type message is received: Title: $title and Body: $body")
+            }
+
+            override fun onPayloadData(data: PayloadData) {
+                super.onPayloadData(data)
+                Logger.d("4444 Push Notification ios payloadData: $data")
+            }
+
+            override fun onNotificationClicked(data: PayloadData) {
+                super.onNotificationClicked(data)
+                Logger.d("4444 Notification clicked, ios  Notification payloadData: $data")
+            }
+        })
     }
+
+
+
+
+
 }
 
 @Throws(Exception::class)

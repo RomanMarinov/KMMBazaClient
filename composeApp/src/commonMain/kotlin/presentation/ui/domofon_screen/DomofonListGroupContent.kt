@@ -255,6 +255,7 @@ fun GroupContentItem(
                     Text(
                         modifier = Modifier,
                         text = sputnikControl.title,
+                        fontWeight = FontWeight.Bold
                     )
                 }
 
@@ -496,10 +497,10 @@ private fun getTitle(size: Int): String {
         title = "Доступна $size камера"
     }
     if (size in 2..4) {
-        title = "Еще доступно $size камеры"
+        title = "Доступно $size камеры"
     }
     if (size >= 5) {
-        title = "Еще доступно $size камер"
+        title = "Доступно $size камер"
     }
     return title
 }

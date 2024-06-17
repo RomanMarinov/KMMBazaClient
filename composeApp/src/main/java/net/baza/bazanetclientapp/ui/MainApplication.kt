@@ -67,6 +67,7 @@ import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfig
 import net.baza.bazanetclientapp.onApplicationStartPlatformSpecific
 import di.commonModule
 import net.baza.bazanetclientapp.R
+import net.baza.bazanetclientapp.notificationPlatform
 import net.baza.bazanetclientapp.ui.AppInitializer.onApplicationStart
 //import net.baza.bazanetclientapp.di.ContextInitializer
 //import net.baza.bazanetclientapp.di.onLibraryInitialized
@@ -163,25 +164,27 @@ object AppInitializer {
 //        NotifierManager.initialize(configuration)
 
         onApplicationStartPlatformSpecific()
-        NotifierManager.addListener(object : NotifierManager.Listener {
-            override fun onNewToken(token: String) {
-                Logger.d("4444 Push Notification android onNewToken: $token")
-            }
+        notificationPlatform()
 
-            override fun onPushNotification(title: String?, body: String?) {
-                super.onPushNotification(title, body)
-                Logger.d("4444 Push Notification  android type message is received: Title: $title and Body: $body")
-            }
-
-            override fun onPayloadData(data: PayloadData) {
-                super.onPayloadData(data)
-                Logger.d("4444 Push Notification android payloadData: $data")
-            }
-
-            override fun onNotificationClicked(data: PayloadData) {
-                super.onNotificationClicked(data)
-                Logger.d("4444 Notification clicked, android  Notification payloadData: $data")
-            }
-        })
+//        NotifierManager.addListener(object : NotifierManager.Listener {
+//            override fun onNewToken(token: String) {
+//                Logger.d("4444 Push Notification android onNewToken: $token")
+//            }
+//
+//            override fun onPushNotification(title: String?, body: String?) {
+//                super.onPushNotification(title, body)
+//                Logger.d("4444 Push Notification  android type message is received: Title: $title and Body: $body")
+//            }
+//
+//            override fun onPayloadData(data: PayloadData) {
+//                super.onPayloadData(data)
+//                Logger.d("4444 Push Notification android payloadData: $data")
+//            }
+//
+//            override fun onNotificationClicked(data: PayloadData) {
+//                super.onNotificationClicked(data)
+//                Logger.d("4444 Notification clicked, android  Notification payloadData: $data")
+//            }
+//        })
     }
 }
