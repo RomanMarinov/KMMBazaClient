@@ -28,6 +28,8 @@ class UserInfoRepositoryImpl(private val httpClient: HttpClient) : UserInfoRepos
     override suspend fun sendSelfPush(body: FirebaseRequestBodyTEST) {
         val firebaseRequestBodyDTO = body.mapToData()
         try {
+
+            Logger.d("4444 sendSelfPush body=" + firebaseRequestBodyDTO)
             val response = httpClient.post("user/firebase_v1") {
                 contentType(ContentType.Application.Json)
                 setBody(body = firebaseRequestBodyDTO)

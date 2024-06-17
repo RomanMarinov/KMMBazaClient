@@ -9,46 +9,50 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.CreationExtras.Empty.get
 import co.touchlab.kermit.Logger
+import com.mmk.kmpnotifier.notification.NotifierManager
+import di.koinViewModel
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.bazanet_logo_svg
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.vectorResource
+//import org.koin.compose.koinInject
+
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.history_call.HistoryCallScreenViewModel
 import util.ColorCustomResources
 import util.StartActivity
 
 
-class  SplashViewModelProvider : KoinComponent {
-    val splashViewModel: SplashViewModel by inject()
-}
+//class SplashViewModelProvider : KoinComponent {
+//    val splashViewModel: SplashViewModel by inject()
+//}
+
+
 
 @Composable
 fun SplashActivityContent(
     onMoveToNextActivity: (StartActivity) -> Unit,
-//    viewModel: SplashViewModel = view
+    //viewModel: SplashViewModel = koinViewModel(),
 ) {
 
-    val viewModel: SplashViewModel = viewModel<SplashViewModel>()
-
-    //
-//    val viewModelProvider = SplashViewModelProvider()
-//    val viewModel = viewModelProvider.splashViewModel
-
+    val viewModel = koinViewModel<SplashViewModel>()
     val nextScreen by viewModel.nextScreen.collectAsStateWithLifecycle()
 
+   // saveFireBaseTokenTemp(viewModel = viewModel)
 
-    Logger.d("4444 SplashActivityContent loaded")
     LaunchedEffect(nextScreen) {
         nextScreen?.let {
             delay(1000L)
-            Logger.d("4444 nextActivityState delay" )
             onMoveToNextActivity(it)
         }
     }
@@ -73,4 +77,5 @@ fun SplashActivityContent(
     LaunchedEffect(Unit) {
         viewModel.checkAndUpdateToken()
     }
+
 }

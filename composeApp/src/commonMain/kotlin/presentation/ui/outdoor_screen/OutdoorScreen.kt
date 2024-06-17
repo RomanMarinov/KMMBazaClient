@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import co.touchlab.kermit.Logger
+import di.koinViewModel
 import domain.model.user_info.Dvr
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_back
@@ -46,6 +47,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.map_screen.MapScreenViewModel
 import util.ColorCustomResources
 import util.ScreenRoute
 
@@ -53,9 +55,9 @@ enum class OutdoorContent {
     LIST_GROUP, LIST, LIST_ZERO, DEFAULT
 }
 
-class  OutdoorScreenViewModelProvider : KoinComponent {
-    val outdoorScreenViewModel: OutdoorScreenViewModel by inject()
-}
+//class  OutdoorScreenViewModelProvider : KoinComponent {
+//    val outdoorScreenViewModel: OutdoorScreenViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,9 +69,9 @@ fun OutdoorScreen(
 
 // анимация топбара при скроле
     // https://www.youtube.com/watch?v=EqCvUETekjk
-    val viewModelProvider = OutdoorScreenViewModelProvider()
-    val viewModel = viewModelProvider.outdoorScreenViewModel
-
+//    val viewModelProvider = OutdoorScreenViewModelProvider()
+//    val viewModel = viewModelProvider.outdoorScreenViewModel
+    val viewModel = koinViewModel<OutdoorScreenViewModel>()
     val outDoorsUiState by viewModel.outDoorsUiState.collectAsState()
     val items: List<Dvr> = outDoorsUiState?.outdoors ?: emptyList()
     val isLoading by viewModel.isLoading.collectAsState()

@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kermit.Logger
+import di.koinViewModel
 import domain.add_address.AddAddressResponse
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_close
@@ -76,6 +77,7 @@ import presentation.ui.attach_photo.AttachPhotoBottomSheet
 import presentation.ui.domofon_screen.model.CheckData
 import presentation.ui.domofon_screen.model.ScreenBottomSheet
 import presentation.ui.request_address.RequestAddressBottomSheet
+import presentation.ui.splash_activity.SplashViewModel
 import util.ColorCustomResources
 import util.ProgressBarHelper
 import util.ScreenRoute
@@ -201,9 +203,9 @@ fun TopTitle(
     }
 }
 
-class AddAddressViewModelProvider : KoinComponent {
-    val addAddressViewModel: AddAddressViewModel by inject()
-}
+//class AddAddressViewModelProvider : KoinComponent {
+//    val addAddressViewModel: AddAddressViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -211,9 +213,9 @@ fun AutoComplete(
     fromScreen: String,
     onShowCurrentBottomSheet: (Boolean) -> Unit
 ) {
-    val viewModelProvider = AddAddressViewModelProvider()
-    val viewModel = viewModelProvider.addAddressViewModel
-
+//    val viewModelProvider = AddAddressViewModelProvider()
+//    val viewModel = viewModelProvider.addAddressViewModel
+    val viewModel = koinViewModel<AddAddressViewModel>()
     val addresses by viewModel.addresses.collectAsStateWithLifecycle()
     val errorNetwork by viewModel.errorNetwork.collectAsStateWithLifecycle()
     val addAddressResponse by viewModel.addAddressResponse.collectAsStateWithLifecycle()

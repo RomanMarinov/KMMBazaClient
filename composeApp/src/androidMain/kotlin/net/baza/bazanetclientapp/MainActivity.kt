@@ -40,7 +40,7 @@ import kmm.composeapp.generated.resources.ic_home
 
 class MainActivity : ComponentActivity() {
 
-    //private val permissionUtil by permissionUtil()
+    private val permissionUtil by permissionUtil()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +62,8 @@ class MainActivity : ComponentActivity() {
             // StatusBar (строка состояния) или NavigationBar (панель навигации) в Android.
             // сначала работало потом изменений не заметил
             WindowCompat.setDecorFitsSystemWindows(window, false)
+
+
 
             App(
                 onMoveToAuthActivity = {
@@ -91,17 +93,15 @@ class MainActivity : ComponentActivity() {
             //InitHuinit()
         }
 
+       //  потом включить важно загугли
+        //AndroidPermissionUtil(this)
 
-        // потом включить важно загугли
-//        AndroidPermissionUtil(this)
+        permissionUtil.askNotificationPermission {
+            Logger.d("4444 HasNotification Permission: $it")
+           // AppLogger.d("HasNotification Permission: $it")
+        }
 
-//        permissionUtil.askNotificationPermission {
-//            Logger.d("4444 HasNotification Permission: $it")
-//           // AppLogger.d("HasNotification Permission: $it")
-//        }
-
-
-
+        permissionUtil.askNotificationPermission()
     }
 
     override fun onNewIntent(intent: Intent) {

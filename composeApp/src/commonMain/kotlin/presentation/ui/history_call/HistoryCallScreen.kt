@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import co.touchlab.kermit.Logger
+import di.koinViewModel
 import domain.model.history_call.HistoryCallAddress
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.history_call_title
@@ -56,15 +57,16 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.help_screen.HelpScreenViewModel
 import util.ColorCustomResources
 import util.GetVideoUrl
 import util.ScreenRoute
 import util.SnackBarHostHelper
 import util.navigateToWebViewHelper
 
-class HistoryCallViewModelProvider : KoinComponent {
-    val historyCallScreenViewModel: HistoryCallScreenViewModel by inject()
-}
+//class HistoryCallViewModelProvider : KoinComponent {
+//    val historyCallScreenViewModel: HistoryCallScreenViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,9 +74,9 @@ fun HistoryCallScreen(
     bottomNavigationPaddingValue: PaddingValues,
     navHostController: NavHostController
 ) {
-    val viewModelProvider = HistoryCallViewModelProvider()
-    val viewModel = viewModelProvider.historyCallScreenViewModel
-
+//    val viewModelProvider = HistoryCallViewModelProvider()
+//    val viewModel = viewModelProvider.historyCallScreenViewModel
+    val viewModel = koinViewModel<HistoryCallScreenViewModel>()
     val historyCalls by viewModel.historyCalls.collectAsState()
 
     var isRefreshing by remember { mutableStateOf(false) }
@@ -159,7 +161,8 @@ fun HistoryCallScreen(
 //                            isRefreshing = false
 //                        }
 //                    },
-                navHostController = navHostController
+                navHostController = navHostController,
+                viewModel = viewModel
             )
         }
     }
@@ -170,11 +173,12 @@ fun HistoryCallScreen(
 fun HistoryCallContentWithRefresh(
     historyCalls: List<HistoryCallAddress>,
     navHostController: NavHostController,
+    viewModel: HistoryCallScreenViewModel
 ) {
 
-    val viewModelProvider = HistoryCallViewModelProvider()
-    val viewModel = viewModelProvider.historyCallScreenViewModel
-    val scope = rememberCoroutineScope()
+//    val viewModelProvider = HistoryCallViewModelProvider()
+//    val viewModel = viewModelProvider.historyCallScreenViewModel
+//    val scope = rememberCoroutineScope()
 
     val videoUrl by viewModel.videoUrl.collectAsStateWithLifecycle()
     val isTransitionWebViewScreen = remember { mutableStateOf(false) }

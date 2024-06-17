@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
+import di.koinViewModel
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_back
 import kmm.composeapp.generated.resources.ic_profile
@@ -35,6 +36,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.internet_tv_screen.InternetTvScreenViewModel
 import presentation.ui.map_screen.map_screen_bottom_sheet.BottomSheetCityCam
 import presentation.ui.map_screen.map_screen_bottom_sheet.BottomSheetDomofonCam
 import presentation.ui.map_screen.map_screen_bottom_sheet.BottomSheetOffice
@@ -43,9 +45,9 @@ import presentation.ui.map_screen.model.MarkerDetail
 import util.ScreenRoute
 import util.Strings
 
-class MapScreenViewModelProvider : KoinComponent {
-    val mapScreenViewModel: MapScreenViewModel by inject()
-}
+//class MapScreenViewModelProvider : KoinComponent {
+//    val mapScreenViewModel: MapScreenViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
@@ -53,8 +55,9 @@ fun MapScreen(
     bottomNavigationPaddingValue: PaddingValues,
     navHostController: NavHostController
 ) {
-    val viewModelProvider = MapScreenViewModelProvider()
-    val viewModel = viewModelProvider.mapScreenViewModel
+//    val viewModelProvider = MapScreenViewModelProvider()
+//    val viewModel = viewModelProvider.mapScreenViewModel
+    val viewModel = koinViewModel<MapScreenViewModel>()
     // анимация топбара при скроле
     // https://www.youtube.com/watch?v=EqCvUETekjk
 

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
+import di.koinViewModel
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.help_title
 import kmm.composeapp.generated.resources.ic_back
@@ -39,12 +40,13 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.domofon_screen.DomofonScreenViewModel
 import util.ColorCustomResources
 import util.ScreenRoute
 
-class HelpScreenViewModelProvider : KoinComponent {
-    val helpScreenViewModel: HelpScreenViewModel by inject()
-}
+//class HelpScreenViewModelProvider : KoinComponent {
+//    val helpScreenViewModel: HelpScreenViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,9 +54,9 @@ fun HelpScreen(
     bottomNavigationPaddingValue: PaddingValues,
     navHostController: NavHostController
 ) {
-    val viewModelProvider = HelpScreenViewModelProvider()
-    val viewModel = viewModelProvider.helpScreenViewModel
-
+//    val viewModelProvider = HelpScreenViewModelProvider()
+//    val viewModel = viewModelProvider.helpScreenViewModel
+    val viewModel = koinViewModel<HelpScreenViewModel>()
     var isRefreshing by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()

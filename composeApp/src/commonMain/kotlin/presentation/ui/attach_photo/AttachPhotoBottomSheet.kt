@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import di.koinViewModel
 import domain.add_address.Data
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.attach_content
@@ -58,6 +59,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.add_address.AddAddressViewModel
 import presentation.ui.add_adress_result.AddAddressResultBottomSheet
 import presentation.ui.add_adress_result.model.ResultSendPhoto
 import presentation.ui.attach_photo.model.Photo
@@ -74,9 +76,9 @@ import util.ProgressBarHelper
 import util.SnackBarHostHelper
 
 
-class AttachPhotoViewModelProvider : KoinComponent {
-    val attachPhotoViewModel: AttachPhotoViewModel by inject()
-}
+//class AttachPhotoViewModelProvider : KoinComponent {
+//    val attachPhotoViewModel: AttachPhotoViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,9 +89,10 @@ fun AttachPhotoBottomSheet(
     onShowCurrentBottomSheet: (Boolean) -> Unit,
     onShowPreviousBottomSheet: (Boolean) -> Unit
 ) {
-    val viewModelProvider = AttachPhotoViewModelProvider()
-    val viewModel = viewModelProvider.attachPhotoViewModel
+//    val viewModelProvider = AttachPhotoViewModelProvider()
+//    val viewModel = viewModelProvider.attachPhotoViewModel
 
+    val viewModel = koinViewModel<AttachPhotoViewModel>()
     val resultSendPhoto by viewModel.resultSendPhoto.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
 

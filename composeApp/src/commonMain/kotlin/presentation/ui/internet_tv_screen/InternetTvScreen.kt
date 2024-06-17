@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import data.public_info.remote.dto.Location
+import di.koinViewModel
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_back
 import kmm.composeapp.generated.resources.ic_favorite
@@ -58,12 +59,13 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.home_screen.HomeScreenViewModel
 import util.ColorCustomResources
 import util.ScreenRoute
 
-class InternetTvScreenViewModelProvider : KoinComponent {
-    val internetTvScreenViewModel: InternetTvScreenViewModel by inject()
-}
+//class InternetTvScreenViewModelProvider : KoinComponent {
+//    val internetTvScreenViewModel: InternetTvScreenViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,8 +74,9 @@ fun InternetTvScreen(
     navHostController: NavHostController
 ) {
 
-    val viewModelProvider = InternetTvScreenViewModelProvider()
-    val viewModel = viewModelProvider.internetTvScreenViewModel
+//    val viewModelProvider = InternetTvScreenViewModelProvider()
+//    val viewModel = viewModelProvider.internetTvScreenViewModel
+    val viewModel = koinViewModel<InternetTvScreenViewModel>()
    // val outDoorsUiState by viewModel.outDoorsUiState.collectAsState()
     val locationsInternetTv by viewModel.locationsTitle.collectAsStateWithLifecycle()
     var isRefreshing by remember { mutableStateOf(false) }

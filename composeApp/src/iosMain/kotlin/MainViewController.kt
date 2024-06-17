@@ -1,12 +1,15 @@
 //import net.baza.bazanetclientapp.notification.configuration.NotificationPlatformConfiguration
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
 import co.touchlab.kermit.Logger
+import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.notification.PayloadData
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import di.commonModule
-import net.baza.bazanetclientapp.notification.NotifierManagerImpl
+//import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import org.koin.core.context.startKoin
 import presentation.ui.auth_activity.AuthActivityContent
 import presentation.ui.splash_activity.SplashActivityContent
@@ -97,19 +100,34 @@ fun MainViewController() = ComposeUIViewController {
             message = snackBarStateAuthWiFi.value
         )
     }
+
+
+    //var myPushNotificationToken by remember { mutableStateOf("") }
+    LaunchedEffect(true) {
+        println("LaunchedEffectApp is called")
+        NotifierManager.addListener(object : NotifierManager.Listener {
+            override fun onNewToken(token: String) {
+               // myPushNotificationToken = token
+                println("onNewToken: $token")
+            }
+        })
+       // myPushNotificationToken = NotifierManager.getPushNotifier().getToken() ?: ""
+      //  Logger.d("4444 myPushNotificationToken=" + myPushNotificationToken)
+    }
 }
 
 @Throws(Exception::class)
 fun initKoin() {
 
-
-    val configuration =  NotificationPlatformConfiguration.Ios(
-        showPushNotification = true,
-        askNotificationPermissionOnStart = true
-    )
+//
+//    val configuration =  NotificationPlatformConfiguration.Ios(
+//        showPushNotification = true,
+//        askNotificationPermissionOnStart = true
+//    )
+////    NotifierManager.initialize(configuration = configuration)
+//
 //    NotifierManager.initialize(configuration = configuration)
 
-    NotifierManagerImpl.initialize(configuration = configuration)
 
 
 
@@ -121,6 +139,5 @@ fun initKoin() {
 
 
     }
-
 
 }

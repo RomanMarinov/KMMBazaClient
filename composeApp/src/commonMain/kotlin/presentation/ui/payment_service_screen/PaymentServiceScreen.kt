@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import co.touchlab.kermit.Logger
+import di.koinViewModel
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_back
 import kmm.composeapp.generated.resources.ic_profile
@@ -38,12 +39,13 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.outdoor_screen.OutdoorScreenViewModel
 import util.ColorCustomResources
 import util.ScreenRoute
 
-class  PaymentServiceViewModelProvider : KoinComponent {
-    val paymentServiceViewModel: PaymentServiceViewModel by inject()
-}
+//class  PaymentServiceViewModelProvider : KoinComponent {
+//    val paymentServiceViewModel: PaymentServiceViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,8 +57,9 @@ fun PaymentServiceScreen(
 
 // анимация топбара при скроле
     // https://www.youtube.com/watch?v=EqCvUETekjk
-    val viewModelProvider = PaymentServiceViewModelProvider()
-    val viewModel = viewModelProvider.paymentServiceViewModel
+//    val viewModelProvider = PaymentServiceViewModelProvider()
+//    val viewModel = viewModelProvider.paymentServiceViewModel
+    val viewModel = koinViewModel<PaymentServiceViewModel>()
 
     val isLoading = viewModel.isLoading.collectAsState()
     val pullToRefreshState = rememberPullToRefreshState()

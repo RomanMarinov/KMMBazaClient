@@ -60,6 +60,7 @@ kotlin {
             api(libs.firebase.crashlytics)
 
             implementation(libs.firebase.messaging)
+            implementation("io.insert-koin:koin-android:3.5.6")
 
             api(libs.kmpNotifier)
             implementation(libs.koin.core)
@@ -92,7 +93,7 @@ kotlin {
             implementation(libs.koin.core)
 
             //api("io.github.hoc081098:kmp-viewmodel:0.8.0")
-            //implementation(libs.koin.compose) // в этом проблема
+            implementation(libs.koin.compose) // в этом проблема
 //            implementation("org.jetbrains.compose.annotation-internal:annotation:1.6.2")
             //implementation(libs.koin.android)
             //implementation(libs.koin.androidx.compose)

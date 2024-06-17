@@ -92,11 +92,34 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-     // FirebaseApp.configure() //important
+      FirebaseApp.configure() //important
       
               // Настройка уведомлений
               let askPermission = true // Или false, в зависимости от ваших требований
               NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
+      
+      ///////////////////
+      ///
+      ///
+      // Регистрация для удаленных уведомлений
+        application.registerForRemoteNotifications()
+      // Устанавливает делегата текущего объекта UNUserNotificationCenter.
+             // UNUserNotificationCenter.current().delegate = self
+      
+              // Запрашивает разрешение на отправку уведомлений и выводит результат в консоль.
+              let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+              UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { granted, error in
+                        if granted {
+                            print("4444 Notification authorization granted")
+                        } else {
+                            print("4444 Notification authorization denied")
+                        }
+                    })
+      
+              // Регистрирует уведомления для удаленных уведомлений.
+              application.registerForRemoteNotifications()
+      
+      /////////
     return true
   }
 
@@ -107,6 +130,38 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         print("AppDelegate deviceToken= \(deviceToken.base64EncodedString())")
         Messaging.messaging().apnsToken = deviceToken
   }
+    
+    
+    
+    
+    
+    
+        // Метод обработки ошибки при регистрации
+        func application(_ application: UIApplication,
+                         didFailToRegisterForRemoteNotificationsWithError error: Error) {
+            print("application(_:didFailToRegisterForRemoteNotificationsWithError:) called")
+            print("Failed to register for remote notifications: \(error)")
+        }
+        // Вызывается, когда приложение получает удаленное уведомление (Push-уведомление) в фоновом режиме.
+        func application(_ application: UIApplication,
+                         didReceiveRemoteNotification userInfo: [AnyHashable : Any]) async -> UIBackgroundFetchResult {
+            print("application(_:didReceiveRemoteNotification:) called")
+            NotifierManager.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
+            
+            print("AppDelegate получает удаленное уведомление= \(userInfo)")
+            
+            return UIBackgroundFetchResult.newData
+        }
+        // Вызывается, когда уведомление будет отображаться пользователю при активном приложении.
+        func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+            print("userNotificationCenter(_:willPresent:withCompletionHandler:) called")
+            completionHandler([.banner, .list, .badge, .sound])
+        }
+    
+    
+    
+    
+
 }
 
 @main
@@ -117,7 +172,7 @@ struct iOSApp: App {
     init() {
         print("iOSApp: ->")
             do {
-                FirebaseApp.configure() // Важно
+                //FirebaseApp.configure() // Важно
                 
                 
                 

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import di.koinViewModel
 
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_profile
@@ -38,14 +39,15 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.splash_activity.SplashViewModel
 
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.TextUtils
 
-class HomeScreenViewModelProvider : KoinComponent {
-    val homeScreenViewModel: HomeScreenViewModel by inject()
-}
+//class HomeScreenViewModelProvider : KoinComponent {
+//    val homeScreenViewModel: HomeScreenViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,8 +58,9 @@ fun HomeScreen(
     //viewModel: HomeScreenViewModel by inject(),
     onShowIncomingCallActivity: () -> Unit
 ) {
-    val viewModelProvider = HomeScreenViewModelProvider()
-    val viewModel = viewModelProvider.homeScreenViewModel
+//    val viewModelProvider = HomeScreenViewModelProvider()
+//    val viewModel = viewModelProvider.homeScreenViewModel
+    val viewModel = koinViewModel<HomeScreenViewModel>()
     val userInfo by viewModel.userInfo.collectAsStateWithLifecycle()
 
     var isRefreshing by remember { mutableStateOf(false) }

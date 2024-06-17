@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kermit.Logger
+import di.koinViewModel
 import domain.model.auth.AuthLoginBody
 import domain.model.auth.FingerprintBody
 import kmm.composeapp.generated.resources.Res
@@ -47,13 +48,14 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.attach_photo.AttachPhotoViewModel
 import util.ColorCustomResources
 import util.TextUtils
 
 
-class AuthActivityViewModelProvider : KoinComponent {
-    val authActivityViewModel: AuthActivityViewModel by inject()
-}
+//class AuthActivityViewModelProvider : KoinComponent {
+//    val authActivityViewModel: AuthActivityViewModel by inject()
+//}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -66,9 +68,9 @@ fun ViewPagerAuth(
     onShowWarning: (Boolean) -> Unit
 ) {
 
-    val viewModelProvider = AuthActivityViewModelProvider()
-    val viewModel = viewModelProvider.authActivityViewModel
-
+//    val viewModelProvider = AuthActivityViewModelProvider()
+//    val viewModel = viewModelProvider.authActivityViewModel
+    val viewModel = koinViewModel<AuthActivityViewModel>()
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(pageCount = { TabsAuth.entries.size })
     val selectedTabIndex = remember { derivedStateOf { pagerState.currentPage } }

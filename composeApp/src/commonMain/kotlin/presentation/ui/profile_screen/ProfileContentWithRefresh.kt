@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import co.touchlab.kermit.Logger
+import di.koinViewModel
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_addresses
 import kmm.composeapp.generated.resources.ic_arrow_right
@@ -53,14 +54,15 @@ import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import presentation.ui.auth_activity.AuthPlatform
+import presentation.ui.payment_service_screen.PaymentServiceViewModel
 import presentation.ui.profile_screen.phone_number.PhoneNumberBottomSheet
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.TextUtils
 
-class  ProfileScreenViewModelProvider : KoinComponent {
-    val profileScreenViewModel: ProfileScreenViewModel by inject()
-}
+//class  ProfileScreenViewModelProvider : KoinComponent {
+//    val profileScreenViewModel: ProfileScreenViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,9 +72,9 @@ fun ProfileContentWithRefresh(
     onMoveToAuthActivity: () -> Unit
 ) {
 
-    val viewModelProvider = ProfileScreenViewModelProvider()
-    val viewModel = viewModelProvider.profileScreenViewModel
-
+//    val viewModelProvider = ProfileScreenViewModelProvider()
+//    val viewModel = viewModelProvider.profileScreenViewModel
+    val viewModel = koinViewModel<ProfileScreenViewModel>()
     val pullToRefreshState = rememberPullToRefreshState()
     val snackBarHostState = remember { SnackbarHostState() }
     var isLoading = remember { mutableStateOf(true) }

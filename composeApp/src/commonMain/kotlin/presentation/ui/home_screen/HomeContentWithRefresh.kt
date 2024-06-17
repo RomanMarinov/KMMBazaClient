@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
@@ -29,9 +30,11 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.mmk.kmpnotifier.notification.NotifierManager
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.home_button_order
 import kmm.composeapp.generated.resources.home_img_domofon
@@ -184,11 +188,12 @@ fun LazyListScope.sendSelfPush(
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(40.dp)
+               // .height(40.dp)
                 .padding(start = 16.dp, top = 16.dp, end = 16.dp),
         ) {
             Row(modifier = Modifier
-                .fillMaxWidth() .background(Color.Red)
+                //22.fillMaxWidth()
+                .background(Color.Red)
                 .clickable {
                     scope.launch {
                         viewModel.sendSelfPush()
@@ -200,6 +205,35 @@ fun LazyListScope.sendSelfPush(
                     text = "Отправить себе пуш",
                     color = Color.White
                 )
+            }
+
+            val notifier = remember { NotifierManager.getLocalNotifier() }
+            val permissionUtil = remember { NotifierManager.getPermissionUtil() }
+            var notificationId by remember { mutableStateOf(0) }
+            Button(onClick = {
+                notificationId = notifier.notify("Title", "bodyMessage")
+            }) {
+                Text("Send Local Notification")
+            }
+            Button(onClick = { notifier.removeAll() }) {
+                Text("Remove all notifications")
+            }
+
+            Button(enabled = notificationId != 0, onClick = {
+                notifier.remove(notificationId)
+                notificationId = 0
+            }) {
+                Text("Remove NotificationID #$notificationId")
+            }
+
+
+
+            Button(onClick = {
+                permissionUtil.askNotificationPermission {
+                    println("Permission is granted")
+                }
+            }) {
+                Text("Ask permission")
             }
         }
     }

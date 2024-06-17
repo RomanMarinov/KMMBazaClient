@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import co.touchlab.kermit.Logger
+import di.koinViewModel
 import domain.model.user_info.Sputnik
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.domofon_title
@@ -45,6 +46,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import presentation.ui.auth_activity.AuthActivityViewModel
 import presentation.ui.domofon_screen.model.UnLockState
 import util.ColorCustomResources
 import util.ScreenRoute
@@ -58,9 +60,9 @@ enum class ShowCameraState {
     ENABLED, DISABLED, DEFAULT
 }
 
-class DomofonScreenViewModelProvider : KoinComponent {
-    val domofonScreenViewModel: DomofonScreenViewModel by inject()
-}
+//class DomofonScreenViewModelProvider : KoinComponent {
+//    val domofonScreenViewModel: DomofonScreenViewModel by inject()
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,9 +70,9 @@ fun DomofonScreen(
     bottomNavigationPaddingValue: PaddingValues,
     navHostController: NavHostController
 ) {
-    val viewModelProvider = DomofonScreenViewModelProvider()
-    val viewModel = viewModelProvider.domofonScreenViewModel
-
+//    val viewModelProvider = DomofonScreenViewModelProvider()
+//    val viewModel = viewModelProvider.domofonScreenViewModel
+    val viewModel = koinViewModel<DomofonScreenViewModel>()
     val sputnikUiState by viewModel.domofonUiState.collectAsState()
     val items: List<Sputnik> = sputnikUiState?.domofon?.sputnik ?: emptyList()
     val statusDomofonUnlockDoor by viewModel.statusDomofonUnlockDoor.collectAsStateWithLifecycle()
