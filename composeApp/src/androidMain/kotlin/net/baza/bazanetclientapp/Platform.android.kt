@@ -4,10 +4,14 @@ import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 
 actual fun onApplicationStartPlatformSpecific() {
-    NotifierManager.initialize(
-        configuration = NotificationPlatformConfiguration.Android(
-            notificationIconResId = R.drawable.ic_launcher_foreground,
-            showPushNotification = true,
-        )
+    val configuration = NotificationPlatformConfiguration.Android(
+        notificationIconResId = R.drawable.ic_launcher_foreground,
+        notificationIconColorResId = R.color.colorBazaMainRed,
+        notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
+            id = "CHANNEL_ID",
+            name = "General"
+        ),
+        showPushNotification = true // показывать на переднем плане
     )
+    NotifierManager.initialize(configuration)
 }

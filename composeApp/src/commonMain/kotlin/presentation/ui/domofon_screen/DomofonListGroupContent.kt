@@ -1,5 +1,6 @@
 package presentation.ui.domofon_screen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
@@ -51,6 +53,8 @@ import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_lock
 import kmm.composeapp.generated.resources.ic_play
 import kmm.composeapp.generated.resources.ic_share
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
 import presentation.ui.add_address.AddAddressBottomSheet
 import util.AddAddressButtonHelper
@@ -422,7 +426,7 @@ fun GroupContentItem(
                         .height(40.dp),
                     shape = RoundedCornerShape(100.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBazaMainBlue),
+                    colors = CardDefaults.cardColors(Color.White),
                 ) {
                     Row(
                         modifier = Modifier
@@ -431,7 +435,7 @@ fun GroupContentItem(
                             }
                             .fillMaxHeight()
                             .padding(8.dp)
-                            .background(ColorCustomResources.colorBazaMainBlue),
+                            .background(Color.White),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.End
                     ) {
@@ -442,33 +446,42 @@ fun GroupContentItem(
                                 .size(24.dp),
                             imageVector = vectorResource(Res.drawable.ic_share),
                             contentDescription = null,
-                            tint = Color.White
+                            tint = ColorCustomResources.colorBazaMainBlue
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                //Spacer(modifier = Modifier.weight(1f))
 
                 ElevatedButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp),
                     shape = RoundedCornerShape(8.dp),
                     onClick = {
-                        onGoDomofonContentList()
-                        onAddrId(sputnikControl.addrId)
+                        scope.launch {
+                            delay(300L)
+                            onGoDomofonContentList()
+                            onAddrId(sputnikControl.addrId)
+                        }
                     },
+                    border = BorderStroke(1.dp, ColorCustomResources.colorBazaMainBlue),
                     content = {
                         Text(
                             modifier = Modifier
                                 .padding(start = 16.dp, end = 16.dp),
-                            text = title
+                            text = title,
+                            fontWeight = FontWeight.Bold,
+                            color = ColorCustomResources.colorBazaMainBlue
                         )
                     },
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = Color.White,
-                        containerColor = ColorCustomResources.colorBazaMainBlue
+                        contentColor = Color.Gray,
+                        containerColor = Color.White,
                     ),
                     //shape = RoundedCornerShape(10.dp)
                 )
-                Spacer(modifier = Modifier.weight(1f))
+                //Spacer(modifier = Modifier.weight(1f))
             }
         }
     }

@@ -14,10 +14,6 @@ actual fun onApplicationStartPlatformSpecific() {
         )
     )
 
-
-
-
-
     NotifierManager.addListener(object : NotifierManager.Listener {
         override fun onNewToken(token: String) {
             Logger.d("4444 Push Notification ios onNewToken: $token")
@@ -50,7 +46,7 @@ return 0
     override fun notify(id: Int, title: String, body: String, payloadData: Map<String, String>) {
         TODO("Not yet implemented")
     }
-
+    
     override fun remove(id: Int) {
         TODO("Not yet implemented")
     }

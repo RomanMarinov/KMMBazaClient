@@ -69,7 +69,7 @@ fun AddAddressButtonHelper(
                     Text(
                         modifier = Modifier
                             //.fillMaxWidth()
-                            .padding(start = 8.dp, end = 8.dp),
+                            .padding(start = 8.dp, end = 16.dp),
                         text = "Новый адрес",
                         color = ColorCustomResources.colorBazaMainBlue
                     )
