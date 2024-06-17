@@ -26,6 +26,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
@@ -50,6 +51,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import co.touchlab.kermit.Logger
 import domain.model.user_info.Sputnik
@@ -70,11 +72,13 @@ import kmm.composeapp.generated.resources.outdoor_create_shortcut
 import kmm.composeapp.generated.resources.smart_domophone_photo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import presentation.ui.add_address.AddAddressBottomSheet
+import presentation.ui.domofon_screen.model.UnLockState
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.navigateToWebViewHelper
@@ -422,6 +426,29 @@ fun ContentLazyListItem(
     var switchCheckedState by remember { mutableStateOf(false) }
     val volumeState = remember { mutableStateOf(true) }
 
+//    val isShowProgressProgressOpenDoor = remember { mutableStateOf(false) }
+//    val statusDomofonUnlockDoor by viewModel.statusDomofonUnlockDoor.collectAsStateWithLifecycle()
+//    var progress by remember { mutableStateOf(0f) }
+//
+//
+//    // Launching a coroutine to update the progress
+//    LaunchedEffect(isShowProgressProgressOpenDoor, statusDomofonUnlockDoor, progress) {
+//        if (statusDomofonUnlockDoor == UnLockState.OPENED_DOOR) {
+//            isShowProgressProgressOpenDoor.value = true
+//        }
+//        if (isShowProgressProgressOpenDoor.value) {
+//            val durationMillis = 7000L // 7 seconds
+//            val intervalMillis = 100L // Interval to update the progress
+//            val steps = durationMillis / intervalMillis // Number of steps to reach 7 seconds
+//            for (i in 0..steps) {
+//                progress = i / steps.toFloat()
+//                delay(intervalMillis)
+//            }
+//            progress = 0f
+//            isShowProgressProgressOpenDoor.value = false
+//        }
+//    }
+
     Logger.d("4444 sputnik.title=" + sputnik.title)
     Column(
         modifier = Modifier
@@ -643,18 +670,30 @@ fun ContentLazyListItem(
                                 }
                         )
 
+
                         if (sputnik.fullControl) {
-                            Icon(
-                                vectorResource(Res.drawable.ic_lock),
-                                contentDescription = "lock",
-                                tint = Color.White,
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .size(80.dp)
-                                    .clickable {
-                                        viewModel.onClickUnLock(deviceId = sputnik.deviceID)
-                                    }
-                            )
+                            Column(
+
+                            ) {
+                                Icon(
+                                    vectorResource(Res.drawable.ic_lock),
+                                    contentDescription = "lock",
+                                    tint = Color.White,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(20.dp))
+                                        .size(80.dp)
+                                        .clickable {
+                                            viewModel.onClickUnLock(deviceId = sputnik.deviceID)
+                                        }
+                                )
+//                                LinearProgressIndicator(
+//                                    progress = { progress },
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .height(8.dp),
+//                                )
+                            }
+
                         }
                     }
                 }
