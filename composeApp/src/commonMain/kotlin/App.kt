@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +29,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import co.touchlab.kermit.Logger
+import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.notification.PayloadData
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.domofon_name_nav
 import kmm.composeapp.generated.resources.help_name_nav
@@ -62,6 +65,30 @@ fun App(
     onMoveToAuthActivity: () -> Unit,
     onShowIncomingCallActivity: () -> Unit
 ) {
+
+
+    var myPushNotificationToken by remember { mutableStateOf("") }
+    LaunchedEffect(true) {
+        println("LaunchedEffectApp is called")
+        NotifierManager.addListener(object : NotifierManager.Listener {
+            override fun onNewToken(token: String) {
+                myPushNotificationToken = token
+                println("onNewToken: $token")
+            }
+
+            override fun onPushNotification(title: String?, body: String?) {
+                super.onPushNotification(title, body)
+                println("APP onPushNotification title: $title" + " body=" +body)
+            }
+
+            override fun onPayloadData(data: PayloadData) {
+                super.onPayloadData(data)
+                println("APP onPayloadData data: $data")
+            }
+        })
+       // myPushNotificationToken = NotifierManager.getPushNotifier().getToken() ?: ""
+    }
+
 
     AppContent(
         onMoveToAuthActivity = {

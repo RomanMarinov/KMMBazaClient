@@ -101,7 +101,7 @@ class MainActivity : ComponentActivity() {
            // AppLogger.d("HasNotification Permission: $it")
         }
 
-        permissionUtil.askNotificationPermission()
+      //  permissionUtil.askNotificationPermission()
     }
 
     override fun onNewIntent(intent: Intent) {

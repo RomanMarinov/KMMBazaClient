@@ -164,27 +164,28 @@ object AppInitializer {
 //        NotifierManager.initialize(configuration)
 
         onApplicationStartPlatformSpecific()
-        notificationPlatform()
+       // notificationPlatform()
 
-//        NotifierManager.addListener(object : NotifierManager.Listener {
-//            override fun onNewToken(token: String) {
-//                Logger.d("4444 Push Notification android onNewToken: $token")
-//            }
-//
-//            override fun onPushNotification(title: String?, body: String?) {
-//                super.onPushNotification(title, body)
-//                Logger.d("4444 Push Notification  android type message is received: Title: $title and Body: $body")
-//            }
-//
-//            override fun onPayloadData(data: PayloadData) {
-//                super.onPayloadData(data)
-//                Logger.d("4444 Push Notification android payloadData: $data")
-//            }
-//
-//            override fun onNotificationClicked(data: PayloadData) {
-//                super.onNotificationClicked(data)
-//                Logger.d("4444 Notification clicked, android  Notification payloadData: $data")
-//            }
-//        })
+        NotifierManager.addListener(object : NotifierManager.Listener {
+            override fun onNewToken(token: String) {
+                Logger.d("4444 Push Notification android onNewToken: $token")
+            }
+
+            override fun onPushNotification(title: String?, body: String?) {
+                super.onPushNotification(title, body)
+                Logger.d("4444 Push Notification  android type message is received: Title: $title and Body: $body")
+            }
+
+            override fun onPayloadData(data: PayloadData) {
+                super.onPayloadData(data)
+                Logger.d("4444 Push Notification android payloadData: $data")
+
+            }
+
+            override fun onNotificationClicked(data: PayloadData) {
+                super.onNotificationClicked(data)
+                Logger.d("4444 Notification clicked, android  Notification payloadData: $data")
+            }
+        })
     }
 }
