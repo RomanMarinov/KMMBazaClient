@@ -174,6 +174,8 @@ android {
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
+
+    // ПОКА УСТАНОВЛЕНА МИН 24, А НАДО 26 ПРОВЕРИТЬ libs.versions.android.minSdk.get().toInt()
     defaultConfig {
         applicationId = "net.baza.bazanetclientapp"
         minSdk = libs.versions.android.minSdk.get().toInt()

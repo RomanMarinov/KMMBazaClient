@@ -8,10 +8,11 @@ actual fun onApplicationStartPlatformSpecific() {
         notificationIconResId = R.drawable.ic_launcher_foreground,
         notificationIconColorResId = R.color.colorBazaMainRed,
         notificationChannelData = NotificationPlatformConfiguration.Android.NotificationChannelData(
-            id = "CHANNEL_ID",
+            id = "1",
             name = "General"
         ),
         showPushNotification = true // показывать на переднем плане
     )
     NotifierManager.initialize(configuration)
+
 }

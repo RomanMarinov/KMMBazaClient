@@ -1,9 +1,7 @@
 package di
 
-import com.mmk.kmpnotifier.notification.PushNotifier
-import com.mmk.kmpnotifier.permission.PermissionUtil
 import data.add_address.remote.AddAddressRepositoryImpl
-import data.auth.local.AppPreferencesRepository
+import data.data_store.AppPreferencesRepository
 import data.auth.remote.AuthRepositoryImpl
 import data.domofon.remote.DomofonRepositoryImpl
 import data.history_call.remote.HistoryCallRepositoryImpl

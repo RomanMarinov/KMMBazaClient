@@ -3,7 +3,7 @@ package presentation.ui.profile_screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import data.auth.local.AppPreferencesRepository
+import data.data_store.AppPreferencesRepository
 import domain.model.auth.FingerprintBody
 import domain.model.user_info.UserInfo
 import domain.repository.AuthRepository
@@ -12,12 +12,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProfileScreenViewModel(
     private val authRepository: AuthRepository,
-    private val userInfoRepository: UserInfoRepository
+    private val userInfoRepository: UserInfoRepository,
+    private val appPreferencesRepository: AppPreferencesRepository
 ) : ViewModel() {
 
     private val _userInfo: MutableStateFlow<UserInfo?> = MutableStateFlow(null)
@@ -46,6 +46,12 @@ class ProfileScreenViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val result = userInfoRepository.getUserInfo()
             _userInfo.value = result
+        }
+    }
+
+    fun clearDataStore() {
+        viewModelScope.launch(Dispatchers.IO) {
+            appPreferencesRepository.clear()
         }
     }
 }

@@ -472,20 +472,12 @@ fun ContentLazyListItem(
             if (sputnik.fullControl) {
                 Row(
                     modifier = Modifier
-                        // .weight(1f)
-                        .weight(1f)
-
-                        .padding(end = 16.dp)
-                    ,
-                    //.fillMaxWidth()
-
-                    //.weight(1f),
+                       // .weight(1f)
+                        .padding(end = 16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
                     Box(
-                        modifier = Modifier,
-                        //.fillMaxWidth(),
                         contentAlignment = Alignment.CenterStart,
                     ) {
                         Card(

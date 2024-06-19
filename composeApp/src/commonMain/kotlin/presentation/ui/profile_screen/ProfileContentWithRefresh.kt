@@ -51,10 +51,7 @@ import kmm.composeapp.generated.resources.ic_profile_card
 import kmm.composeapp.generated.resources.ic_profile_post_card
 import kmm.composeapp.generated.resources.ic_profile_setting
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import presentation.ui.auth_activity.AuthPlatform
-import presentation.ui.payment_service_screen.PaymentServiceViewModel
 import presentation.ui.profile_screen.phone_number.PhoneNumberBottomSheet
 import util.ColorCustomResources
 import util.ScreenRoute
@@ -83,6 +80,8 @@ fun ProfileContentWithRefresh(
     val logout by viewModel.logout.collectAsStateWithLifecycle()
     logout?.let {
         if (it) {
+            // удалить fingerPrint из стор
+            viewModel.clearDataStore()
             Logger.d("4444 LogoutPlatform().Logout()")
             onMoveToAuthActivity()
             // LogoutPlatform().Logout()

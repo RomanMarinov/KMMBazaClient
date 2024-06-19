@@ -1,18 +1,16 @@
 package data.auth.remote
 
 import co.touchlab.kermit.Logger
-import data.auth.local.AppPreferencesRepository
+import data.data_store.AppPreferencesRepository
 import data.auth.remote.dto.AuthLoginBodyDTO
 import data.auth.remote.dto.AuthLoginResponseDTO
 import data.auth.remote.dto.FingerprintBodyDTO
-import data.auth.remote.dto.firebase.FirebaseRequestBodyDTO
 import data.auth.remote.dto.firebase.OurServerDTO
 import domain.model.auth.AuthLoginBody
 import domain.model.auth.AuthLoginResponse
 import domain.model.auth.AuthRefreshBody
 import domain.model.auth.FingerprintBody
 import domain.model.auth.firebase.FirebaseRequestBody
-import domain.model.auth.firebase.OurServer
 import domain.repository.AuthRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -208,11 +206,10 @@ class AuthRepositoryImpl(
         return appPreferencesRepository.fetchInitialPreferences().accessToken
     }
 
-
     override suspend fun refreshTokenSync(): HttpResponse? {
         Logger.d("4444 REFRESH Начинаем обновление токенов - RefreshManagerImpl/refreshTokenSync()")
         val refreshToken = appPreferencesRepository.fetchInitialPreferences().refreshToken
-        val fingerPrint =  appPreferencesRepository.fetchInitialPreferences().fingerPrint
+        val fingerPrint = appPreferencesRepository.fetchInitialPreferences().fingerPrint
         val body = AuthRefreshBody(refreshToken, fingerPrint)
 
         val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -233,7 +230,6 @@ class AuthRepositoryImpl(
         try {
 
             val job = coroutineScope.launch {
-
                 val response = httpClient.post("auth/refresh_token") {
                     contentType(ContentType.Application.Json)
                     setBody(body = body)
@@ -315,6 +311,11 @@ class AuthRepositoryImpl(
         } catch (e: Exception) {
             Logger.d{"4444 try catch sendRegisterFireBaseData e=" + e}
         }
+    }
+
+    override suspend fun setFingerPrint(fingerPrint: String) {
+        appPreferencesRepository.clearFingerPrint()
+        appPreferencesRepository.setFingerPrint(fingerPrint = fingerPrint)
     }
 }
 

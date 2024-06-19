@@ -1,6 +1,6 @@
 package di.network_module
 
-import data.auth.local.AppPreferencesRepository
+import data.data_store.AppPreferencesRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

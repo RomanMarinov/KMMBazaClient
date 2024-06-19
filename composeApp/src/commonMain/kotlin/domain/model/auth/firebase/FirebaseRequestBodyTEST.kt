@@ -2,6 +2,7 @@ package domain.model.auth.firebase
 
 import data.auth.remote.dto.firebase.FirebaseRequestBodyDTO
 import data.auth.remote.dto.firebase.FirebaseRequestBodyDTOTEST
+import kmm.composeapp.generated.resources.Res
 
 data class FirebaseRequestBodyTEST(
     val firebaseToken: String?,
@@ -9,7 +10,13 @@ data class FirebaseRequestBodyTEST(
     val device: String,
     val version: Int,
     val title: String,
-    val message: String
+    val message: String,
+
+val type: String,
+val address: String,
+val imageUrl: String,
+val uuid: String,
+val videoUrl: String
 ) {
     fun mapToData() : FirebaseRequestBodyDTOTEST {
         return FirebaseRequestBodyDTOTEST(
@@ -18,7 +25,13 @@ data class FirebaseRequestBodyTEST(
             device = device,
             version = version,
             title = title,
-            message = message
+            message = message,
+
+            type = type,
+            address = address,
+            imageUrl = imageUrl,
+            uuid = uuid,
+            videoUrl = videoUrl
         )
     }
 }

@@ -1,8 +1,8 @@
 package di
 
-import data.auth.local.AppPreferencesRepository
-import data.auth.local.dataStoreFileName
-import data.auth.local.getDataStore
+import data.data_store.AppPreferencesRepository
+import data.data_store.dataStoreFileName
+import data.data_store.getDataStore
 import kotlinx.cinterop.ExperimentalForeignApi
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory

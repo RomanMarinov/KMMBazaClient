@@ -1,30 +1,24 @@
 package presentation.ui.splash_activity
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.notification.NotifierManager
-import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
-import data.auth.local.AppPreferencesRepository
+import data.data_store.AppPreferencesRepository
 import domain.model.auth.firebase.FirebaseRequestBody
 import domain.repository.AuthRepository
 import io.ktor.http.isSuccess
-import kmm.composeapp.generated.resources.Res
-import kmm.composeapp.generated.resources.ic_home
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.vectorResource
 //import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import util.StartActivity
 import util.TextUtils
 
 class SplashViewModel(
-    private val authRepository: AuthRepository,
-    private val appPreferencesRepository: AppPreferencesRepository
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _nextScreen: MutableStateFlow<StartActivity?> = MutableStateFlow(null)
@@ -37,7 +31,6 @@ class SplashViewModel(
 
     init {
         getPublicInfoFromServer()
-        getAndSaveFireBaseToken()
     }
 
     private fun getPublicInfoFromServer() {
@@ -50,20 +43,7 @@ class SplashViewModel(
 //        }
     }
 
-    private fun getAndSaveFireBaseToken() {
-//        Logger.d("4444 getAndSaveFireBaseToken NotifierManager.getPushNotifier().getToken()")
-//        viewModelScope.launch(Dispatchers.IO) {
-//
-////            NotifierManagerImpl.getPushNotifier()
-//            val fireBaseToken = NotifierManagerImpl.getPushNotifier().getToken()
-////            val fireBaseToken = NotifierManager.getPushNotifier().getToken()
-//            fireBaseToken?.let {
-//                _fireBaseToken.value = it
-//            }
-//        }
-    }
-
-    fun checkAndUpdateToken() {
+    fun checkAndUpdateToken(fireBaseToken: String?, fingerPrint: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val accessToken = authRepository.getAccessTokenFromPrefs()
             TextUtils.isAccessTokenValid(accessToken = accessToken)  // выводим в консоль сколько ещё годен
@@ -73,7 +53,7 @@ class SplashViewModel(
                 val response = authRepository.refreshTokenSync()
                 if (response?.status?.isSuccess() == true) {
                    // registerFirebase()
-                    //sendRegisterFireBaseData()
+                    sendRegisterFireBaseData(fireBaseToken, fingerPrint)
                     _nextScreen.value = StartActivity.MAIN_ACTIVITY
                     Logger.d("4444 REFRESH HOME_ACTIVITY")
                 } else if (response?.status?.isSuccess() == false || response == null) {
@@ -83,37 +63,22 @@ class SplashViewModel(
             } else { // если токен актуален, то регистрируем FireBase и переходим на главную страницу
                 Logger.d("REFRESH AccessToken актуален, регистрируем Firebase - SplashScreen/checkTokenAndRefresh()")
                // registerFirebase()
-               // sendRegisterFireBaseData()
+                sendRegisterFireBaseData(fireBaseToken, fingerPrint)
                 _nextScreen.value = StartActivity.MAIN_ACTIVITY
             }
         }
     }
 
-//    private suspend fun registerFirebase() {
-//        println("````````````````` SplashScreen - registerFirebase() `````````````````")
-//        sendRegisterFireBaseData().also { result ->
-//            Logger.d("FIREBASE Результат запроса на регистрацию Firebase = $result - SplashScreen/registerFirebase()")
-//            if (!result) {
-//                Logger.d("FIREBASE registerFirebase is NOT Successful - SplashScreen/registerFirebase()")
-//                sendRegisterFireBaseData() // снова пробуем зарегистрировать Firebase
-//                    .also {
-//                        Logger.d("FIREBASE Результат повторного запроса на регистрацию Firebase = $it - SplashScreen/registerFirebase()")
-//                    }
-//            } else {
-//                Logger.d("FIREBASE registerFirebase is Successful - SplashScreen/registerFirebase()")
-//            }
-//        }
-//    }
-
-    private suspend fun sendRegisterFireBaseData() {
+    private suspend fun sendRegisterFireBaseData(fireBaseToken: String?, fingerPrint: String) {
         Logger.d("4444 MainActivityViewModel sendRegisterFireBaseData")
 
-        val fingerPrint = appPreferencesRepository.fetchInitialPreferences().fingerPrint
+        authRepository.setFingerPrint(fingerPrint = fingerPrint)
+//        val fingerPrint = appPreferencesRepository.fetchInitialPreferences().fingerPrint
         val platformName = GetPlatformName().getName()
 
         Logger.d("4444 platformName="+ platformName)
         val firebaseRequestBody = FirebaseRequestBody(
-            firebaseToken = _fireBaseToken.value,
+            firebaseToken = fireBaseToken,
             fingerprint = fingerPrint,
             version = 1,
             device = platformName

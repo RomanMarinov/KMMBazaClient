@@ -1,4 +1,4 @@
-package data.auth.local
+package data.data_store
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
@@ -14,12 +14,15 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import org.koin.core.component.KoinComponent
+//import util.LifeCycleState
 
 data class AppPreferences(
     val phone: Long = 0L,
     val accessToken: String = "",
     val refreshToken: String = "",
-    val fingerPrint: String = ""
+    val fingerPrint: String = "",
+
+    val lifeCycleState: String
 )
 
 class AppPreferencesRepository(
@@ -36,6 +39,7 @@ class AppPreferencesRepository(
 
 
         val MOVE_TO_AUTH_ACTIVITY = booleanPreferencesKey("MOVE_TO_AUTH_ACTIVITY")
+        val LIFE_CYCLE_ACTIVITY_STATE = stringPreferencesKey("LIFE_CYCLE_ACTIVITY_STATE")
     }
 
     suspend fun clear() {
@@ -103,6 +107,18 @@ class AppPreferencesRepository(
         it[PreferencesKeys.MOVE_TO_AUTH_ACTIVITY] == true
     }
 
+    suspend fun clearFingerPrint() {
+        dataStore.edit {
+            it[PreferencesKeys.FINGER_PRINT_KEY] = ""
+        }
+    }
+
+    suspend fun setFingerPrint(fingerPrint: String) {
+        dataStore.edit {
+            it[PreferencesKeys.FINGER_PRINT_KEY] = fingerPrint
+        }
+    }
+
     suspend fun setAuthToPrefsAndAuthState(
         phone: Long,
         accessToken: String,
@@ -133,11 +149,14 @@ class AppPreferencesRepository(
         val refreshToken: String = preferences[PreferencesKeys.REFRESH_TOKEN_KEY] ?: ""
         val fingerprint: String = preferences[PreferencesKeys.FINGER_PRINT_KEY] ?: ""
 
+        val lifeCycleState: String = preferences[PreferencesKeys.LIFE_CYCLE_ACTIVITY_STATE] ?: ""
+
         return AppPreferences(
             phone = phone,
             accessToken = accessToken,
             refreshToken = refreshToken,
-            fingerPrint = fingerprint
+            fingerPrint = fingerprint,
+            lifeCycleState = lifeCycleState
         )
     }
 
@@ -153,5 +172,9 @@ class AppPreferencesRepository(
         dataStore.edit { it[PreferencesKeys.REFRESH_TOKEN_KEY] = "" }
         dataStore.edit { it[PreferencesKeys.FINGER_PRINT_KEY] = "" }
 
+    }
+
+    suspend fun saveLifeCycleState(state: String) {
+        dataStore.edit { it[PreferencesKeys.LIFE_CYCLE_ACTIVITY_STATE] = state}
     }
 }

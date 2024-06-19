@@ -19,6 +19,10 @@
 <!--    это разрешение, которое позволяет вашему приложению управлять блокировкой активности устройства, чтобы его экран не отключался приложением во время работы или выполнения определенных задач.-->
 <!--    шло с firebase-->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.NOTIFICATION_POLICY_ACCESS_SETTINGS" />
 
     <application
         android:name=".ui.MainApplication"
@@ -118,8 +122,22 @@
                 android:value="androidx.startup" />
         </provider>
 
+        <receiver
+            android:name=".service.BroadcastReceiverNotification"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="notification_swipe" />
+
+                <category android:name="DEFAULT" />
+            </intent-filter>
+        </receiver> <!-- FileProvider for attaching photo -->
+
         <service
-            android:name="net.baza.service.MyFirebaseMessagingService"
+            android:name=".service.RingtoneService"
+            android:enabled="true"
+            android:exported="true" /> <!-- settings for sentry: -->
+        <service
+            android:name=".service.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
@@ -23,6 +24,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
+import kotlinx.coroutines.launch
 //import net.baza.bazanetclientapp.notification.NotifierManagerImpl
 import presentation.ui.splash_activity.SplashActivityContent
 import util.StartActivity
@@ -37,7 +39,6 @@ class SplashActivity : ComponentActivity() {
         setContent {
             Log.d("4444", " SplashActivity loaded")
             val nextActivityState = remember { mutableStateOf(StartActivity.DEFAULT) }
-
             enableEdgeToEdge(
                 statusBarStyle = SystemBarStyle.light(
                     Color.TRANSPARENT, Color.TRANSPARENT
@@ -74,6 +75,7 @@ class SplashActivity : ComponentActivity() {
                 }
             }
             LifecycleOwnerSplashActivity()
+
 
 
 //            val configuration =  NotificationPlatformConfiguration.Android(
@@ -138,6 +140,7 @@ fun LifecycleOwnerSplashActivity() {
                 when (event) {
                     Lifecycle.Event.ON_START -> {
                         Log.d("4444", " SplashActivity Lifecycle.Event.ON_START")
+
                     }
 
                     Lifecycle.Event.ON_STOP -> { // когда свернул

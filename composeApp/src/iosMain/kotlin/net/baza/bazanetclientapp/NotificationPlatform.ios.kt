@@ -14,6 +14,11 @@ actual fun notificationPlatform() {
             super.onPayloadData(data)
             Logger.d("4444 onPayloadData ios data=" + data)
         }
+
+        override fun onNewToken(token: String) {
+            super.onNewToken(token)
+            Logger.d("4444 onPayloadData ios token=" + token)
+        }
     })
 
 }

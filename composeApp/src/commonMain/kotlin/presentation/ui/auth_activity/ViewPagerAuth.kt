@@ -452,7 +452,6 @@ fun getAuthLoginBody(phone: String): AuthLoginBody {
     return AuthLoginBody(phoneLong, fingerprint)
 }
 
-
 @Composable
 fun LoginByWiFi(
     viewModel: AuthActivityViewModel,

@@ -1,4 +1,4 @@
-package data.auth.local
+package data.data_store
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory

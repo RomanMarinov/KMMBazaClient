@@ -9,5 +9,11 @@ data class FirebaseRequestBodyDTOTEST(
     val device: String,
     val version: Int,
     val title: String,
-    val message: String
+    val message: String,
+
+    val type: String,
+    val address: String,
+    val imageUrl: String,
+    val uuid: String,
+    val videoUrl: String
 )

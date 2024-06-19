@@ -66,6 +66,7 @@ import com.mmk.kmpnotifier.notification.PayloadData
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import net.baza.bazanetclientapp.onApplicationStartPlatformSpecific
 import di.commonModule
+import di.mainActivityModule
 import net.baza.bazanetclientapp.R
 import net.baza.bazanetclientapp.notificationPlatform
 import net.baza.bazanetclientapp.ui.AppInitializer.onApplicationStart
@@ -139,6 +140,7 @@ object AppInitializer {
 
            // AppInitializer.onApplicationStart()
             //onApplicationStartPlatformSpecific()
+
         }
 
 
@@ -164,7 +166,7 @@ object AppInitializer {
 //        NotifierManager.initialize(configuration)
 
         onApplicationStartPlatformSpecific()
-       // notificationPlatform()
+        notificationPlatform()
 
         NotifierManager.addListener(object : NotifierManager.Listener {
             override fun onNewToken(token: String) {

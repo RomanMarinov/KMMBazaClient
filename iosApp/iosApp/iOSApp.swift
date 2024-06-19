@@ -85,7 +85,79 @@ import UserNotificationsUI
 //        }
 //    }
 //}
+//////////////////////////////////////////
+///
+///
 
+
+
+
+//class AppDelegate: NSObject, UIApplicationDelegate {
+//
+//    func application(_ application: UIApplication,
+//                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+//
+//        // Настройка Firebase
+//        FirebaseApp.configure()
+//
+//        // Настройка уведомлений
+//        let askPermission = true // Или false, в зависимости от ваших требований
+//        NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
+//
+//        // Запрос разрешения на уведомления
+//        requestNotificationAuthorization(application)
+//
+//        return true
+//    }
+//
+//    private func requestNotificationAuthorization(_ application: UIApplication) {
+//        // Запрос разрешения на отправку уведомлений
+//        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+//        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
+//            if granted {
+//                print("4444 Notification authorization granted")
+//            } else {
+//                print("4444 Notification authorization denied")
+//            }
+//        }
+//
+////        // Регистрация для удаленных уведомлений
+////        DispatchQueue.main.async { // ВЫЗЫВАЕТ ОШИБКУ
+////            application.registerForRemoteNotifications()
+////        }
+//    }
+//
+//    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Foundation.Data) {
+//        print("AppDelegate deviceToken= \(deviceToken.base64EncodedString())")
+//        Messaging.messaging().apnsToken = deviceToken
+//    }
+//
+//    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+//        print("application(_:didFailToRegisterForRemoteNotificationsWithError:) called")
+//        print("Failed to register for remote notifications: \(error)")
+//    }
+//
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+//        print("application(_:didReceiveRemoteNotification:) called")
+//        NotifierManager.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
+//        print("AppDelegate получает удаленное уведомление= \(userInfo)")
+//        completionHandler(.newData)
+//    }
+//
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        print("userNotificationCenter(_:willPresent:withCompletionHandler:) called")
+//        completionHandler([.banner, .list, .badge, .sound])
+//    }
+//}
+//
+
+
+
+
+/////////////////////////////////////////
+///
+///
+///
 class AppDelegate: NSObject, UIApplicationDelegate {
 
     
@@ -102,38 +174,32 @@ class AppDelegate: NSObject, UIApplicationDelegate {
       ///
       ///
       // Регистрация для удаленных уведомлений
-        application.registerForRemoteNotifications()
+      //  application.registerForRemoteNotifications()
       // Устанавливает делегата текущего объекта UNUserNotificationCenter.
              // UNUserNotificationCenter.current().delegate = self
       
-              // Запрашивает разрешение на отправку уведомлений и выводит результат в консоль.
-              let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-              UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { granted, error in
-                        if granted {
-                            print("4444 Notification authorization granted")
-                        } else {
-                            print("4444 Notification authorization denied")
-                        }
-                    })
-      
-              // Регистрирует уведомления для удаленных уведомлений.
-              application.registerForRemoteNotifications()
+//              // Запрашивает разрешение на отправку уведомлений и выводит результат в консоль.
+//              let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+//              UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { granted, error in
+//                        if granted {
+//                            print("4444 Notification authorization granted")
+//                        } else {
+//                            print("4444 Notification authorization denied")
+//                        }
+//                    })
+//      
+////              // Регистрирует уведомления для удаленных уведомлений.
+//              application.registerForRemoteNotifications()
       
       /////////
     return true
   }
 
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Foundation.Data) {
-        
-        
-        
         print("AppDelegate deviceToken= \(deviceToken.base64EncodedString())")
         Messaging.messaging().apnsToken = deviceToken
   }
-    
-    
-    
-    
     
     
         // Метод обработки ошибки при регистрации
@@ -157,11 +223,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             print("userNotificationCenter(_:willPresent:withCompletionHandler:) called")
             completionHandler([.banner, .list, .badge, .sound])
         }
-    
-    
-    
-    
-
 }
 
 @main
@@ -172,15 +233,7 @@ struct iOSApp: App {
     init() {
         print("iOSApp: ->")
             do {
-                //FirebaseApp.configure() // Важно
-                
-                
-                
                 try MainViewControllerKt.doInitKoin()
-                
-                
-                
-                
             } catch {
                 // Обработка исключения
                 print("Error initializing Koin: \(error)")

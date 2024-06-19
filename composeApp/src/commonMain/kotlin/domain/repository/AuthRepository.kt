@@ -16,12 +16,11 @@ interface AuthRepository {
     //  fun refreshTokenSync(body: AuthRefreshBody): Response<AuthLoginResponse>?
     suspend fun ipAuthorization(fingerprintBody: FingerprintBody): HttpResponse?
 
-
     suspend fun getAccessTokenFromPrefs(): String
     suspend fun refreshTokenSync(): HttpResponse?
 
     //    suspend fun saveFireBaseToken()
     suspend fun sendRegisterFireBaseData(firebaseRequestBody: FirebaseRequestBody)
-
+    suspend fun setFingerPrint(fingerPrint: String)
 
 }

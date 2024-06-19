@@ -1,7 +1,7 @@
 package di.network_module
 
 import co.touchlab.kermit.Logger
-import data.auth.local.AppPreferencesRepository
+import data.data_store.AppPreferencesRepository
 import domain.model.auth.AuthLoginResponse
 import domain.model.auth.AuthRefreshBody
 import io.ktor.client.HttpClient
