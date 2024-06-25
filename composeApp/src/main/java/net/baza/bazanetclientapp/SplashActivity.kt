@@ -73,6 +73,8 @@ class SplashActivity : ComponentActivity() {
 
                 StartActivity.DEFAULT -> { // ничего }
                 }
+
+                StartActivity.INCOMING_CALL_IOS -> TODO()
             }
             LifecycleOwnerSplashActivity()
 

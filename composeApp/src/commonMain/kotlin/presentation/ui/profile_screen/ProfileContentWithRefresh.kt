@@ -51,6 +51,7 @@ import kmm.composeapp.generated.resources.ic_profile_card
 import kmm.composeapp.generated.resources.ic_profile_post_card
 import kmm.composeapp.generated.resources.ic_profile_setting
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.koinInject
 import presentation.ui.auth_activity.AuthPlatform
 import presentation.ui.profile_screen.phone_number.PhoneNumberBottomSheet
 import util.ColorCustomResources
@@ -66,12 +67,13 @@ import util.TextUtils
 fun ProfileContentWithRefresh(
     onRefresh: Any,
     navHostController: NavHostController,
-    onMoveToAuthActivity: () -> Unit
+    onMoveToAuthActivity: () -> Unit,
+    viewModel: ProfileScreenViewModel = koinInject()
 ) {
 
 //    val viewModelProvider = ProfileScreenViewModelProvider()
 //    val viewModel = viewModelProvider.profileScreenViewModel
-    val viewModel = koinViewModel<ProfileScreenViewModel>()
+//    val viewModel = koinViewModel<ProfileScreenViewModel>()
     val pullToRefreshState = rememberPullToRefreshState()
     val snackBarHostState = remember { SnackbarHostState() }
     var isLoading = remember { mutableStateOf(true) }

@@ -57,7 +57,7 @@ class HomeScreenViewModel(
                 fingerprint = fingerPrint,
                 version = 1,
                 device = platformName,
-                title = "Входящий звонок",
+                title = "Входящий звонок\nТестовая ул 1",
                 message = "Тестовая ул 1",
 
 

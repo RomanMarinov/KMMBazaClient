@@ -79,6 +79,8 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import presentation.ui.add_address.AddAddressBottomSheet
 import presentation.ui.domofon_screen.model.UnLockState
+import presentation.ui.profile_screen.address_screen.AddAddress
+import presentation.ui.splash_activity.GetPlatformName
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.navigateToWebViewHelper
@@ -114,9 +116,12 @@ fun DomofonListContent(
                 .fillMaxSize()
             //    .navigationBarsPadding()
             ,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            //verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item { PermissionBannerContent() }
+            val platformName = GetPlatformName().getName()
+            if (platformName == "android") {
+                item { PermissionBannerContent() }
+            }
 
             if (!isLoading && (items.isEmpty())) {
                 item {
@@ -124,12 +129,14 @@ fun DomofonListContent(
                 }
             }
 
-            if (items.isNotEmpty()) {
-                item {
-                    ContentLazyListItemTop(
-                        navHostController = navHostController
-                    )
-                }
+//            item {
+//                AddAddressListContent()
+//            }
+
+            item {
+                ContentLazyListItemTop(
+                    navHostController = navHostController
+                )
             }
 
             val itemsSortByFullControl = items.sortedBy { it.fullControl }.reversed()
@@ -173,12 +180,11 @@ fun DomofonListContent(
 
 @Composable
 fun PresentationContent() {
-    val isShowBottomSheet = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
     ) {
         Text(
             text = stringResource(Res.string.domofon_present_top),
@@ -202,68 +208,71 @@ fun PresentationContent() {
                 contentScale = ContentScale.FillBounds
             )
         }
+    }
+}
 
+@Composable
+fun AddAddressListContent() {
+    //////////////////////////////////
+    val isShowBottomSheet = remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
+        //.weight(1f),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End
+    ) {
+        Box(
+            modifier = Modifier,
+            //.fillMaxWidth(),
 
-        //////////////////////////////////
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            //.weight(1f),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
         ) {
-            Box(
-                modifier = Modifier,
-                //.fillMaxWidth(),
-
+            Card(
+                modifier = Modifier
+                    //.fillMaxWidth()
+                    .height(40.dp),
+                shape = RoundedCornerShape(100.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
-                Card(
+                Row(
                     modifier = Modifier
-                        //.fillMaxWidth()
-                        .height(40.dp),
-                    shape = RoundedCornerShape(100.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .clickable {
+                        .clickable {
 //                                onShowBottomSheet(true)
-                                isShowBottomSheet.value = true
-                            }
-                            .fillMaxHeight()
-                            .padding(start = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(24.dp),
-                            imageVector = vectorResource(Res.drawable.ic_plus),
-                            contentDescription = null,
-                            tint = ColorCustomResources.colorBazaMainBlue
-                        )
-                        Text(
-                            modifier = Modifier
-                                //.fillMaxWidth()
-                                .padding(start = 8.dp, end = 16.dp),
-                            text = "Новый адрес",
-                            color = ColorCustomResources.colorBazaMainBlue
-                        )
-                    }
+                            isShowBottomSheet.value = true
+                        }
+                        .fillMaxHeight()
+                        .padding(start = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(24.dp),
+                        imageVector = vectorResource(Res.drawable.ic_plus),
+                        contentDescription = null,
+                        tint = ColorCustomResources.colorBazaMainBlue
+                    )
+                    Text(
+                        modifier = Modifier
+                            //.fillMaxWidth()
+                            .padding(start = 8.dp, end = 16.dp),
+                        text = "Новый адрес",
+                        color = ColorCustomResources.colorBazaMainBlue
+                    )
                 }
             }
         }
+    }
 ///////////////////////////////////////////////
-        if (isShowBottomSheet.value) {
-            AddAddressBottomSheet(
-                fromScreen = ScreenRoute.DomofonScreen.route,
-                onShowCurrentBottomSheet = {
-                    isShowBottomSheet.value = it
-                }
-            )
-        }
+    if (isShowBottomSheet.value) {
+        AddAddressBottomSheet(
+            fromScreen = ScreenRoute.DomofonScreen.route,
+            onShowCurrentBottomSheet = {
+                isShowBottomSheet.value = it
+            }
+        )
     }
 }
 
@@ -280,7 +289,7 @@ fun ContentLazyListItemTop(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp),
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp),
         //.weight(1f),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
@@ -453,7 +462,7 @@ fun ContentLazyListItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
         //.navigationBarsPadding()
     ) {
 
@@ -577,7 +586,7 @@ fun ContentLazyListItem(
             modifier = Modifier
                 .fillMaxWidth()
                 //.weight(1f)
-                .padding(top = 16.dp, bottom = 16.dp),
+                .padding(top = 8.dp, bottom = 8.dp),
             //.fillMaxWidth()
             verticalAlignment = Alignment.CenterVertically,
             // horizontalArrangement = Arrangement.Start

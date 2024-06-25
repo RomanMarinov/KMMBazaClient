@@ -21,6 +21,9 @@ import presentation.ui.profile_screen.ProfileScreenViewModel
 import presentation.ui.profile_screen.address_screen.AddressesScreenViewModel
 
 actual val viewModelModule2 = module {
+//    factory { MainActivityViewModel(get()) }
+//    factory { IncomingCallViewModel(get()) }
+
 //    single<Platform> { IOSPlatform() }
 
 //    singleOf(::SplashViewModel)

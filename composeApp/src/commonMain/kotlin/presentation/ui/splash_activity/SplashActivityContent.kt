@@ -1,20 +1,25 @@
 package presentation.ui.splash_activity
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mmk.kmpnotifier.notification.NotifierManager
 import di.koinViewModel
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.bazanet_logo_svg
@@ -34,10 +39,12 @@ import util.StartActivity
 
 
 
+
 @Composable
 fun SplashActivityContent(
     onMoveToNextActivity: (StartActivity) -> Unit,
     //viewModel: SplashViewModel = koinViewModel(),
+    //viewModel: SplashViewModel = koinInject()
 ) {
 
     val viewModel = koinViewModel<SplashViewModel>()
@@ -47,8 +54,13 @@ fun SplashActivityContent(
     val scope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         scope.launch {
-            val fireBaseToken = NotifierManager.getPushNotifier().getToken()
-            viewModel.checkAndUpdateToken(fireBaseToken = fireBaseToken, fingerPrint = fingerPrint)
+           // val fireBaseToken = NotifierManager.getPushNotifier().getToken()
+//
+//            Logger.d("4444 LOGGER HUYOGER fireBaseToken=" + fireBaseToken)
+
+            viewModel.checkAndUpdateToken(
+                fireBaseToken = "fireBaseToken",
+                fingerPrint = fingerPrint)
         }
     }
 

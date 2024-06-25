@@ -1,8 +1,17 @@
 package presentation.ui.home_screen
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +19,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -39,9 +49,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection.Companion.Content
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -63,6 +77,7 @@ import presentation.ui.home_screen.home_screen_bottom_sheet.BottomSheetOrder
 import presentation.ui.home_screen.home_screen_bottom_sheet.BottomSheetPersonalAccount
 import util.ColorCustomResources
 import util.ScreenRoute
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -117,7 +132,7 @@ fun HomeContentWithRefresh(
                 //.padding(bottom = paddingValue.calculateBottomPadding()
              //   )
         ) {
-            sendSelfPush(viewModel = viewModel)
+            //sendSelfPush(viewModel = viewModel)
 
             homePersonalAccountCard(
                 openBottomSheet = {
@@ -178,66 +193,70 @@ fun HomeContentWithRefresh(
         )
     }
 }
-fun LazyListScope.sendSelfPush(
-    viewModel: HomeScreenViewModel
-){
-    item {
-        val scope = rememberCoroutineScope()
 
-        ElevatedCard(
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-               // .height(40.dp)
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp),
-        ) {
-            Row(modifier = Modifier
-                //22.fillMaxWidth()
-                .background(Color.Red)
-                .clickable {
-                    scope.launch {
-                        viewModel.sendSelfPush()
-                    }
-                },
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center) {
-                Text(
-                    text = "Отправить себе пуш",
-                    color = Color.White
-                )
-            }
+// потом удалить нужно было для отладки себе пушей
+//fun LazyListScope.sendSelfPush(
+//    viewModel: HomeScreenViewModel
+//){
+//    item {
+//        val scope = rememberCoroutineScope()
+//
+//        ElevatedCard(
+//            shape = RoundedCornerShape(8.dp),
+//            modifier = Modifier
+//                .fillMaxWidth()
+//               // .height(40.dp)
+//                .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+//        ) {
+//            Row(modifier = Modifier
+//                //22.fillMaxWidth()
+//                .background(Color.Red)
+//                .clickable {
+//                    scope.launch {
+//                        viewModel.sendSelfPush()
+//                    }
+//                },
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.Center) {
+//                Text(
+//                    text = "Отправить себе пуш",
+//                    color = Color.White
+//                )
+//            }
+//
+//            val notifier = remember { NotifierManager.getLocalNotifier() }
+//            val permissionUtil = remember { NotifierManager.getPermissionUtil() }
+//            var notificationId by remember { mutableStateOf(0) }
+//            Button(onClick = {
+//                notificationId = notifier.notify("Title", "bodyMessage")
+//            }) {
+//                Text("Send Local Notification")
+//            }
+//            Button(onClick = { notifier.removeAll() }) {
+//                Text("Remove all notifications")
+//            }
+//
+//            Button(enabled = notificationId != 0, onClick = {
+//                notifier.remove(notificationId)
+//                notificationId = 0
+//            }) {
+//                Text("Remove NotificationID #$notificationId")
+//            }
+//
+//
+//
+//            Button(onClick = {
+//                permissionUtil.askNotificationPermission {
+//                    println("Permission is granted")
+//                }
+//            }) {
+//                Text("Ask permission")
+//            }
+//
+//        }
+//    }
+//}
 
-            val notifier = remember { NotifierManager.getLocalNotifier() }
-            val permissionUtil = remember { NotifierManager.getPermissionUtil() }
-            var notificationId by remember { mutableStateOf(0) }
-            Button(onClick = {
-                notificationId = notifier.notify("Title", "bodyMessage")
-            }) {
-                Text("Send Local Notification")
-            }
-            Button(onClick = { notifier.removeAll() }) {
-                Text("Remove all notifications")
-            }
-
-            Button(enabled = notificationId != 0, onClick = {
-                notifier.remove(notificationId)
-                notificationId = 0
-            }) {
-                Text("Remove NotificationID #$notificationId")
-            }
-
-
-
-            Button(onClick = {
-                permissionUtil.askNotificationPermission {
-                    println("Permission is granted")
-                }
-            }) {
-                Text("Ask permission")
-            }
-        }
-    }
-}
 fun LazyListScope.homePersonalAccountCard(
     openBottomSheet: (Boolean) -> Unit,
 ) {

@@ -48,7 +48,7 @@ class HistoryCallScreenViewModel(
 
     private fun getDomofonSputnikList() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = userInfoRepository.getUserInfo().data.domofon?.sputnik
+            val result = userInfoRepository.getUserInfo().data?.domofon?.sputnik
             result?.let {
                 domofonList = it.toMutableList()
             }

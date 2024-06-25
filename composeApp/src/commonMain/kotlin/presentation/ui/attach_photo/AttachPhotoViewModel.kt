@@ -39,7 +39,7 @@ class AttachPhotoViewModel(
 
     private fun checkPhoneLinkedToAccount() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = userInfoRepository.getUserInfo().data.profile.needAssociatePhoneToServices
+            val result = userInfoRepository.getUserInfo().data?.profile?.needAssociatePhoneToServices
             isNeedAssociatePhoneToServices.value = result
         }
     }
@@ -63,7 +63,7 @@ class AttachPhotoViewModel(
 
     fun getCountCameras(dataAddress: Data?) {
         viewModelScope.launch {
-            val domofons: Domofon? = userInfoRepository.getUserInfo().data.domofon
+            val domofons: Domofon? = userInfoRepository.getUserInfo().data?.domofon
             domofons?.let { domof ->
 
                 Logger.d("4444 domof=" + domof.sputnik)

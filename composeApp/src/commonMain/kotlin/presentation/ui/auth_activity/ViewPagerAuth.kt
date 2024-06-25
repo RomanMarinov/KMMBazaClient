@@ -46,6 +46,7 @@ import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_help_number
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import presentation.ui.attach_photo.AttachPhotoViewModel
@@ -65,12 +66,13 @@ fun ViewPagerAuth(
     onMoveToMainActivity: () -> Unit,
     onShowSnackBarAuth: (Int) -> Unit,
     onShowSnackBarAuthWiFi: (String) -> Unit,
-    onShowWarning: (Boolean) -> Unit
+    onShowWarning: (Boolean) -> Unit,
+    viewModel: AuthActivityViewModel = koinInject()
 ) {
 
 //    val viewModelProvider = AuthActivityViewModelProvider()
 //    val viewModel = viewModelProvider.authActivityViewModel
-    val viewModel = koinViewModel<AuthActivityViewModel>()
+    //val viewModel = koinViewModel<AuthActivityViewModel>()
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(pageCount = { TabsAuth.entries.size })
     val selectedTabIndex = remember { derivedStateOf { pagerState.currentPage } }
@@ -82,7 +84,7 @@ fun ViewPagerAuth(
     when (logInStatusCode) {
         200 -> {
             Logger.d { "4444 ViewPagerAuth 200" }
-            onMoveToMainActivity()
+            onMoveToMainActivity()// хуй
         }
 
         404 -> { // "С указанного номера не было звонка"

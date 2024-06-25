@@ -145,11 +145,11 @@ fun ProfileScreen(
 //                    items = outDoorsUiState.outdoors,
 //                    isRefreshing = isRefreshing,
                     onRefresh = {
-                        scope.launch {
-                            isRefreshing = true
-                            delay(2000L)
-                            isRefreshing = false
-                        }
+//                        scope.launch {
+//                            isRefreshing = true
+//                            delay(2000L)
+//                            isRefreshing = false
+//                        }
                     },
                     navHostController = navHostController,
                     onMoveToAuthActivity = {

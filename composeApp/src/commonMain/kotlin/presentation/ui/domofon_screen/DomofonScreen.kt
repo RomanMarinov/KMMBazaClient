@@ -168,6 +168,18 @@ fun DomofonScreen(
                                 if (countGroup.value > 2 && domofonContentState.value == DomofonContent.LIST) { // стоит на группе
                                     domofonContentState.value = DomofonContent.LIST_GROUP
                                 }
+
+                                if (domofonContentState.value == DomofonContent.LIST_ZERO) {
+                                    navHostController.navigate(
+                                        ScreenRoute.HomeScreen.route,
+                                        NavOptions.Builder().setPopUpTo(
+                                            // The destination of popUpTo
+                                            route = ScreenRoute.HomeScreen.route,
+                                            // Whether the popUpTo destination should be popped from the back stack.
+                                            inclusive = false,
+                                        ).build()
+                                    )
+                                }
                             }
                         ) {
                             Icon(

@@ -39,7 +39,7 @@ class OutdoorScreenViewModel @Throws(Exception::class) constructor(
         Logger.d("4444 getOutdoors")
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = isLoading
-            val outDoors = userInfoRepository.getUserInfo().data.dvr
+            val outDoors = userInfoRepository.getUserInfo().data?.dvr
             outDoors?.let { listDvr ->
                 _outDoorsUiState.update {
                     it.copy(outdoors = listDvr)

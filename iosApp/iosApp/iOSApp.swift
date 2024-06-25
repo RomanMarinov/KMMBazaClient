@@ -1,183 +1,33 @@
-import SwiftUI
-import ComposeApp
-import FirebaseCore
-import Firebase
-import FirebaseMessaging
-import UserNotifications
-import Foundation
-import UserNotificationsUI
-
-//// Класс AppDelegate отвечает за управление поведением вашего приложения и его жизненным циклом.
-//class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+//import SwiftUI
+////import ComposeApp
+//import FirebaseCore
+//import Firebase
+//import FirebaseMessaging
+//import UserNotifications
+////import Foundation
+//import UserNotificationsUI
 //
-//    // Вызывается при запуске приложения и загрузке завершена. Печатает сообщение в консоль.
-//    func application(_ application: UIApplication,
-//                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//        print("application(_:didFinishLaunchingWithOptions:) called")
-//        
-//       // FirebaseApp.configure() // Важно
 //
-//        let askPermission = true // Или false, в зависимости от ваших требований
-//        NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
-//        
-//        // Устанавливает делегата текущего объекта UNUserNotificationCenter.
-//        UNUserNotificationCenter.current().delegate = self
-//        
-//        // Запрашивает разрешение на отправку уведомлений и выводит результат в консоль.
-//        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//        UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { granted, error in
-//                  if granted {
-//                      print("4444 Notification authorization granted")
-//                  } else {
-//                      print("4444 Notification authorization denied")
-//                  }
-//              })
-//        
-//        // Регистрирует уведомления для удаленных уведомлений.
-//        application.registerForRemoteNotifications()
-//        
-//        print("FCM заходит")
-//        return true
-//    }
-//    
-//    // метод получения APNS токена
-//    func application(_ application: UIApplication,
-//                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Foundation.Data) {
-//        print("application(_:didRegisterForRemoteNotificationsWithDeviceToken:) called")
-//        print("FCM apnsToken token: \(deviceToken)")
-//        
-//        // Устанавливаем APNS токен для Firebase Messaging
-//        Messaging.messaging().apnsToken = deviceToken
-//        
-//        // Получаем FCM токен после установки APNS токена
-//        fetchFCMToken()
-//    }
-//    
-//    // Метод обработки ошибки при регистрации
-//    func application(_ application: UIApplication,
-//                     didFailToRegisterForRemoteNotificationsWithError error: Error) {
-//        print("application(_:didFailToRegisterForRemoteNotificationsWithError:) called")
-//        print("Failed to register for remote notifications: \(error)")
-//    }
-//    // Вызывается, когда приложение получает удаленное уведомление (Push-уведомление) в фоновом режиме.
-//    func application(_ application: UIApplication,
-//                     didReceiveRemoteNotification userInfo: [AnyHashable : Any]) async -> UIBackgroundFetchResult {
-//        print("application(_:didReceiveRemoteNotification:) called")
-//        NotifierManager.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
-//        return UIBackgroundFetchResult.newData
-//    }
-//    // Вызывается, когда уведомление будет отображаться пользователю при активном приложении.
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//        print("userNotificationCenter(_:willPresent:withCompletionHandler:) called")
-//        completionHandler([.banner, .list, .badge, .sound])
-//    }
-//    
-//    func fetchFCMToken() {
-//        print("fetchFCMToken() called")
-//        Messaging.messaging().token { token, error in
-//            if let error = error {
-//                print("Error fetching FCM registration token: \(error)")
-//            } else if let token = token {
-//                print("FCM registration token: \(token)")
-//                // Здесь можно обновить UI или выполнить другие действия с токеном
-//                // Например, self.fcmRegTokenMessage.text = "Remote FCM registration token: \(token)"
-//            }
-//        }
-//    }
-//}
-//////////////////////////////////////////
-///
-///
-
-
-
-
 //class AppDelegate: NSObject, UIApplicationDelegate {
 //
-//    func application(_ application: UIApplication,
-//                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+//    
+//  func application(_ application: UIApplication,
+//                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 //
-//        // Настройка Firebase
-//        FirebaseApp.configure()
-//
-//        // Настройка уведомлений
-//        let askPermission = true // Или false, в зависимости от ваших требований
-//        NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
-//
-//        // Запрос разрешения на уведомления
-//        requestNotificationAuthorization(application)
-//
-//        return true
-//    }
-//
-//    private func requestNotificationAuthorization(_ application: UIApplication) {
-//        // Запрос разрешения на отправку уведомлений
-//        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
-//            if granted {
-//                print("4444 Notification authorization granted")
-//            } else {
-//                print("4444 Notification authorization denied")
-//            }
-//        }
-//
-////        // Регистрация для удаленных уведомлений
-////        DispatchQueue.main.async { // ВЫЗЫВАЕТ ОШИБКУ
-////            application.registerForRemoteNotifications()
-////        }
-//    }
-//
-//    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Foundation.Data) {
-//        print("AppDelegate deviceToken= \(deviceToken.base64EncodedString())")
-//        Messaging.messaging().apnsToken = deviceToken
-//    }
-//
-//    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-//        print("application(_:didFailToRegisterForRemoteNotificationsWithError:) called")
-//        print("Failed to register for remote notifications: \(error)")
-//    }
-//
-//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        print("application(_:didReceiveRemoteNotification:) called")
-//        NotifierManager.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
-//        print("AppDelegate получает удаленное уведомление= \(userInfo)")
-//        completionHandler(.newData)
-//    }
-//
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//        print("userNotificationCenter(_:willPresent:withCompletionHandler:) called")
-//        completionHandler([.banner, .list, .badge, .sound])
-//    }
-//}
-//
-
-
-
-
-/////////////////////////////////////////
-///
-///
-///
-class AppDelegate: NSObject, UIApplicationDelegate {
-
-    
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-
-      FirebaseApp.configure() //important
-      
-              // Настройка уведомлений
-              let askPermission = true // Или false, в зависимости от ваших требований
-              NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
-      
-      ///////////////////
-      ///
-      ///
-      // Регистрация для удаленных уведомлений
-      //  application.registerForRemoteNotifications()
-      // Устанавливает делегата текущего объекта UNUserNotificationCenter.
-             // UNUserNotificationCenter.current().delegate = self
-      
+//      FirebaseApp.configure() //important
+//      
+//              // Настройка уведомлений
+//              let askPermission = true // Или false, в зависимости от ваших требований
+//              NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
+//      
+//      ///////////////////
+//      ///
+//      ///
+//      // Регистрация для удаленных уведомлений
+//        //application.registerForRemoteNotifications()
+//       //Устанавливает делегата текущего объекта UNUserNotificationCenter.
+//             // UNUserNotificationCenter.current().delegate = self
+//      
 //              // Запрашивает разрешение на отправку уведомлений и выводит результат в консоль.
 //              let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
 //              UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { granted, error in
@@ -189,55 +39,119 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 //                    })
 //      
 ////              // Регистрирует уведомления для удаленных уведомлений.
-//              application.registerForRemoteNotifications()
+//             // application.registerForRemoteNotifications()
+//      
+//      /////////
+//    return true
+//  }
+//
+//
+//
+//    @objc(application:didRegisterForRemoteNotificationsWithDeviceToken:)
+//    private func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+//        print("AppDelegate deviceToken= \(deviceToken)")
+////        print("AppDelegate deviceToken= \(deviceToken.base64EncodedString())")
+//        Messaging.messaging().apnsToken = deviceToken
+//  }
+//    
+//    
+//        // Метод обработки ошибки при регистрации
+//        func application(_ application: UIApplication,
+//                         didFailToRegisterForRemoteNotificationsWithError error: Error) {
+//            print("application(_:didFailToRegisterForRemoteNotificationsWithError:) called")
+//            print("Failed to register for remote notifications: \(error)")
+//        }
+////        // Вызывается, когда приложение получает удаленное уведомление (Push-уведомление) в фоновом режиме.
+////        func application(_ application: UIApplication,
+////                         didReceiveRemoteNotification userInfo: [AnyHashable : Any]) async -> UIBackgroundFetchResult {
+////            print("application(_:didReceiveRemoteNotification:) called")
+////            NotifierManager.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
+////            
+////            print("AppDelegate получает удаленное уведомление= \(userInfo)")
+////            
+////            return UIBackgroundFetchResult.newData
+////        }
+//        // Вызывается, когда уведомление будет отображаться пользователю при активном приложении.
+//        func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//            print("userNotificationCenter(_:willPresent:withCompletionHandler:) called")
+//            completionHandler([.banner, .list, .badge, .sound])
+//        }
+//}
+
+
+
+
+import SwiftUI
+
+import ComposeApp
+import Foundation
+import FirebaseCore
+import FirebaseMessaging
+
+
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+      FirebaseApp.configure()
       
-      /////////
+      AppInitializerIos.shared.onApplicationStart()
+      
+      // Запрос на регистрацию уведомлений
+              UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                  print("Permission granted: \(granted)")
+              }
+              
+              application.registerForRemoteNotifications()
+      
     return true
   }
-
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Foundation.Data) {
-        print("AppDelegate deviceToken= \(deviceToken.base64EncodedString())")
+        // Проверьте, что токен корректный: Убедитесь, что вы передаете правильный APNS токен в Firebase. Используйте следующий код для отладки:
+        let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+        let token = tokenParts.joined()
+        print("Device Token: \(token)")
+        
         Messaging.messaging().apnsToken = deviceToken
-  }
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+           print("Failed to register for remote notifications: \(error.localizedDescription)")
+       }
     
     
-        // Метод обработки ошибки при регистрации
-        func application(_ application: UIApplication,
-                         didFailToRegisterForRemoteNotificationsWithError error: Error) {
-            print("application(_:didFailToRegisterForRemoteNotificationsWithError:) called")
-            print("Failed to register for remote notifications: \(error)")
-        }
-        // Вызывается, когда приложение получает удаленное уведомление (Push-уведомление) в фоновом режиме.
-        func application(_ application: UIApplication,
-                         didReceiveRemoteNotification userInfo: [AnyHashable : Any]) async -> UIBackgroundFetchResult {
-            print("application(_:didReceiveRemoteNotification:) called")
-            NotifierManager.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
-            
-            print("AppDelegate получает удаленное уведомление= \(userInfo)")
-            
-            return UIBackgroundFetchResult.newData
-        }
-        // Вызывается, когда уведомление будет отображаться пользователю при активном приложении.
-        func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-            print("userNotificationCenter(_:willPresent:withCompletionHandler:) called")
-            completionHandler([.banner, .list, .badge, .sound])
-        }
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) async -> UIBackgroundFetchResult {
+        NotifierManager.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
+        return UIBackgroundFetchResult.newData
+    }
+    
+    
 }
+
+
+
 
 @main
 struct iOSApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
      
+    
+    
+    
     init() {
-        print("iOSApp: ->")
-            do {
-                try MainViewControllerKt.doInitKoin()
-            } catch {
-                // Обработка исключения
-                print("Error initializing Koin: \(error)")
-            }
+    
+        MainViewControllerKt.doInitKoin()
+        
+//        print("iOSApp: ->")
+//            do {
+//                try MainViewControllerKt.doInitKoin()
+//            } catch {
+//                // Обработка исключения
+//                print("Error initializing Koin: \(error)")
+//            }
         }
     
     var body: some Scene {
@@ -247,99 +161,3 @@ struct iOSApp: App {
     }
 }
 
-
-//
-//
-//class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-//
-//    func application(_ application: UIApplication,
-//                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//        // Инициализация Firebase
-//        FirebaseApp.configure()
-//        
-//        // Настройка уведомлений
-//        let askPermission = true // Или false, в зависимости от ваших требований
-//        NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
-//        
-//        // Регистрация для удаленных уведомлений
-//        application.registerForRemoteNotifications()
-//        
-//        // Настройка центра уведомлений
-//        UNUserNotificationCenter.current().delegate = self
-//        
-//        return true
-//    }
-//    
-//    func application(_ application: UIApplication,
-//                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Foundation.Data) {
-//        Messaging.messaging().apnsToken = deviceToken
-//    }
-//    
-//    
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//            completionHandler([.banner, .list, .badge, .sound])
-//        }
-//    
-////    // Обработка уведомлений на переднем плане
-////    func userNotificationCenter(_ center: UNUserNotificationCenter,
-////                                willPresent notification: UNNotification,
-////                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-////        completionHandler([.alert, .badge, .sound])
-////    }
-//}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//class AppDelegate: NSObject, UIApplicationDelegate {
-//
-//func application(_ application: UIApplication,
-//                 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//
-//   // FirebaseApp.configure() //important
-//
-//    let askPermission = true // Или false, в зависимости от ваших требований
-//    NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(showPushNotification: true, askNotificationPermissionOnStart: askPermission))
-//    return true
-//}
-//    
-//    func application(_ application: UIApplication,
-//                         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Foundation.Data) {
-//            Messaging.messaging().apnsToken = deviceToken
-//        }
-//}
-
-//@main
-//struct iOSApp: App {
-//  
-//    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-//     
-//       
-//    init() {
-//        FirebaseApp.configure() // Важно
-//            do {
-//                try MainViewControllerKt.doInitKoin()
-//            } catch {
-//                // Обработка исключения
-//                print("Error initializing Koin: \(error)")
-//            }
-//        }
-//    
-//    var body: some Scene {
-//        WindowGroup {
-//            ContentView()
-//        }
-//    }
-//}
-
-//
-//@main
-//struct iOSApp: App {
-//
-//    init() {
-//        MainViewControllerKt.doInitKoin()
-//    }
-//    
-//    var body: some Scene {
-//        WindowGroup {
-//            ContentView()
-//        }
-//    }
-//}

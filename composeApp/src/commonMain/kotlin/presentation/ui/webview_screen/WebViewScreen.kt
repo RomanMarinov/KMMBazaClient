@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -21,11 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import co.touchlab.kermit.Logger
 import com.multiplatform.webview.jsbridge.WebViewJsBridge
-import com.multiplatform.webview.util.KLogSeverity
-import com.multiplatform.webview.util.toKermitSeverity
-import com.multiplatform.webview.web.LoadingState
 import com.multiplatform.webview.web.WebContent
-import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.WebViewState
 import com.multiplatform.webview.web.rememberWebViewNavigator
 import kmm.composeapp.generated.resources.Res
@@ -40,6 +35,9 @@ fun WebViewScreen(
     address: String?,
     videoUrl: String?
 ) {
+
+
+
 
     val decodedUrl = UrlEncoderUtil.decode(videoUrl ?: "")
    // val decodedAddress = UrlEncoderUtil.decode(address ?: "")
@@ -80,43 +78,45 @@ fun WebViewScreen(
             )
         }
 
-        val loadingState = webViewState.loadingState
-        if (loadingState is LoadingState.Loading) {
-            LinearProgressIndicator(
-                progress = { loadingState.progress },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+//        val loadingState = webViewState.loadingState
+//        if (loadingState is LoadingState.Loading) {
+//            LinearProgressIndicator(
+//                progress = { loadingState.progress },
+//                modifier = Modifier.fillMaxWidth(),
+//            )
+//        }
 
 
-        webViewState.webSettings.apply {
-            isJavaScriptEnabled = true
-            androidWebSettings.apply {
-                domStorageEnabled = true
-                loadsImagesAutomatically = true
-                isAlgorithmicDarkeningAllowed = true
-                safeBrowsingEnabled = true
-
-                Logger.d { "4444 WebViewScreen webViewState.isLoading=" + webViewState.isLoading }
-
-                Logger.d { "4444 WebViewScreen KLogSeverity.Error=" + KLogSeverity.Error.toKermitSeverity() }
-                Logger.d { "4444 WebViewScreen KLogSeverity.Assert=" + KLogSeverity.Assert.toKermitSeverity() }
-                Logger.d { "4444 WebViewScreen KLogSeverity.Info=" + KLogSeverity.Info.toKermitSeverity() }
-            }
-        }
-
-        WebView(
-            state = webViewState,
-            modifier = Modifier.fillMaxSize(),
-            navigator = webViewNavigator,
-            webViewJsBridge = webViewJsBridge,
-            onCreated = {
-                // Вызовется, когда WebView будет создан
-
-            },
-            onDispose = {
-                // Вызовется при удалении WebView
-            }
-        )
+        WebViewPlatform(videoUrl = videoUrl)
+//
+//        webViewState.webSettings.apply {
+//            isJavaScriptEnabled = true
+//            androidWebSettings.apply {
+//                domStorageEnabled = true
+//                loadsImagesAutomatically = true
+//                isAlgorithmicDarkeningAllowed = true
+//                safeBrowsingEnabled = true
+//
+//                Logger.d { "4444 WebViewScreen webViewState.isLoading=" + webViewState.isLoading }
+//
+//                Logger.d { "4444 WebViewScreen KLogSeverity.Error=" + KLogSeverity.Error.toKermitSeverity() }
+//                Logger.d { "4444 WebViewScreen KLogSeverity.Assert=" + KLogSeverity.Assert.toKermitSeverity() }
+//                Logger.d { "4444 WebViewScreen KLogSeverity.Info=" + KLogSeverity.Info.toKermitSeverity() }
+//            }
+//        }
+//
+//        WebView(
+//            state = webViewState,
+//            modifier = Modifier.fillMaxSize(),
+//            navigator = webViewNavigator,
+//            webViewJsBridge = webViewJsBridge,
+//            onCreated = {
+//                // Вызовется, когда WebView будет создан
+//
+//            },
+//            onDispose = {
+//                // Вызовется при удалении WebView
+//            }
+//        )
     }
 }

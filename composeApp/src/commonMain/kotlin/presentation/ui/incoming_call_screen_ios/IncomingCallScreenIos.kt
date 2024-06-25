@@ -1,20 +1,8 @@
-package net.baza.bazanetclientapp
+package presentation.ui.incoming_call_screen_ios
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.KeyguardManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Build
-import android.os.Bundle
-import android.util.Log
-import android.view.WindowManager
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import PayloadDataCustom
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -23,6 +11,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,15 +26,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material.swipeable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -55,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -62,11 +47,10 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -74,170 +58,143 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import co.touchlab.kermit.Logger
 import com.multiplatform.webview.jsbridge.WebViewJsBridge
-import com.multiplatform.webview.util.KLogSeverity
+import com.multiplatform.webview.setting.PlatformWebSettings
 import com.multiplatform.webview.util.toKermitSeverity
 import com.multiplatform.webview.web.LoadingState
 import com.multiplatform.webview.web.WebContent
 import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.WebViewState
 import com.multiplatform.webview.web.rememberWebViewNavigator
-import di.koinViewModel
+import com.multiplatform.webview.web.rememberWebViewState
+import kmm.composeapp.generated.resources.Res
+import kmm.composeapp.generated.resources.ic_video_call_accept
+import kmm.composeapp.generated.resources.ic_video_call_decline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.baza.bazanetclientapp.service.RingtoneService
-import net.baza.bazanetclientapp.ui.IncomingCallViewModel
 import net.thauvin.erik.urlencoder.UrlEncoderUtil
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.koinInject
 import presentation.ui.domofon_screen.model.UnLockState
 import presentation.ui.webview_screen.WebViewPlatform
+import util.ColorCustomResources
 import util.SnackBarHostHelper
 import kotlin.math.roundToInt
-
 
 enum class OpenDoorState {
     DOOR_OPENED, ERROR_OPEN, DEFAULT, DECLINE
 }
 
-class IncomingCallActivity : ComponentActivity() {
-    private val closeReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action == "close_call_activity") {
-                val shouldClose = intent.getBooleanExtra("close_activity", false)
-                if (shouldClose) {
-                    finish()
-                }
-            }
+@Composable
+fun IncomingCallScreenIos(
+    data: PayloadDataCustom,
+    onFinishIncomingCall: () -> Unit,
+    viewModel: IncomingCallScreenIosViewModel = koinInject()
+) {
+//    val context = LocalContext.current
+//    val activity = LocalContext.current as Activity
+//    val viewModel = koinViewModel<IncomingCallViewModel>()
+    val isShowSnackBar = remember { mutableStateOf(OpenDoorState.DEFAULT) }
+    val scope = rememberCoroutineScope()
+
+//    // Регистрация приемника широковещательных сообщений
+//    val filter = IntentFilter("close_call_activity")
+//    LocalBroadcastManager.getInstance(this).registerReceiver(closeReceiver, filter)
+
+    val statusDomofonOpenDoor by viewModel.statusDomofonOpenDoor.collectAsStateWithLifecycle()
+
+    //Log.d("4444", " statusDomofonOpenDoor=" + statusDomofonOpenDoor.name)
+
+//    unlockAndTurnOnTheScreen()
+
+//    val address = intent.getStringExtra("address")
+//    val imageUrl = intent.getStringExtra("imageUrl")
+//    val videoUrl = intent.getStringExtra("videoUrl")
+//    val channelID = intent.getStringExtra("channelID")
+//    val uuid = intent.getStringExtra("uuid")
+
+    LaunchedEffect(statusDomofonOpenDoor) {
+        if (statusDomofonOpenDoor == UnLockState.OPENED_DOOR) {
+            isShowSnackBar.value = OpenDoorState.DOOR_OPENED
+        } else if (statusDomofonOpenDoor == UnLockState.ERROR_OPEN) {
+            isShowSnackBar.value = OpenDoorState.ERROR_OPEN
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            Surface(modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.Black)) {
-                val context = LocalContext.current
-                val activity = LocalContext.current as Activity
-                val viewModel = koinViewModel<IncomingCallViewModel>()
-                val isShowSnackBar = remember { mutableStateOf(OpenDoorState.DEFAULT) }
+    CallScreen(
+        address = data.address,
+        deviceId = data.uuid,
+        videoUrl = data.videoUrl,
+        onDeclineCall = {
 
-                // Регистрация приемника широковещательных сообщений
-                val filter = IntentFilter("close_call_activity")
-                LocalBroadcastManager.getInstance(this).registerReceiver(closeReceiver, filter)
+            Logger.d("44444 --------------------------------------")
+            isShowSnackBar.value = OpenDoorState.DECLINE
+        },
+        viewModel = viewModel
+    )
 
-                val statusDomofonOpenDoor by viewModel.statusDomofonOpenDoor.collectAsStateWithLifecycle()
-
-                Log.d("4444", " statusDomofonOpenDoor=" + statusDomofonOpenDoor.name)
-
-                unlockAndTurnOnTheScreen()
-
-                val address = intent.getStringExtra("address")
-                val imageUrl = intent.getStringExtra("imageUrl")
-                val videoUrl = intent.getStringExtra("videoUrl")
-                val channelID = intent.getStringExtra("channelID")
-                val uuid = intent.getStringExtra("uuid")
-
-                LaunchedEffect(statusDomofonOpenDoor) {
-                    if (statusDomofonOpenDoor == UnLockState.OPENED_DOOR) {
-                        isShowSnackBar.value = OpenDoorState.DOOR_OPENED
-                    } else if (statusDomofonOpenDoor == UnLockState.ERROR_OPEN) {
-                        isShowSnackBar.value = OpenDoorState.ERROR_OPEN
-                    }
-                }
-
-                CallScreen(
-                    address = address,
-                    deviceId = uuid,
-                    videoUrl = videoUrl,
-                    onDeclineCall = {
-                        isShowSnackBar.value = OpenDoorState.DECLINE
-                    },
-                    viewModel = viewModel
-                )
-
-                if (isShowSnackBar.value == OpenDoorState.DOOR_OPENED) {
-                    SnackBarHostHelper.ShortShortTime(
-                        message = "Дверь открыта",
-                        onFinishTime = {
-                            isShowSnackBar.value = OpenDoorState.DEFAULT
-                        })
-                    stopRingtone(context = context)
-                    executeFinishCurrentActivity(activity = activity)
-                }
-                if (isShowSnackBar.value == OpenDoorState.ERROR_OPEN) {
-                    SnackBarHostHelper.ShortShortTime(
-                        message = "Ошибка открытия двери",
-                        onFinishTime = {
-                            isShowSnackBar.value = OpenDoorState.DEFAULT
-                        })
-                }
-                if (isShowSnackBar.value == OpenDoorState.DECLINE) {
-                    SnackBarHostHelper.ShortShortTime(
-                        message = "Звонок отлонен",
-                        onFinishTime = {
-                            isShowSnackBar.value = OpenDoorState.DEFAULT
-                        })
-                }
-
-                LifecycleOwnerIncomingCallActivity()
-            }
+    if (isShowSnackBar.value == OpenDoorState.DOOR_OPENED) {
+        SnackBarHostHelper.ShortShortTime(
+            message = "Дверь открыта",
+            onFinishTime = {
+                isShowSnackBar.value = OpenDoorState.DEFAULT
+            })
+        scope.launch {
+            delay(1000L)
+            onFinishIncomingCall()
+        }
+//        stopRingtone(context = context)
+  //      executeFinishCurrentActivity(activity = activity)
+    }
+    if (isShowSnackBar.value == OpenDoorState.ERROR_OPEN) {
+        SnackBarHostHelper.ShortShortTime(
+            message = "Ошибка открытия двери",
+            onFinishTime = {
+                isShowSnackBar.value = OpenDoorState.DEFAULT
+            })
+    }
+    if (isShowSnackBar.value == OpenDoorState.DECLINE) {
+        SnackBarHostHelper.ShortShortTime(
+            message = "Звонок отлонен",
+            onFinishTime = {
+                isShowSnackBar.value = OpenDoorState.DEFAULT
+//                onFinishIncomingCall()
+            })
+        scope.launch {
+            delay(1000L)
+            onFinishIncomingCall()
         }
     }
 
-    // метод нужен если установлен пароль для блокировки экрана
-    private fun unlockAndTurnOnTheScreen() {
-        Log.d("4444", " unlockAndTurnOnTheScreen выполнился")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) { // для Android выше от 8.1
-            Log.d("4444", " unlockAndTurnOnTheScreen выполнился для Android выше от 8.1")
-            setShowWhenLocked(true) // позволяет отобразить активити поверх блокировки экрана.
-            setTurnScreenOn(true) // позволяет включить экран.
-            val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-            //  запрос на отключение блокировки экрана.
-            keyguardManager.requestDismissKeyguard(this, null)
-            // при бездействии экран не гаснет
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        } else {
-            this.window.addFlags(
-                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-            )
-        }
-    }
+    //LifecycleOwnerIncomingCallActivity()
 }
 
 
-// при бездействии экран не гаснет
-private fun setKeepScreenOn() {
-    // window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-}
-
-@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun CallScreen(
     address: String?,
     videoUrl: String?,
     deviceId: String?,
     onDeclineCall: () -> Unit,
-    viewModel: IncomingCallViewModel
+    viewModel: IncomingCallScreenIosViewModel
 ) {
-    Log.d("4444", " CallScreen загрузился")
+    Logger.d("4444 CallScreen IOS загрузился")
 
-    val context = LocalContext.current
-    val activity = LocalContext.current as Activity
+//    val context = LocalContext.current
+//    val activity = LocalContext.current as Activity
 
+//    UnlockAndTurnOnTheScreen()
     val scope = rememberCoroutineScope()
     val isFinishCallScreen = remember { mutableStateOf(false) }
 
     IncomingCallContent( // входящий
         address = address,
         videoUrl = videoUrl,
-        context = context,
+        //context = context,
         //viewModel = viewModel,
         onAcceptCall = {
             scope.launch {
@@ -252,14 +209,15 @@ fun CallScreen(
             onDeclineCall()
             scope.launch {
                 delay(1500L)
+
                 isFinishCallScreen.value = true
             }
         }
     )
 
     if (isFinishCallScreen.value) {
-        stopRingtone(context = context)
-        executeFinishCurrentActivity(activity = activity)
+       // stopRingtone(context = context)
+        //executeFinishCurrentActivity(activity = activity)
         isFinishCallScreen.value = false
     }
 }
@@ -268,7 +226,7 @@ fun CallScreen(
 fun IncomingCallContent(
     address: String?,
     videoUrl: String?,
-    context: Context,
+   // context: Context,
     modifier: Modifier = Modifier,
     // viewModel: CallScreenViewModel,
     onAcceptCall: (Boolean) -> Unit,
@@ -277,25 +235,26 @@ fun IncomingCallContent(
 
     // viewModel.saveHideNavigationBar(true)
 
-    Log.d("4444", "IncomingCallContent loaded")
+   // Log.d("4444", "IncomingCallContent loaded")
+
     Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = { }
+            ),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .background(Color.Black)
-                    .fillMaxSize()
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = { }
-                    ),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 //        Spacer(modifier = Modifier.weight(1f)) // Добавляет пустое пространство вверху с весом 1f
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(start = 16.dp, top = 88.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
@@ -303,11 +262,11 @@ fun IncomingCallContent(
                 color = Color.White,
                 fontSize = 24.sp,
                 text = "Звонок в домофон"
+//                text = "Мой дружище"
             )
         }
         Row(
             modifier = Modifier
-                .background(Color.Black)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
@@ -324,20 +283,42 @@ fun IncomingCallContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+            //    .padding(16.dp)
+            ,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
+
             WebViewPlatform(
-                videoUrl = videoUrl)
+                videoUrl = videoUrl
+            )
 //            IncomingCallWebView(
 //                videoUrl = videoUrl
 //            )
         }
 
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .weight(1f)
+//            //    .padding(16.dp)
+//            ,
+//            verticalAlignment = Alignment.CenterVertically,
+//            horizontalArrangement = Arrangement.Center
+//        ) {
+//            Image(
+//                painter = painterResource(id = R.drawable.jiraf),
+//                modifier = Modifier.fillMaxWidth()
+//                //    .size(356.dp, 283.dp)
+//                ,
+//                contentDescription = null,
+//                contentScale = ContentScale.Crop
+//            )
+//        }
+
         Column(
             modifier = Modifier
-                .background(Color.Black)
                 .fillMaxWidth() // Занимаем всю ширину
                 .padding(bottom = 56.dp),
             verticalArrangement = Arrangement.Bottom
@@ -352,7 +333,7 @@ fun IncomingCallContent(
                     onAcceptCall = {
                         onAcceptCall(it)
                     },
-                    context = context
+                    //context = context
                 )
             }
             Box(
@@ -372,19 +353,17 @@ fun IncomingCallContent(
     }
 }
 
-@SuppressLint("UnrememberedMutableState")
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AcceptBand(
-    // viewModel: CallScreenViewModel,
-    onAcceptCall: (Boolean) -> Unit,
-    context: Context,
+    onAcceptCall: (Boolean) -> Unit
 ) {
     val shimmerColorShades = listOf(
-        colorResource(R.color.colorBazaMainBlue).copy(1f),
-        colorResource(R.color.colorBazaMainBlue).copy(0.0f),
-        colorResource(R.color.colorBazaMainBlue).copy(1f)
+        (ColorCustomResources.colorBazaMainBlue).copy(1f),
+        (ColorCustomResources.colorBazaMainBlue).copy(0.0f),
+        (ColorCustomResources.colorBazaMainBlue).copy(1f)
     )
+
+    val scope = rememberCoroutineScope()
 
     val width = 300.dp
     val dragSize = 60.dp
@@ -394,8 +373,7 @@ fun AcceptBand(
         initialValue = 0f,
         targetValue = 4000f,
         animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1500, easing = FastOutSlowInEasing),
-            // RepeatMode.Reverse
+            tween(durationMillis = 1500, easing = FastOutSlowInEasing)
         ), label = ""
     )
 
@@ -405,30 +383,41 @@ fun AcceptBand(
         end = Offset(translateAnim, translateAnim)
     )
 
-    val swipeableState = rememberSwipeableState(ConfirmationState.Default)
-    val sizePx = with(LocalDensity.current) { (width - dragSize).toPx() }
-    val anchors = mapOf(0f to ConfirmationState.Default, sizePx to ConfirmationState.Confirmed)
-    val progress = derivedStateOf {
-        if (swipeableState.offset.value == 0f) 0f else swipeableState.offset.value / sizePx
-    }
+    var offsetX by remember { mutableStateOf(0f) }
+    val maxOffset = with(LocalDensity.current) { (width - dragSize).toPx() }
+    val halfOffset = maxOffset / 2
+    val progress = derivedStateOf { offsetX / maxOffset }
+    val animatableOffset = remember { Animatable(0f) }
 
+    LaunchedEffect(offsetX) {
+        animatableOffset.snapTo(offsetX)
+    }
 
     Box(
         modifier = Modifier
             .width(width)
-            .swipeable(
-                state = swipeableState,
-                anchors = anchors,
-                thresholds = { _, _ -> FractionalThreshold(0.5f) },
-                orientation = Orientation.Horizontal
-            )
-            .background(brush = brush, RoundedCornerShape(dragSize))
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures(
+                    onDragEnd = {
+                        val targetOffset = if (offsetX > halfOffset) maxOffset else 0f
+                        scope.launch {
+                            animatableOffset.animateTo(
+                                targetValue = targetOffset,
+                                animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                            )
+                            offsetX = targetOffset
+                        }
+                    }
+                ) { _, dragAmount ->
+                    offsetX = (offsetX + dragAmount).coerceIn(0f, maxOffset)
+                }
+            }
+            .background(brush = brush, shape = RoundedCornerShape(dragSize))
     ) {
         Column(
             Modifier
                 .align(Alignment.Center)
                 .alpha(1f - progress.value),
-            //.alpha(if (progress.value in 0.0f..0.5f) 1f else 0f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -441,26 +430,22 @@ fun AcceptBand(
 
         AcceptBall(
             modifier = Modifier
-                .offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
+                .offset { IntOffset(animatableOffset.value.roundToInt(), 0) }
                 .size(dragSize),
             progress = progress.value,
-            // viewModel = viewModel,
             onAcceptCall = {
                 onAcceptCall(it)
-            },
-            context = context
+            }
         )
     }
 }
 
-@SuppressLint("UnrememberedMutableState")
+
 @Composable
 private fun AcceptBall(
     modifier: Modifier,
     progress: Float,
-    // viewModel: CallScreenViewModel,
-    onAcceptCall: (Boolean) -> Unit,
-    context: Context,
+    onAcceptCall: (Boolean) -> Unit
 ) {
     val limitState = remember { mutableStateOf(true) }
     Box(
@@ -476,48 +461,35 @@ private fun AcceptBall(
                 Icon(
                     imageVector = Icons.Filled.Done,
                     contentDescription = null,
-                    tint = colorResource(id = R.color.colorBazaMainBlue),
+                    tint = ColorCustomResources.colorBazaMainBlue,
                     modifier = Modifier.size(40.dp)
                 )
 
-                //  Log.d("4444", " CallScreen onAcceptCall progress=" +progress)
-
                 if (limitState.value && progress >= 1.0) {
-                    //  Log.d("4444", " CallScreen onAcceptCall progress=" +progress)
                     onAcceptCall(true)
                     limitState.value = false
                 }
             } else {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_video_call_accept),
+                    imageVector = vectorResource(Res.drawable.ic_video_call_accept),
                     contentDescription = null,
-                    tint = colorResource(id = R.color.colorBazaMainBlue),
+                    tint = ColorCustomResources.colorBazaMainBlue,
                     modifier = Modifier.size(40.dp)
                 )
             }
         }
     }
 }
-
-@SuppressLint("UnrememberedMutableState")
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DeclineBand(
-    //viewModel: CallScreenViewModel,
     onDeclineCall: (Boolean) -> Unit
 ) {
-//    val shimmerColorShades = listOf(
-//        (Color.White).copy(1f),
-//        (Color.White).copy(0.0f),
-//        (Color.White).copy(1f)
-//    )
-
     val shimmerColorShades = listOf(
-        colorResource(R.color.colorBazaMainRed).copy(1f),
-        colorResource(R.color.colorBazaMainRed).copy(0.0f),
-        colorResource(R.color.colorBazaMainRed).copy(1f)
+        (ColorCustomResources.colorBazaMainRed).copy(1f),
+        (ColorCustomResources.colorBazaMainRed).copy(0.0f),
+        (ColorCustomResources.colorBazaMainRed).copy(1f)
     )
-
+val scope = rememberCoroutineScope()
     val width = 300.dp
     val dragSize = 60.dp
 
@@ -526,8 +498,7 @@ fun DeclineBand(
         initialValue = 4000f,
         targetValue = 0f,
         animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1500, easing = FastOutSlowInEasing),
-            //RepeatMode.Reverse
+            tween(durationMillis = 1500, easing = FastOutSlowInEasing)
         ), label = ""
     )
 
@@ -537,28 +508,41 @@ fun DeclineBand(
         end = Offset(translateAnim, translateAnim)
     )
 
+    val maxOffsetPx = with(LocalDensity.current) { (width - dragSize).toPx() }
+    var offsetX by remember { mutableStateOf(maxOffsetPx) } // Start from the right side
+    val progress = derivedStateOf { offsetX / maxOffsetPx }
+    val animatableOffset = remember { Animatable(maxOffsetPx) }
 
-    val swipeableState = rememberSwipeableState(ConfirmationState.Default)
-    val sizePx = with(LocalDensity.current) { (width - dragSize).toPx() }
-    val anchors = mapOf(
-        0f to ConfirmationState.Confirmed,
-        sizePx to ConfirmationState.Default
-    ) // Измените порядок состояний по умолчанию и подтверждения
-    val progress = derivedStateOf {
-        if (swipeableState.offset.value == 0f) 0f else swipeableState.offset.value / sizePx
+//    var offsetX by remember { mutableStateOf(0f) } // Start from the right side
+    val maxOffset = with(LocalDensity.current) { (width - dragSize).toPx() }
+    val halfOffset = maxOffset / 2
+//    val progress = derivedStateOf { offsetX / maxOffset }
+//    val animatableOffset = remember { Animatable(maxOffset) }
+
+    LaunchedEffect(offsetX) {
+        animatableOffset.snapTo(offsetX)
     }
 
     Box(
         modifier = Modifier
             .width(width)
-            .swipeable(
-                state = swipeableState,
-                anchors = anchors,
-                thresholds = { _, _ -> FractionalThreshold(0.5f) },
-                orientation = Orientation.Horizontal
-            )
-            .background(brush, RoundedCornerShape(dragSize))
-
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures(
+                    onDragEnd = {
+                        val targetOffset = if (offsetX < halfOffset) 0f else maxOffset
+                        scope.launch {
+                            animatableOffset.animateTo(
+                                targetValue = targetOffset,
+                                animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                            )
+                            offsetX = targetOffset
+                        }
+                    }
+                ) { _, dragAmount ->
+                    offsetX = (offsetX + dragAmount).coerceIn(0f, maxOffset)
+                }
+            }
+            .background(brush = brush, shape = RoundedCornerShape(dragSize))
     ) {
         Column(
             Modifier
@@ -576,10 +560,9 @@ fun DeclineBand(
 
         DeclineBall(
             modifier = Modifier
-                .offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
+                .offset { IntOffset(animatableOffset.value.roundToInt(), 0) }
                 .size(dragSize),
             progress = progress.value,
-            //viewModel = viewModel,
             onDeclineCall = {
                 onDeclineCall(it)
             }
@@ -587,16 +570,13 @@ fun DeclineBand(
     }
 }
 
-@SuppressLint("UnrememberedMutableState")
 @Composable
 private fun DeclineBall(
     modifier: Modifier,
     progress: Float,
-    //viewModel: CallScreenViewModel,
     onDeclineCall: (Boolean) -> Unit
 ) {
     val limitState = remember { mutableStateOf(true) }
-
     Box(
         modifier
             .padding(4.dp)
@@ -610,26 +590,20 @@ private fun DeclineBall(
                 Icon(
                     imageVector = Icons.Filled.Done,
                     contentDescription = null,
-                    tint = colorResource(id = R.color.colorBazaMainRed),
+                    tint = ColorCustomResources.colorBazaMainRed,
                     modifier = Modifier.size(40.dp)
                 )
-
-                //  Log.d("4444", " isConfirmed progress=" + progress)
 
                 if (limitState.value && progress <= 0.02) {
                     limitState.value = false
                     onDeclineCall(true)
                 }
-
-
-                // viewModel.executeFinishCallScreen(finish = true)
-                // тут надо сделать закрытие экрана
             } else {
                 Icon(
                     modifier = Modifier.size(40.dp),
-                    painter = painterResource(id = R.drawable.ic_video_call_decline),
+                    imageVector = vectorResource(Res.drawable.ic_video_call_decline), // замените на нужный ресурс
                     contentDescription = null,
-                    tint = colorResource(id = R.color.colorBazaMainRed)
+                    tint = ColorCustomResources.colorBazaMainRed
                 )
             }
         }
@@ -641,19 +615,10 @@ private fun DeclineBall(
 fun IncomingCallWebView(
     videoUrl: String?
 ) {
-    Logger.d { "IncomingCallWebView videoUrl=" + videoUrl }
-
     // ссылка из домофона рабочая
     val videoUrl1 = "https://sputnikdvr1.baza.net/a8afbbde-981b-492f-8b4c-e1af5edd5b2b/embed.html?dvr=true&token=NzZhOGM1YmU1YmY5N2MyZWUwZWFkN2FkYzI5YjA4MjBlMjA5NDdkOC4xNzE5NjQ2NzAx"
-    // ссылка которую паша присылает вызывает ошибку
-    val videoUrl2 = "https://sputnikdvr1.baza.net/a8afbbde-981b-492f-8b4c-e1af5edd5b2b/embed.html?proto=webrtc&realtime=true&token=MjdiZDI5N2NjZWJiNDllMGYyYWI5Y2ZmOTliZmFmMDUzYzNmZWNjYi4xNzE5MzAwNzYz"
-    val decodedUrl = UrlEncoderUtil.decode(videoUrl1 ?: "")
+    val decodedUrl = UrlEncoderUtil.decode(videoUrl1)
     // val decodedAddress = UrlEncoderUtil.decode(address ?: "")
-
-//    val decodedUrl = remember { mutableStateOf("") }
-//    LaunchedEffect(Unit) {
-//        decodedUrl.value = UrlEncoderUtil.decode("https://sputnikdvr1.baza.net/a8afbbde-981b-492f-8b4c-e1af5edd5b2b/embed.html?dvr=true&token=YjY1ZDZkMWYwYTI3NTRhYTc5MzZiNWU1Y2E3MjJmOTRlZTlhNzhiMS4xNzE5NDE5ODYy")
-//    }
 
     val webViewState = remember { WebViewState(WebContent.Url(decodedUrl)) }
     //val webViewAddress = remember { WebViewState(WebContent.Url(decodedAddress)) }
@@ -705,17 +670,25 @@ fun IncomingCallWebView(
 
         webViewState.webSettings.apply {
             isJavaScriptEnabled = true
-            androidWebSettings.apply {
+
+            PlatformWebSettings.AndroidWebSettings().apply {
                 domStorageEnabled = true
                 loadsImagesAutomatically = true
                 isAlgorithmicDarkeningAllowed = true
                 safeBrowsingEnabled = true
+                Logger.d { "4444 WebViewScreen android webViewState.isLoading=" + webViewState.isLoading }
+                Logger.d { "4444 WebViewScreen android KLogSeverity.Error=" + com.multiplatform.webview.util.KLogSeverity.Error.toKermitSeverity() }
+                Logger.d { "4444 WebViewScreen android KLogSeverity.Assert=" + com.multiplatform.webview.util.KLogSeverity.Assert.toKermitSeverity() }
+                Logger.d { "4444 WebViewScreen android KLogSeverity.Info=" + com.multiplatform.webview.util.KLogSeverity.Info.toKermitSeverity() }
+            }
+            PlatformWebSettings.IOSWebSettings().apply {
 
-                Logger.d { "4444 WebViewScreen webViewState.isLoading=" + webViewState.isLoading }
 
-                Logger.d { "4444 WebViewScreen KLogSeverity.Error=" + KLogSeverity.Error.toKermitSeverity() }
-                Logger.d { "4444 WebViewScreen KLogSeverity.Assert=" + KLogSeverity.Assert.toKermitSeverity() }
-                Logger.d { "4444 WebViewScreen KLogSeverity.Info=" + KLogSeverity.Info.toKermitSeverity() }
+
+                Logger.d { "4444 WebViewScreen ios webViewState.isLoading=" + webViewState.isLoading }
+                Logger.d { "4444 WebViewScreen ios KLogSeverity.Error=" + com.multiplatform.webview.util.KLogSeverity.Error.toKermitSeverity() }
+                Logger.d { "4444 WebViewScreen ios KLogSeverity.Assert=" + com.multiplatform.webview.util.KLogSeverity.Assert.toKermitSeverity() }
+                Logger.d { "4444 WebViewScreen ios KLogSeverity.Info=" + com.multiplatform.webview.util.KLogSeverity.Info.toKermitSeverity() }
             }
         }
 
@@ -735,42 +708,86 @@ fun IncomingCallWebView(
     }
 }
 
+//
+//@Composable
+//fun WebViewScreen(url: String) {
+//    val webViewState = rememberWebViewState(url = url)
+//    val context = LocalContext.current
+//
+//    AndroidView(factory = {
+//        WebView(context).apply {
+//            settings.javaScriptEnabled = true
+//            settings.allowFileAccess = true
+//            settings.domStorageEnabled = true
+//            settings.mediaPlaybackRequiresUserGesture = false
+//
+//            webViewClient = object : WebViewClient() {
+//                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+//                    super.onPageStarted(view, url, favicon)
+//                    Log.d("WebViewScreen", "Loading: $url")
+//                }
+//
+//                override fun onPageFinished(view: WebView?, url: String?) {
+//                    super.onPageFinished(view, url)
+//                    Log.d("WebViewScreen", "Finished loading: $url")
+//                }
+//
+//                override fun onReceivedError(
+//                    view: WebView?,
+//                    request: WebResourceRequest?,
+//                    error: WebResourceError?
+//                ) {
+//                    super.onReceivedError(view, request, error)
+//                    Log.e("WebViewScreen", "Error: ${error?.description}")
+//                }
+//            }
+//
+//            webChromeClient = object : WebChromeClient() {
+//                override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+//                    Log.d("WebViewScreen", "${consoleMessage?.message()} -- From line " +
+//                            "${consoleMessage?.lineNumber()} of " +
+//                            "${consoleMessage?.sourceId()}")
+//                    return true
+//                }
+//            }
+//        }
+//    }, update = { webView ->
+//        webView.loadUrl(url)
+//    })
+//}
+
 @Composable
 fun LifecycleOwnerIncomingCallActivity() {
     val localLifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
-    val activity = LocalContext.current as Activity
-
-
     DisposableEffect(
         key1 = localLifecycleOwner,
         effect = {
             val observer = LifecycleEventObserver { _, event ->
                 when (event) {
                     Lifecycle.Event.ON_START -> {
-                        Log.d("4444", " IncomingCallActivity Lifecycle.Event.ON_START")
+                        Logger.d("4444 IOS IncomingCallActivity Lifecycle.Event.ON_START")
                         //viewModel.saveLifeCycleState(state = LifeCycleState.ON_START.name)
                         val scope = CoroutineScope(Dispatchers.Main)
                         scope.launch {
                             delay(28000L)
-                            stopRingtone(context = context)
+                            //stopRingtone(context = context)
                             //binding.webView.destroy()
-                            executeFinishCurrentActivity(activity = activity)
+                            //executeFinishCurrentActivity(activity = activity)
                         }
                     }
 
                     Lifecycle.Event.ON_RESUME -> {
-                        Log.d("4444", " IncomingCallActivity Lifecycle.Event.ON_RESUME")
+                        Logger.d("4444 IOS IncomingCallActivity Lifecycle.Event.ON_RESUME")
                         //viewModel.saveLifeCycleState(state = LifeCycleState.ON_RESUME.name)
                     }
 
                     Lifecycle.Event.ON_STOP -> { // когда свернул
-                        Log.d("4444", " IncomingCallActivity Lifecycle.Event.ON_STOP")
+                        Logger.d("4444 IOS IncomingCallActivity Lifecycle.Event.ON_STOP")
                         //viewModel.saveLifeCycleState(state = LifeCycleState.ON_STOP.name)
                     }
 
                     Lifecycle.Event.ON_DESTROY -> { // когда удалил из стека
-                        Log.d("4444", " IncomingCallActivity Lifecycle.Event.ON_DESTROY")
+                        Logger.d("4444 IOS IncomingCallActivity Lifecycle.Event.ON_DESTROY")
                         //viewModel.saveLifeCycleState(state = LifeCycleState.ON_DESTROY.name)
                     }
 
@@ -783,38 +800,6 @@ fun LifecycleOwnerIncomingCallActivity() {
             }
         }
     )
-}
-
-private fun stopRingtone(context: Context) {
-
-
-    try {
-        val intent = Intent(context, RingtoneService::class.java)
-        intent.action = RingtoneService.ACTION_STOP_RINGTONE
-        context.startService(intent)
-        //8999 c.startForegroundService(intent2);
-    } catch (e: Exception) {
-        Log.d("4444", " try catch Ошибка воспроизведения звука звонка: ", e)
-    }
-}
-
-private fun executeFinishCurrentActivity(activity: Activity) {
-    Log.d("4444", " executeFinishCurrentActivity")
-    activity.finish()
-}
-
-
-@Composable
-fun NavigateToHomeScreen() {
-
-    val context = LocalContext.current
-
-    // Создание Intent для перехода к другой активности
-    val intent = Intent(context, MainActivity::class.java).apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    }
-    context.startActivity(intent)
-    // Завершение текущей активности
 }
 
 enum class ConfirmationState {

@@ -98,16 +98,16 @@ class AddAddressViewModel(
 
     private fun getFullNameAndPhone() {
         viewModelScope.launch(Dispatchers.IO) {
-            val profile = userInfoRepository.getUserInfo().data.profile
+            val profile = userInfoRepository.getUserInfo().data?.profile
             fullName = StringBuilder()
-                .append(profile.lastName)
+                .append(profile?.lastName)
                 .append(" ")
-                .append(profile.firstName)
+                .append(profile?.firstName)
                 .append(" ")
-                .append(profile.middleName)
+                .append(profile?.middleName)
                 .toString()
 
-            profilePhone = profile.phone.toString()
+            profilePhone = profile?.phone.toString()
         }
     }
 

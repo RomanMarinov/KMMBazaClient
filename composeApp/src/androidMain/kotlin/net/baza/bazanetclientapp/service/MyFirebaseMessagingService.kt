@@ -45,7 +45,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val context: Context by lazy { applicationContext }
 
-
 //    NotifierManager.addListener(object : NotifierManager.Listener {----------
 //        override fun onNewToken(token: String) {
 //            Logger.d("4444 Push Notification ios onNewToken: $token")

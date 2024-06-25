@@ -9,6 +9,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.media.AudioManager
 import android.os.Build
@@ -24,6 +25,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavDeepLinkBuilder
+import com.google.firebase.Firebase
+import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.mmk.kmpnotifier.notification.Notifier
 import com.mmk.kmpnotifier.notification.NotifierManager
@@ -332,6 +335,20 @@ class NotificationPushCustomizerImpl(
     ) {
         Log.d("4444", " showPushCall")
 
+
+//        Picasso.get().load(imageUrl).into(object : Target {
+//            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+//                notification.setLargeIcon(bitmap)
+//                NotificationManagerCompat.from(context).notify(notificationId, notification.build())
+//            }
+//
+//            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+//            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+//        })
+
+
+
+
         // проверяю есть ли разрешения для уведомлений (true / false)
         if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
             try {
@@ -354,7 +371,7 @@ class NotificationPushCustomizerImpl(
                 val notification = NotificationCompat.Builder(context, channelId)
                     .setSmallIcon(R.drawable.ic_logo_push)
                     .setColor(ContextCompat.getColor(context, R.color.colorBazaMainRed))
-                    .setLargeIcon(Picasso.get().load(imageUrl).get())
+                   // .setLargeIcon(Picasso.get().load(imageUrl).get())
                     .setContentTitle("Входящий звонок") // Заголовок
                     .setContentText(address) // Основной текст
                     .setDeleteIntent(pendingIntent)
@@ -548,6 +565,7 @@ class NotificationPushCustomizerImpl(
 //                    }
 //                }
 //            }
+
         }
     }
 

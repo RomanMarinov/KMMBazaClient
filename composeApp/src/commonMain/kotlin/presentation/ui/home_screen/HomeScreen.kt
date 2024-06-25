@@ -106,7 +106,12 @@ fun HomeScreen(
                         Text(
                             text = "Привет$name!",
                             fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp
+                            fontSize = 24.sp,
+                            modifier = Modifier.clickable {
+                                scope.launch {
+                                    viewModel.sendSelfPush()
+                                }
+                            }
                         )
 
                         var phone = ""

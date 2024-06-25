@@ -8,6 +8,7 @@ import data.data_store.AppPreferencesRepository
 import domain.model.auth.firebase.FirebaseRequestBody
 import domain.repository.AuthRepository
 import io.ktor.http.isSuccess
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,8 +30,11 @@ class SplashViewModel(
 
     private var _fireBaseToken = MutableStateFlow("")
 
+    val scope = CoroutineScope(Dispatchers.Main)
+
     init {
         getPublicInfoFromServer()
+        getFireBaseToken()
     }
 
     private fun getPublicInfoFromServer() {
@@ -41,6 +45,12 @@ class SplashViewModel(
 //                }
 //            }
 //        }
+    }
+
+    private fun getFireBaseToken() {
+        scope.launch {
+          //  _fireBaseToken.value = NotifierManager.getPushNotifier().getToken().toString()
+        }
     }
 
     fun checkAndUpdateToken(fireBaseToken: String?, fingerPrint: String) {
@@ -71,6 +81,14 @@ class SplashViewModel(
 
     private suspend fun sendRegisterFireBaseData(fireBaseToken: String?, fingerPrint: String) {
         Logger.d("4444 MainActivityViewModel sendRegisterFireBaseData")
+        // переместить ан ui
+        //val fireBaseToken1 = NotifierManager.getPushNotifier().getToken()
+        val fire = getFirebaseTokenPlatform()
+       // Logger.d("4444 LOGGER HUYOGER fireBaseToken=" + fireBaseToken)
+
+        scope.launch {
+//            val fireBaseToken1 = NotifierManager.getPushNotifier().getToken()
+        }
 
         authRepository.setFingerPrint(fingerPrint = fingerPrint)
 //        val fingerPrint = appPreferencesRepository.fetchInitialPreferences().fingerPrint
@@ -78,9 +96,9 @@ class SplashViewModel(
 
         Logger.d("4444 platformName="+ platformName)
         val firebaseRequestBody = FirebaseRequestBody(
-            firebaseToken = fireBaseToken,
+            firebaseToken = fire,
             fingerprint = fingerPrint,
-            version = 1,
+            version = 250,
             device = platformName
         )
         // пока не решу проблему на ios

@@ -104,7 +104,8 @@ kotlin {
             //implementation("org.jetbrains.kotlin:kotlin-serialization:2.0.0-RC1")
             implementation("net.thauvin.erik.urlencoder:urlencoder-lib:1.5.0")
             //implementation("io.github.kevinnzou:compose-webview:0.33.6")
-            implementation("io.github.kevinnzou:compose-webview-multiplatform:1.9.2")
+            implementation("io.github.kevinnzou:compose-webview-multiplatform:1.9.12")
+
 //            implementation("com.google.accompanist:accompanist-webview:0.34.0")
             implementation("com.google.accompanist:accompanist-permissions:0.35.1-alpha")
 //            implementation("dev.icerock.moko:resources:0.23.0")
@@ -133,7 +134,6 @@ kotlin {
 //            implementation("co.touchlab:kermit-gradle-plugin:2.0.2")
             implementation("co.touchlab:kermit:2.0.2")
             implementation("co.touchlab:kermit-crashlytics:2.0.2")
-
 //            implementation("com.google.fireflations-interop:17.2.0")
 //            implementation("com.google.firebase:firebase-config-interop:16.0.1")
         }
@@ -148,6 +148,7 @@ kotlin {
 //                implementation("dev.gitlive:firebase-installations:1.12.0")
                 //api("io.github.mirzemehdi:kmpnotifier-iossimulatorarm64:1.0.0")
                 api(libs.kmpNotifier)
+                implementation(compose.material3)
 //                api("io.github.mirzemehdi:kmpnotifier-iossimulatorarm64:1.0.0")
                 //export("io.github.mirzemehdi:kmpnotifier-iosarm64:0.6.0")
               //  api("io.github.mirzemehdi:kmpnotifier-iosarm64:0.6.0")
@@ -270,6 +271,7 @@ dependencies {
 //    implementation(libs.compose.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.androidx.constraintlayout.compose.android)
 
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)

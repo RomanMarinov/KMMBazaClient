@@ -40,10 +40,7 @@ class DomofonScreenViewModel(
     fun getSputnik(isLoading: Boolean) {
         viewModelScope.launch {
             _isLoading.value = isLoading
-            val domofons: Domofon? = userInfoRepository.getUserInfo().data.domofon
-
-            Logger.d("4444 sputnikUiState=" + domofons?.sputnik)
-
+            val domofons: Domofon? = userInfoRepository.getUserInfo().data?.domofon
             domofons?.let { domof ->
                 _domofonUiState.update {
                     it?.copy(domofon = domof)

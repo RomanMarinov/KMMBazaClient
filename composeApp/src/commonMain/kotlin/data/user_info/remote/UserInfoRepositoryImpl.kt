@@ -29,14 +29,14 @@ class UserInfoRepositoryImpl(private val httpClient: HttpClient) : UserInfoRepos
         val firebaseRequestBodyDTO = body.mapToData()
         try {
 
-            Logger.d("4444 sendSelfPush body=" + firebaseRequestBodyDTO)
+           // Logger.d("4444 sendSelfPush body=" + firebaseRequestBodyDTO)
             val response = httpClient.post("user/firebase_v1") {
                 contentType(ContentType.Application.Json)
                 setBody(body = firebaseRequestBodyDTO)
             }
 
             if (response.status.isSuccess()) {
-                Logger.d { "4444 sendSelfPush isSuccess result=" }
+                Logger.d { "4444 sendSelfPush isSuccess" }
                 //            val result = response.body<OurServerDTO>()
 //            if (result.data.result) {
 //                Logger.d{"4444 sendRegisterFireBaseData isSuccess result=" + result.data.result}

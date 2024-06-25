@@ -119,7 +119,7 @@ class KtorAuthInterceptor(
 //            }
             if (response.status.isSuccess()) {
                 val result = response.body<AuthLoginResponse>()
-                Logger.d("4444 refreshNow isSuccess result= ${result}")
+                //Logger.d("4444 refreshNow isSuccess result= ${result}")
                 appPreferencesRepository.setAuthToPrefsAndAuthState(
                     phone = result.payload?.phone ?: 0L,
                     accessToken = result.accessToken ?: "",

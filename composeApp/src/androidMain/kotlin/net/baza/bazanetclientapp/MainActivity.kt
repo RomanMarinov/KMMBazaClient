@@ -92,6 +92,9 @@ class MainActivity : ComponentActivity() {
                 },
                 onShowIncomingCallActivity = {
                     startActivity(Intent(this, IncomingCallActivity::class.java))
+                },
+                onPayloadData = {
+
                 }
             )
 
@@ -170,6 +173,8 @@ class MainActivity : ComponentActivity() {
         permissionUtil.askNotificationPermission {
             Logger.d("4444 MainActivity HasNotification Permission: $it")
         }
+
+
 
         //  потом включить важно загугли
         //AndroidPermissionUtil(this)

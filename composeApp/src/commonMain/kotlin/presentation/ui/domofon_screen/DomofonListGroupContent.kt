@@ -52,11 +52,13 @@ import io.kamel.image.asyncPainterResource
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_lock
 import kmm.composeapp.generated.resources.ic_play
+import kmm.composeapp.generated.resources.ic_plus
 import kmm.composeapp.generated.resources.ic_share
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
 import presentation.ui.add_address.AddAddressBottomSheet
+import presentation.ui.splash_activity.GetPlatformName
 import util.AddAddressButtonHelper
 import util.ColorCustomResources
 import util.ScreenRoute
@@ -103,11 +105,12 @@ fun DomofonListGroupContent(
                     .fillMaxSize()
                 //.navigationBarsPadding()
                 ,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                //verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                item {
-                    PermissionBannerContent()
+                val platformName = GetPlatformName().getName()
+                if (platformName == "android") {
+                    item { PermissionBannerContent() }
                 }
 
                 item {
@@ -170,7 +173,7 @@ fun TopTitleContentGroup(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp),
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp),
         // horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -189,11 +192,57 @@ fun TopTitleContentGroup(
             )
         }
 
-        AddAddressButtonHelper(
-            onShowBottomSheet = {
-                isShowBottomSheet.value = it
+
+        Row(
+            modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(top = 16.dp)
+            ,
+            //.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End
+        ) {
+            Box(
+                modifier = Modifier,
+                //.fillMaxWidth(),
+                contentAlignment = Alignment.CenterEnd,
+            ) {
+                Card(
+                    modifier = Modifier
+                        //.fillMaxWidth()
+                        .height(40.dp),
+                    shape = RoundedCornerShape(100.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .clickable {
+                                isShowBottomSheet.value = true
+                            }
+                            .fillMaxHeight()
+                            .padding(start = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(24.dp),
+                            imageVector = vectorResource(Res.drawable.ic_plus),
+                            contentDescription = null,
+                            tint = ColorCustomResources.colorBazaMainBlue
+                        )
+                        Text(
+                            modifier = Modifier
+                                //.fillMaxWidth()
+                                .padding(start = 8.dp, end = 16.dp),
+                            text = "Новый адрес",
+                            color = ColorCustomResources.colorBazaMainBlue
+                        )
+                    }
+                }
             }
-        )
+        }
     }
 
     if (isShowBottomSheet.value) {
@@ -227,7 +276,7 @@ fun GroupContentItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp),
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp),
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBazaMainBlue),

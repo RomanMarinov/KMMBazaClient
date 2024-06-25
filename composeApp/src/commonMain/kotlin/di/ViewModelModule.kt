@@ -10,6 +10,7 @@ import presentation.ui.domofon_screen.DomofonScreenViewModel
 import presentation.ui.help_screen.HelpScreenViewModel
 import presentation.ui.history_call.HistoryCallScreenViewModel
 import presentation.ui.home_screen.HomeScreenViewModel
+import presentation.ui.incoming_call_screen_ios.IncomingCallScreenIosViewModel
 import presentation.ui.internet_tv_screen.InternetTvScreenViewModel
 import presentation.ui.map_screen.MapScreenViewModel
 import presentation.ui.outdoor_screen.OutdoorScreenViewModel
@@ -46,6 +47,9 @@ val viewModelModule = module {
     factory { AddressesScreenViewModel(get(), get()) }
 
     factory { PaymentServiceViewModel() }
+
+    factory { IncomingCallScreenIosViewModel(get()) }
+
 
 }
 

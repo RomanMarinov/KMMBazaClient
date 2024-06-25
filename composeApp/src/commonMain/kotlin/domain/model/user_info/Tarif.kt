@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Tarif(
-    val bitrate: Int,
+    val bitrate: Int? = null,
     val canChange: Boolean,
     val group: String,
     val id: Int,

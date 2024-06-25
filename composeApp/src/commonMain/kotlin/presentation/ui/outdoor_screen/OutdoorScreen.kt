@@ -158,6 +158,18 @@ fun OutdoorScreen(
                                 if (countGroup.value > 2 && outdoorContentState.value == OutdoorContent.LIST) { // стоит на группе
                                     outdoorContentState.value = OutdoorContent.LIST_GROUP
                                 }
+
+                                if (outdoorContentState.value == OutdoorContent.LIST_ZERO) {
+                                    navHostController.navigate(
+                                        ScreenRoute.HomeScreen.route,
+                                        NavOptions.Builder().setPopUpTo(
+                                            // The destination of popUpTo
+                                            route = ScreenRoute.HomeScreen.route,
+                                            // Whether the popUpTo destination should be popped from the back stack.
+                                            inclusive = false,
+                                        ).build()
+                                    )
+                                }
                             }
                         ) {
                             Icon(
@@ -193,6 +205,7 @@ fun OutdoorScreen(
                 )
             }
         ) { outdoorTopBarPaddingValue ->
+            Logger.d("4444 пусто outdoorTopBarPaddingValue=" + outdoorTopBarPaddingValue)
 
             Column(
                 modifier = Modifier

@@ -29,8 +29,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import co.touchlab.kermit.Logger
+import com.mmk.kmpnotifier.notification.Notifier
 import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.PayloadData
+import data.data_store.AppPreferencesRepository
+import domain.repository.AuthRepository
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.domofon_name_nav
 import kmm.composeapp.generated.resources.help_name_nav
@@ -45,11 +48,21 @@ import kmm.composeapp.generated.resources.outdoor_name_nav
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 
 import org.koin.core.context.KoinContext
 import util.ColorCustomResources
 import util.NavHostScreenScenes
 import util.ScreenRoute
+
+
+data class PayloadDataCustom(
+    val type: String = "",
+    val address: String = "",
+    val imageUrl: String = "",
+    val uuid: String = "",
+    val videoUrl: String = ""
+)
 
 data class BottomNavigationItem(
     val title: String,
@@ -63,31 +76,68 @@ data class BottomNavigationItem(
 @Composable
 fun App(
     onMoveToAuthActivity: () -> Unit,
-    onShowIncomingCallActivity: () -> Unit
+    onShowIncomingCallActivity: (PayloadDataCustom) -> Unit,
+    onPayloadData: (PayloadData) -> Unit
 ) {
-
-
     var myPushNotificationToken by remember { mutableStateOf("") }
-    LaunchedEffect(true) {
-        println("LaunchedEffectApp is called")
-        NotifierManager.addListener(object : NotifierManager.Listener {
-            override fun onNewToken(token: String) {
-                myPushNotificationToken = token
-                println("onNewToken: $token")
-            }
+    var isExecuteFirebaseNotificationPlatform by remember { mutableStateOf(false) }
+    val payloadDataCustomState = remember { mutableStateOf(PayloadDataCustom()) }
+//    LaunchedEffect(true) {
+//        println("4444 LaunchedEffectApp is called")
+//
+//        println("4444 LaunchedEffectApp is called FIREBASE  IOS token=" + NotifierManager.getPushNotifier().getToken())
+//        NotifierManager.addListener(object : NotifierManager.Listener {
+//            override fun onNewToken(token: String) {
+//                myPushNotificationToken = token
+//                println("4444 onNewToken: $token")
+//            }
+//
+//            override fun onPushNotification(title: String?, body: String?) {
+//                super.onPushNotification(title, body)
+//                println("4444 APP onPushNotification title: $title" + " body=" +body)
+//            }
+//
+//            override fun onPayloadData(data: PayloadData) {
+//                super.onPayloadData(data)
+//                println("4444 APP onPayloadData data: $data")
+//            }
+//        })
+//       // myPushNotificationToken = NotifierManager.getPushNotifier().getToken() ?: ""
+//    }
+///////////////////
+//
+    NotifierManager.addListener(object : NotifierManager.Listener {
+        override fun onNewToken(token: String) {
+            myPushNotificationToken = token
+            println("4444 onNewToken: $token")
+        }
 
-            override fun onPushNotification(title: String?, body: String?) {
-                super.onPushNotification(title, body)
-                println("APP onPushNotification title: $title" + " body=" +body)
-            }
+        override fun onPushNotification(title: String?, body: String?) {
+            super.onPushNotification(title, body)
+            println("4444 APP onPushNotification title: $title" + " body=" +body)
+        }
 
-            override fun onPayloadData(data: PayloadData) {
-                super.onPayloadData(data)
-                println("APP onPayloadData data: $data")
-            }
-        })
-       // myPushNotificationToken = NotifierManager.getPushNotifier().getToken() ?: ""
-    }
+        override fun onPayloadData(data: PayloadData) {
+            super.onPayloadData(data)
+            println("4444 APP onPayloadData data: $data")
+            onPayloadData(data)
+
+            val type = data["type"].toString()
+            val address = data["address"].toString()
+            val imageUrl = data["image_url"].toString()
+            val uuid = data["uuid"].toString()
+            val videoUrl = data["video_url"].toString()
+
+            payloadDataCustomState.value = PayloadDataCustom(
+                type = type,
+                address = address,
+                imageUrl = imageUrl,
+                uuid = uuid,
+                videoUrl = videoUrl
+            )
+            isExecuteFirebaseNotificationPlatform = true
+        }
+    })
 
 
     AppContent(
@@ -95,7 +145,7 @@ fun App(
             onMoveToAuthActivity()
         },
         onShowIncomingCallActivity = {
-            onShowIncomingCallActivity()
+            onShowIncomingCallActivity(it)
         }
     )
 
@@ -109,6 +159,16 @@ fun App(
 //            }
 //        )
 //    }
+
+    if (isExecuteFirebaseNotificationPlatform) {
+        FirebaseNotificationPlatform(
+            data = payloadDataCustomState.value,
+            onShowIncomingCallActivity = {
+                onShowIncomingCallActivity(it)
+            }
+        )
+        // возможно надо как то isExecuteFirebaseNotificationPlatform false
+    }
 }
 
 @Composable
@@ -125,7 +185,7 @@ fun GetCurrentEntry(
 @Preview
 fun AppContent(
     onMoveToAuthActivity: () -> Unit,
-    onShowIncomingCallActivity: () -> Unit
+    onShowIncomingCallActivity: (PayloadDataCustom) -> Unit
 ) {
     MaterialTheme {
 
@@ -275,7 +335,7 @@ fun AppContent(
                             onMoveToAuthActivity()
                         },
                         onShowIncomingCallActivity = {
-                            onShowIncomingCallActivity()
+                            //onShowIncomingCallActivity()
                         }
                     )
                 }
