@@ -439,19 +439,19 @@ fun LazyListScope.helpContentMessengers(
                     Image(
                         painter = painterResource(Res.drawable.ic_vk),
                         modifier = Modifier
-                            .size(80.dp),
+                            .size(50.dp),
                         contentDescription = null
                     )
                     Image(
                         painter = painterResource(Res.drawable.ic_tg),
                         modifier = Modifier
-                            .size(80.dp),
+                            .size(50.dp),
                         contentDescription = null
                     )
                     Image(
                         painter = painterResource(Res.drawable.ic_wa),
                         modifier = Modifier
-                            .size(80.dp),
+                            .size(50.dp),
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))

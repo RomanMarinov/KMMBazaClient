@@ -29,21 +29,15 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import co.touchlab.kermit.Logger
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_back
-import kmm.composeapp.generated.resources.ic_profile
 import kmm.composeapp.generated.resources.profile_title
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import presentation.ui.payment_service_screen.PaymentServiceViewModel
+import org.koin.compose.koinInject
 import util.ColorCustomResources
-import util.ScreenRoute
 import util.SnackBarHostHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,9 +45,11 @@ import util.SnackBarHostHelper
 fun ProfileScreen(
     bottomNavigationPaddingValue: PaddingValues,
     navHostController: NavHostController,
-    onMoveToAuthActivity: () -> Unit
+    onMoveToAuthActivity: () -> Unit,
+    viewModel: ProfileScreenViewModel = koinInject()
 ) {
 
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val pullToRefreshState = rememberPullToRefreshState()
     val snackbarHostState = remember { SnackbarHostState() }
     val openBottomSheetPersonalAccountState = remember { mutableStateOf(false) }
@@ -61,7 +57,6 @@ fun ProfileScreen(
     var isRefreshing by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
-
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -112,20 +107,6 @@ fun ProfileScreen(
                                 )
                         }
                     },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                navHostController.navigate(ScreenRoute.ProfileScreen.route)
-                            }
-                        ) {
-                            Icon(
-                                imageVector = vectorResource(Res.drawable.ic_profile),
-                                contentDescription = "Open profile",
-                                modifier = Modifier
-                                    .size(24.dp)
-                            )
-                        }
-                    },
                     modifier = Modifier
                         .shadow(4.dp),
                     scrollBehavior = scrollBehavior
@@ -143,18 +124,16 @@ fun ProfileScreen(
             ) {
                 ProfileContentWithRefresh(
 //                    items = outDoorsUiState.outdoors,
-//                    isRefreshing = isRefreshing,
+                    isLoading = isLoading,
                     onRefresh = {
-//                        scope.launch {
-//                            isRefreshing = true
-//                            delay(2000L)
-//                            isRefreshing = false
-//                        }
+                        viewModel.getUserInfo(isLoading = true)
                     },
                     navHostController = navHostController,
                     onMoveToAuthActivity = {
                         onMoveToAuthActivity()
-                    }
+                    },
+                    modifier = Modifier,
+                    viewModel = viewModel
                 )
             }
         }

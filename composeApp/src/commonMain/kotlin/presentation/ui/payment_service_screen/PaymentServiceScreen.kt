@@ -90,6 +90,7 @@ fun PaymentServiceScreen(
                     navigationIcon = {
                         IconButton(
                             onClick = {
+                                                                navHostController.navigate(ScreenRoute.ProfileScreen.route)
                             }
                         ) {
                             Icon(
@@ -104,20 +105,20 @@ fun PaymentServiceScreen(
                                 )
                         }
                     },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                navHostController.navigate(ScreenRoute.ProfileScreen.route)
-                            }
-                        ) {
-                            Icon(
-                                imageVector = vectorResource(Res.drawable.ic_profile),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(24.dp)
-                            )
-                        }
-                    },
+//                    actions = {
+//                        IconButton(
+//                            onClick = {
+//                                navHostController.navigate(ScreenRoute.ProfileScreen.route)
+//                            }
+//                        ) {
+//                            Icon(
+//                                imageVector = vectorResource(Res.drawable.ic_profile),
+//                                contentDescription = null,
+//                                modifier = Modifier
+//                                    .size(24.dp)
+//                            )
+//                        }
+//                    },
                     modifier = Modifier
                         .shadow(4.dp),
                     scrollBehavior = scrollBehavior

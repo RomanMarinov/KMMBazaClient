@@ -1,9 +1,8 @@
-package presentation.ui.profile_screen.address_screen
+package presentation.ui.profile_screen.address_item
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.multiplatform.webview.web.LoadingState
 import domain.model.user_info.UserInfo
 import domain.repository.AddAddressRepository
 import domain.repository.UserInfoRepository

@@ -1,4 +1,4 @@
-package presentation.ui.profile_screen.address_screen
+package presentation.ui.profile_screen.address_item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -37,8 +37,6 @@ import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.addresses_title
 import kmm.composeapp.generated.resources.ic_back
 import kmm.composeapp.generated.resources.ic_profile
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.koinInject

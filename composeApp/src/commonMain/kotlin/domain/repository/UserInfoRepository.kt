@@ -10,4 +10,6 @@ interface UserInfoRepository {
 
     // потом убрать
     suspend fun sendSelfPush(body: FirebaseRequestBodyTEST)
+
+    suspend fun sendActualEmailToServer(email: String) : Boolean
 }

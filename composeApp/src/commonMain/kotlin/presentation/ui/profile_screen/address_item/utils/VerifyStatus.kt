@@ -1,4 +1,4 @@
-package presentation.ui.profile_screen.address_screen.utils
+package presentation.ui.profile_screen.address_item.utils
 
 import domain.model.user_info.AdditionalAddresses
 

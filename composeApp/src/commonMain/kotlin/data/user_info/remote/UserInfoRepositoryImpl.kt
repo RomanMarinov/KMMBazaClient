@@ -9,6 +9,7 @@ import domain.repository.UserInfoRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -49,5 +50,25 @@ class UserInfoRepositoryImpl(private val httpClient: HttpClient) : UserInfoRepos
         } catch (e: Exception) {
             Logger.d { "4444 try catch sendSelfPush e=" + e }
         }
+    }
+
+    override suspend fun sendActualEmailToServer(email: String) : Boolean {
+        Logger.d("попытка sendActualEmailToServer")
+       return try {
+           val response = httpClient.patch("user/profile") {
+               contentType(ContentType.Application.Json)
+               setBody(mapOf("email" to email))
+           }
+           if (response.status.isSuccess()) {
+               Logger.d("sendActualEmailToServer isSuccess")
+               true
+           } else {
+               Logger.d("sendActualEmailToServer failure")
+                false
+           }
+       } catch (e: Exception) {
+           Logger.d("try catch sendActualEmailToServer e=" + e)
+           false
+       }
     }
 }

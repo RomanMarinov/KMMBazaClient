@@ -10,9 +10,12 @@ import domain.repository.AuthRepository
 import domain.repository.UserInfoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import presentation.ui.profile_screen.email_item.SendEmailState
 
 class ProfileScreenViewModel(
     private val authRepository: AuthRepository,
@@ -26,8 +29,15 @@ class ProfileScreenViewModel(
     private var _logout: MutableStateFlow<Boolean?> = MutableStateFlow(null)
     val logout: StateFlow<Boolean?> = _logout
 
+    private var _responseSendEmail: MutableStateFlow<SendEmailState> =
+        MutableStateFlow(SendEmailState.DEFAULT)
+    val responseSendEmail: StateFlow<SendEmailState> = _responseSendEmail
+
+    private var _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
     init {
-        getUserInfo()
+        getUserInfo(false)
     }
 
     fun logout(fingerprint: String) {
@@ -42,10 +52,12 @@ class ProfileScreenViewModel(
         }
     }
 
-    private fun getUserInfo() {
+    fun getUserInfo(isLoading: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
+            _isLoading.value = isLoading
             val result = userInfoRepository.getUserInfo()
             _userInfo.value = result
+            _isLoading.value = false
         }
     }
 
@@ -53,5 +65,21 @@ class ProfileScreenViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             appPreferencesRepository.clear()
         }
+    }
+
+    fun sendActualEmailToServer(email: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = userInfoRepository.sendActualEmailToServer(email = email)
+            if (response) {
+                _responseSendEmail.value = SendEmailState.SUCCESS
+            } else {
+                _responseSendEmail.value = SendEmailState.FAILURE
+            }
+
+        }
+    }
+
+    fun resetSendEmailState() {
+        _responseSendEmail.value = SendEmailState.DEFAULT
     }
 }

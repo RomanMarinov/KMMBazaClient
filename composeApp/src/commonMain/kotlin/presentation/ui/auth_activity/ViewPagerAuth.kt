@@ -84,7 +84,7 @@ fun ViewPagerAuth(
     when (logInStatusCode) {
         200 -> {
             Logger.d { "4444 ViewPagerAuth 200" }
-            onMoveToMainActivity()// хуй
+            onMoveToMainActivity()
         }
 
         404 -> { // "С указанного номера не было звонка"

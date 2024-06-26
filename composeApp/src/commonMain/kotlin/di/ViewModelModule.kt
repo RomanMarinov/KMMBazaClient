@@ -16,7 +16,7 @@ import presentation.ui.map_screen.MapScreenViewModel
 import presentation.ui.outdoor_screen.OutdoorScreenViewModel
 import presentation.ui.payment_service_screen.PaymentServiceViewModel
 import presentation.ui.profile_screen.ProfileScreenViewModel
-import presentation.ui.profile_screen.address_screen.AddressesScreenViewModel
+import presentation.ui.profile_screen.address_item.AddressesScreenViewModel
 import presentation.ui.splash_activity.SplashViewModel
 
 val viewModelModule = module {

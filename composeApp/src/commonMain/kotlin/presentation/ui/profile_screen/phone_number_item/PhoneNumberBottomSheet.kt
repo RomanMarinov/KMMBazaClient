@@ -1,4 +1,4 @@
-package presentation.ui.profile_screen.phone_number
+package presentation.ui.profile_screen.phone_number_item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import co.touchlab.kermit.Logger
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_close

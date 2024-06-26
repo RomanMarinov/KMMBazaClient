@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,16 +13,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,12 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import co.touchlab.kermit.Logger
-import di.koinViewModel
+import com.multiplatform.webview.web.LoadingState
+import domain.model.user_info.UserInfo
 import kmm.composeapp.generated.resources.Res
 import kmm.composeapp.generated.resources.ic_addresses
 import kmm.composeapp.generated.resources.ic_arrow_right
@@ -53,7 +53,8 @@ import kmm.composeapp.generated.resources.ic_profile_setting
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.koinInject
 import presentation.ui.auth_activity.AuthPlatform
-import presentation.ui.profile_screen.phone_number.PhoneNumberBottomSheet
+import presentation.ui.profile_screen.email_item.EmailBottomSheet
+import presentation.ui.profile_screen.phone_number_item.PhoneNumberBottomSheet
 import util.ColorCustomResources
 import util.ScreenRoute
 import util.TextUtils
@@ -65,10 +66,12 @@ import util.TextUtils
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileContentWithRefresh(
-    onRefresh: Any,
+    isLoading: Boolean,
+    onRefresh: () -> Unit,
     navHostController: NavHostController,
     onMoveToAuthActivity: () -> Unit,
-    viewModel: ProfileScreenViewModel = koinInject()
+    modifier: Modifier = Modifier,
+    viewModel: ProfileScreenViewModel
 ) {
 
 //    val viewModelProvider = ProfileScreenViewModelProvider()
@@ -76,7 +79,7 @@ fun ProfileContentWithRefresh(
 //    val viewModel = koinViewModel<ProfileScreenViewModel>()
     val pullToRefreshState = rememberPullToRefreshState()
     val snackBarHostState = remember { SnackbarHostState() }
-    var isLoading = remember { mutableStateOf(true) }
+    // var isLoading = remember { mutableStateOf(true) }
 
     val userInfo by viewModel.userInfo.collectAsStateWithLifecycle()
     val logout by viewModel.logout.collectAsStateWithLifecycle()
@@ -112,7 +115,7 @@ fun ProfileContentWithRefresh(
     Box(
         modifier = Modifier
             .nestedScroll(pullToRefreshState.nestedScrollConnection)
-           // .navigationBarsPadding()
+        // .navigationBarsPadding()
         // .padding(bottom = paddingValue.calculateBottomPadding())
 //            .background(
 //                Brush.linearGradient(
@@ -134,18 +137,14 @@ fun ProfileContentWithRefresh(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                //.padding(bottom = 16.dp)
+            //.padding(bottom = 16.dp)
 //                .padding(
 //                    bottom = paddingValue.calculateBottomPadding()
 //                )
         ) {
             profileNameCard(
-                name = "Имя",
-                lastName = "Фамилия",
-                middleName = "Отчество"
-//                openBottomSheet = {
-//                   // openBottomSheetPersonalAccountState.value = it
-//                }
+                userInfo = userInfo,
+                viewModel = viewModel
             )
 
             profilePhoneNumberCard(
@@ -170,6 +169,7 @@ fun ProfileContentWithRefresh(
             profileExit(viewModel = viewModel)
         }
 
+
 //        if (pullToRefreshState.isRefreshing) {
 //            LaunchedEffect(true) {
 //                onRefresh()
@@ -184,23 +184,47 @@ fun ProfileContentWithRefresh(
 //            }
 //        }
 //
-//        PullToRefreshContainer(
-//            state = pullToRefreshState,
-//            modifier = Modifier.align(Alignment.TopCenter),
-//            //  modifier = Modifier.align(Alignment.CenterHorizontally),
-//
-//        )
+        PullToRefreshContainer(
+            state = pullToRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter),
+            containerColor = Color.White,
+            contentColor = ColorCustomResources.colorBazaMainBlue
+        )
+
+        if (pullToRefreshState.isRefreshing) {
+            LaunchedEffect(true) {
+                onRefresh()
+            }
+        }
+
+        LaunchedEffect(isLoading) {
+            if (isLoading) {
+                pullToRefreshState.startRefresh()
+            } else {
+                pullToRefreshState.endRefresh()
+            }
+        }
     }
 }
 
 fun LazyListScope.profileNameCard(
-    name: String,
-    lastName: String,
-    middleName: String,
+    userInfo: UserInfo?,
+    viewModel: ProfileScreenViewModel
 ) {
-    val probel = " "
 
     item {
+        val probel = " "
+        val name = userInfo?.data?.profile?.firstName ?: ""
+        val lastName = userInfo?.data?.profile?.lastName ?: ""
+        val middleName = userInfo?.data?.profile?.middleName ?: ""
+        val email = if (userInfo?.data?.profile?.email?.isEmpty() == true) {
+            "email не указан"
+        } else {
+            userInfo?.data?.profile?.email
+        }
+
+        val isShowEmailBottomSheet = remember { mutableStateOf(false) }
+
         ElevatedCard(
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
@@ -210,31 +234,22 @@ fun LazyListScope.profileNameCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        //openBottomSheet(true)
-                    }
             ) {
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color.White),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(
+//
+                    Icon(
                         modifier = Modifier
-                            .padding(16.dp),
-                        onClick = {
-                            //openBottomSheet(true)
-                        }) {
-                        Icon(
-                            modifier = Modifier
-                                .size(40.dp),
-                            imageVector = vectorResource(Res.drawable.ic_profile_card),
-                            contentDescription = null,
-                            tint = ColorCustomResources.colorBazaMainBlue
-                        )
-                    }
+                            .padding(16.dp)
+                            .size(40.dp),
+                        imageVector = vectorResource(Res.drawable.ic_profile_card),
+                        contentDescription = null,
+                        tint = ColorCustomResources.colorBazaMainBlue
+                    )
 
                     Text(
                         modifier = Modifier
@@ -242,7 +257,6 @@ fun LazyListScope.profileNameCard(
                         text = "$name$probel$lastName$probel$middleName",
                         fontSize = 16.sp
                     )
-
                 }
 
                 Box(
@@ -256,24 +270,26 @@ fun LazyListScope.profileNameCard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+//                        .clickable(enabled = (email != null && email.isEmpty()),
+//                            onClick = {
+//
+//                            })
+                        .clickable {
+                            isShowEmailBottomSheet.value = true
+                        }
                         .background(Color.White),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(
+                    Icon(
                         modifier = Modifier
-                            .padding(16.dp),
-                        onClick = {
-                            //openBottomSheet(true)
-                        }) {
-                        Icon(
-                            modifier = Modifier
-                                .size(36.dp),
-                            imageVector = vectorResource(Res.drawable.ic_profile_post_card),
-                            contentDescription = null,
-                            tint = Color.Gray
-                        )
-                    }
-                    Column(modifier = Modifier.fillMaxWidth()) {
+                            .padding(16.dp)
+                            .size(36.dp),
+                        imageVector = vectorResource(Res.drawable.ic_profile_post_card),
+                        contentDescription = null,
+                        tint = Color.Gray
+                    )
+
+                    Column() {
                         Text(
                             modifier = Modifier
                                 .padding(top = 16.dp, end = 16.dp),
@@ -282,11 +298,37 @@ fun LazyListScope.profileNameCard(
                         Text(
                             modifier = Modifier
                                 .padding(top = 8.dp, end = 16.dp, bottom = 16.dp),
-                            text = "email@email.ru"
+                            text = email ?: ""
                         )
+                    }
+
+                    if (email != null) {
+                        if (!email.isEmpty()) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Icon(
+                                    imageVector = vectorResource(Res.drawable.ic_arrow_right),
+                                    contentDescription = "arrow",
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }
+        }
+
+        if (isShowEmailBottomSheet.value) {
+            EmailBottomSheet(
+                onShowBottomSheet = {
+                    isShowEmailBottomSheet.value = it
+                },
+                viewModel = viewModel
+            )
         }
     }
 }
@@ -314,29 +356,33 @@ fun LazyListScope.profilePhoneNumberCard(
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
+//                Card(
+//                    modifier = Modifier
+//                        .padding(16.dp)
+//                        .size(36.dp),
+//                    //.align(Alignment.CenterEnd),
+//                    shape = RoundedCornerShape(5.dp),
+//                   // colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                        //    .fillMaxSize()
+//                           // .padding(16.dp)
+//                            .size(36.dp),
+//                        contentAlignment = Alignment.Center,
+//                    ) {
 
-                Card(
+                Icon(
+                    // close
                     modifier = Modifier
                         .padding(16.dp)
                         .size(36.dp),
-                    //.align(Alignment.CenterEnd),
-                    shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            // close
-                            modifier = Modifier
-                                .size(36.dp),
-                            imageVector = vectorResource(Res.drawable.ic_phone),
-                            contentDescription = null,
-                        )
-                    }
-                }
+                    imageVector = vectorResource(Res.drawable.ic_phone),
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
+                //     }
+
 
                 Column(
                     // modifier = Modifier.fillMaxWidth()
@@ -401,31 +447,32 @@ fun LazyListScope.profilePersonAccountCard() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Card(
+//                Card(
+//                    modifier = Modifier
+//                        .padding(16.dp)
+//                        .size(36.dp),
+//                    //.align(Alignment.CenterEnd),
+//                    shape = RoundedCornerShape(5.dp),
+//                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .clickable {
+//                                // openBottomSheet(false)
+//                            },
+//                        contentAlignment = Alignment.Center,
+//                    ) {
+
+                Icon(
+                    // close
                     modifier = Modifier
                         .padding(16.dp)
                         .size(36.dp),
-                    //.align(Alignment.CenterEnd),
-                    shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
-                                // openBottomSheet(false)
-                            },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            // close
-                            modifier = Modifier
-                                .size(36.dp),
-                            imageVector = vectorResource(Res.drawable.ic_person_account),
-                            contentDescription = null,
-                        )
-                    }
-                }
+                    imageVector = vectorResource(Res.drawable.ic_person_account),
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
 
                 Column(
                     // modifier = Modifier.fillMaxWidth()
@@ -483,31 +530,31 @@ fun LazyListScope.profilePaymentServiceCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Card(
+//                Card(
+//                    modifier = Modifier
+//                        .padding(16.dp)
+//                        .size(36.dp),
+//                    //.align(Alignment.CenterEnd),
+//                    shape = RoundedCornerShape(5.dp),
+//                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .clickable {
+//                                // openBottomSheet(false)
+//                            },
+//                        contentAlignment = Alignment.Center,
+//                    ) {
+
+                Icon(
                     modifier = Modifier
                         .padding(16.dp)
                         .size(36.dp),
-                    //.align(Alignment.CenterEnd),
-                    shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
-                                // openBottomSheet(false)
-                            },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            // close
-                            modifier = Modifier
-                                .size(36.dp),
-                            imageVector = vectorResource(Res.drawable.ic_payment_card),
-                            contentDescription = null,
-                        )
-                    }
-                }
+                    imageVector = vectorResource(Res.drawable.ic_payment_card),
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
 
                 Text(
                     modifier = Modifier
@@ -555,31 +602,32 @@ fun LazyListScope.profileYourAddressesCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Card(
+//                Card(
+//                    modifier = Modifier
+//                        .padding(16.dp)
+//                        .size(36.dp),
+//                    //.align(Alignment.CenterEnd),
+//                    shape = RoundedCornerShape(5.dp),
+//                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .clickable {
+//                                // openBottomSheet(false)
+//                            },
+//                        contentAlignment = Alignment.Center,
+//                    ) {
+
+                Icon(
+                    // close
                     modifier = Modifier
                         .padding(16.dp)
                         .size(36.dp),
-                    //.align(Alignment.CenterEnd),
-                    shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
-                                // openBottomSheet(false)
-                            },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            // close
-                            modifier = Modifier
-                                .size(36.dp),
-                            imageVector = vectorResource(Res.drawable.ic_addresses),
-                            contentDescription = null,
-                        )
-                    }
-                }
+                    imageVector = vectorResource(Res.drawable.ic_addresses),
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
 
                 Column(
                     // modifier = Modifier.fillMaxWidth()
@@ -596,7 +644,7 @@ fun LazyListScope.profileYourAddressesCard(
                             .padding(top = 8.dp, end = 16.dp, bottom = 16.dp),
                         text = "Доступ к Вашим адресам",
                         fontSize = 16.sp,
-                        color = Color.Gray
+                        color = Color.Black
                     )
                 }
                 Row(
@@ -635,31 +683,32 @@ fun LazyListScope.profileDeviceAndAccessCard() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Card(
+//                Card(
+//                    modifier = Modifier
+//                        .padding(16.dp)
+//                        .size(36.dp),
+//                    //.align(Alignment.CenterEnd),
+//                    shape = RoundedCornerShape(5.dp),
+//                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .clickable {
+//                                // openBottomSheet(false)
+//                            },
+//                        contentAlignment = Alignment.Center,
+//                    ) {
+
+                Icon(
+                    // close
                     modifier = Modifier
                         .padding(16.dp)
                         .size(36.dp),
-                    //.align(Alignment.CenterEnd),
-                    shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
-                                // openBottomSheet(false)
-                            },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            // close
-                            modifier = Modifier
-                                .size(36.dp),
-                            imageVector = vectorResource(Res.drawable.ic_devices),
-                            contentDescription = null,
-                        )
-                    }
-                }
+                    imageVector = vectorResource(Res.drawable.ic_devices),
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
 
                 Text(
                     modifier = Modifier
@@ -705,31 +754,32 @@ fun LazyListScope.profileUKCard() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Card(
+//                Card(
+//                    modifier = Modifier
+//                        .padding(16.dp)
+//                        .size(36.dp),
+//                    //.align(Alignment.CenterEnd),
+//                    shape = RoundedCornerShape(5.dp),
+//                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .clickable {
+//                                // openBottomSheet(false)
+//                            },
+//                        contentAlignment = Alignment.Center,
+//                    ) {
+
+                Icon(
+                    // close
                     modifier = Modifier
                         .padding(16.dp)
                         .size(36.dp),
-                    //.align(Alignment.CenterEnd),
-                    shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
-                                // openBottomSheet(false)
-                            },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            // close
-                            modifier = Modifier
-                                .size(36.dp),
-                            imageVector = vectorResource(Res.drawable.ic_chat_with_uk),
-                            contentDescription = null,
-                        )
-                    }
-                }
+                    imageVector = vectorResource(Res.drawable.ic_chat_with_uk),
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
 
                 Text(
                     modifier = Modifier
@@ -776,31 +826,32 @@ fun LazyListScope.profileSettingCard() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Card(
+//                Card(
+//                    modifier = Modifier
+//                        .padding(16.dp)
+//                        .size(36.dp),
+//                    //.align(Alignment.CenterEnd),
+//                    shape = RoundedCornerShape(5.dp),
+//                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .clickable {
+//                                // openBottomSheet(false)
+//                            },
+//                        contentAlignment = Alignment.Center,
+//                    ) {
+
+                Icon(
+                    // close
                     modifier = Modifier
                         .padding(16.dp)
                         .size(36.dp),
-                    //.align(Alignment.CenterEnd),
-                    shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = ColorCustomResources.colorBackgroundClose),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
-                                // openBottomSheet(false)
-                            },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            // close
-                            modifier = Modifier
-                                .size(36.dp),
-                            imageVector = vectorResource(Res.drawable.ic_profile_setting),
-                            contentDescription = null,
-                        )
-                    }
-                }
+                    imageVector = vectorResource(Res.drawable.ic_profile_setting),
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
 
                 Text(
                     modifier = Modifier

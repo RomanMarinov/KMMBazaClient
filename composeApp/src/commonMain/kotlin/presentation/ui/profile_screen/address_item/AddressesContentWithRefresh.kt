@@ -1,4 +1,4 @@
-package presentation.ui.profile_screen.address_screen
+package presentation.ui.profile_screen.address_item
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
@@ -72,7 +72,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
 import presentation.ui.add_address.AddAddressBottomSheet
 import presentation.ui.attach_photo.AttachPhotoBottomSheet
-import presentation.ui.profile_screen.address_screen.utils.VerifyStatus
+import presentation.ui.profile_screen.address_item.utils.VerifyStatus
 import util.ColorCustomResources
 import util.ProgressBarHelper
 import util.ScreenRoute
